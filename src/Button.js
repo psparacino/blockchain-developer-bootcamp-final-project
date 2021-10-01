@@ -1,8 +1,7 @@
-import React from 'react';
+import { useState , React } from 'react';
 import './Button.css';
 
 import { ethers } from 'ethers';
-import { JsonRpcProvider } from '@ethersproject/providers';
 
 let connected = false;
 
@@ -32,9 +31,14 @@ if (window.ethereum) {
 
 
 const Button = () => {
+  
+  //fix double click logic
+  //const [ metaMaskOpen, setMetaMaskOpen] = useState(false);
+  //console.log(metaMaskOpen , "HERE")
 
-  const connectToMetMask = async () => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+
+  const connectToMetaMask = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
     // Prompt user for account connections
     await provider.send("eth_requestAccounts")
     .then((response) => {
@@ -47,9 +51,15 @@ const Button = () => {
     const signer = provider.getSigner();
     console.log("Account:", await signer.getAddress());
     }
+
+
     return (
         <div>
-            <button className="button" id="connectButton" onClick={connectToMetMask}>{connected === true ? 'MetaMask is Connected!' : 'Click Here to Connect MetaMask'}</button>
+            <button className="button" id="connectButton" 
+              onClick={connectToMetaMask}>
+
+              {connected === true ? 'MetaMask is Connected!' : 'Click Here to Connect MetaMask'}
+            </button>
         </div>
     )
 }
@@ -57,13 +67,11 @@ const Button = () => {
 export default Button;
 
 
-/*
-    window.ethereum.request({method: 'eth_requestAccounts'})
-    .then((response) => {
-        document.getElementById("connectButton").innerText = "MetaMask connected!";
-        connected = true;
+/*  
 
-    })
-    .catch((error) => {
-        window.location.reload();
-    });*/
+() => metaMaskOpen ? 
+              () => {window.location.reload(); connectToMetaMask() ; setMetaMaskOpen = true}
+              : 
+              connectToMetaMask()
+
+              */

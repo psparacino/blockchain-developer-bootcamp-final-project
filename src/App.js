@@ -1,4 +1,4 @@
-import AudioPlayer from './AudioPlayer.jsx';
+import AudioMain from './AudioMain.js';
 import Button from './Button.js';
 
 import tracks from "./tracks";
@@ -10,7 +10,8 @@ function App() {
     <div className="App">
       <header className="App-header">
         <Button style="color: black" />
-        <AudioPlayer tracks={tracks} />
+        <AudioMain />
+        
       </header>
     </div>
   );
