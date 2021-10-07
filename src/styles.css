@@ -31,7 +31,7 @@
   }
   
   .audio-player {
-    --active-color: #00aeb0;
+    --active-color: rgb(36, 169, 240);
     background: var(--active-color);
     max-width: 350px;
     padding: 24px;

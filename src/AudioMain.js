@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import AudioPlayer from  './AudioPlayer.jsx';
+import AudioControls from './AudioControls.jsx';
 import tracks from "./tracks";
 
 //images
@@ -8,9 +9,13 @@ import red_x from './assets/Red_X.png';
 //styles
 import './AudioMain.css';
 
-const AudioPage = () => {
+const AudioMain = () => {
 
     const [trackNumber, setTrackNumber] = useState(0);
+
+    const [currentTrack, setCurrentTrack] = useState('');
+
+    const [playCount, setPlayCount] = useState(0);
 
 
     const AlbumOwnership = () => {
@@ -30,8 +35,13 @@ const AudioPage = () => {
     const AlbumStats = () => {
 
         return (
-        <p> ALBUM STATS/SONG PLAY COUNT PLACEHOLDER</p>
+            <div style={{textAlign : 'center', marginTop : '40px'}}>
+                <p>{currentTrack} PLAYS (ALL USERS): 0</p>
+                <p>{currentTrack} Album Purchases: (ALL USERS): 0</p>
+            </div>
+        
         //needs to track plays of songs. that state will maybe live on ipfs.
+        
         )
     }
 
@@ -41,6 +51,7 @@ const AudioPage = () => {
 
     <div>
         <AudioPlayer tracks={tracks} startingTrackIndex={trackNumber} />
+        
         <AlbumStats />
         <div className="BuyDiv">
             <AlbumOwnership />
@@ -60,7 +71,7 @@ const AudioPage = () => {
                         Artist
                     </th>
                     <th>
-                        Play Count
+                        Your Play Count
                     </th>
                     <th>
                         Album Art
@@ -77,6 +88,9 @@ const AudioPage = () => {
                     onClick={
                         () => {
                             setTrackNumber(index);
+                            setCurrentTrack(track.title);
+                            
+                         
                         }         
                     }>
                     {'▶️'}
@@ -89,7 +103,7 @@ const AudioPage = () => {
                     {track.artist}
                 </td>
                 <td>
-                play count placeholder
+                {playCount}
                 </td>
                 <td>
                    <img className="albumArt" src={track.image} />
@@ -107,4 +121,4 @@ const AudioPage = () => {
 
 }
 
-export default AudioPage;
+export default AudioMain;
