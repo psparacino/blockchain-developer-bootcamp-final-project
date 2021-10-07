@@ -1,5 +1,95 @@
+body{
+  background-color: #212121;
+  font-size: 24px;
+  padding: 16px;
+  color: rgba(255,255,255,0.75);
+  font-family: sans-serif;
+}
+
 td, th {
-    border: 5px solid #999;
+    border: 2px solid #999;
     padding: 0.5rem;
     text-align: left;
   }
+
+  .mainTable {
+    margin: auto;
+    margin-top: 40px;
+  }
+
+  .albumArt {
+    max-width: 80px;
+    height: auto;
+  }
+
+/* play button styles */
+
+.playButton {
+  margin: auto;
+  width: 100%;
+  display: block;
+  font-size: 300%;
+
+}
+
+.playButton:hover {
+  background-color: #666;
+}
+
+.playButton:active {
+  background-color: #668;
+  transform: translateY(4px);
+}
+
+/* buy album styles */
+
+.BuyDiv {
+  text-align: center;
+  padding-top: 50px;
+}
+
+button.buyButton {
+    display: inline-block;
+    padding:0.5em 1em;
+    border:0.16em solid #FFFFFF;
+    box-sizing: border-box;
+    width: 25%;
+    text-transform:uppercase;
+    font-family:'Roboto',sans-serif;
+    font-weight:800;
+    font-size: larger;
+    color:#FFFFFF;
+    text-align:center;
+    transition: all 0.15s;
+  }
+ button.buyButton:hover{
+    color:#DDDDDD;
+    border-color:#DDDDDD;
+  }
+  button.buyButton:active{
+    color:#BBBBBB;
+    border-color:#BBBBBB;
+  }
+
+  .ownedCheckLeft {
+    max-width: 5%;
+    vertical-align: bottom;
+    margin-right: 50px;
+  }
+  
+
+  .ownedCheckRight {
+    max-width: 5%;
+    vertical-align: bottom;
+    margin-left: 50px;
+  }
+  
+
+
+
+
+
+  
+  
+  
+  

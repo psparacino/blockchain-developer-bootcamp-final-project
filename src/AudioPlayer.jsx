@@ -7,9 +7,9 @@ import "./styles.css";
  * Read the blog post here:
  * https://letsbuildui.dev/articles/building-an-audio-player-with-react-hooks
  */
-const AudioPlayer = ({ tracks }) => {
+const AudioPlayer = ({ tracks, startingTrackIndex }) => {
   // State
-  const [trackIndex, setTrackIndex] = useState(0);
+  const [trackIndex, setTrackIndex] = useState(startingTrackIndex);
   const [trackProgress, setTrackProgress] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -74,6 +74,11 @@ const AudioPlayer = ({ tracks }) => {
       setTrackIndex(0);
     }
   };
+
+  useEffect(() => {
+    setTrackIndex(startingTrackIndex);
+
+  }, [startingTrackIndex])
 
   useEffect(() => {
     if (isPlaying) {

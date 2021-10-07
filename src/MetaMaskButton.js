@@ -1,4 +1,4 @@
-import { useState , React } from 'react';
+/* import { useState , React } from 'react';
 import './Button.css';
 
 import { ethers } from 'ethers';
@@ -21,7 +21,7 @@ if (window.ethereum) {
     const { ethereum } = window;
     if (ethereum && ethereum.isMetaMask) {
       console.log('MetaMask successfully detected!');
-
+      connected = true;
       // Access the decentralized web!
     } else {
       console.log('Please install MetaMask');
@@ -67,11 +67,57 @@ const Button = () => {
 export default Button;
 
 
-/*  
+*/
 
-() => metaMaskOpen ? 
-              () => {window.location.reload(); connectToMetaMask() ; setMetaMaskOpen = true}
-              : 
-              connectToMetaMask()
+import { useState , React } from 'react';
+import './Button.css';
 
-              */
+import { ethers } from 'ethers';
+
+
+
+
+//let connected = false;
+
+
+const Button = ({mainAccount, setMainAccount}) => {
+  //left over from before using props
+  
+  
+  //fix double click logic
+  //const [ metaMaskOpen, setMetaMaskOpen] = useState(false);
+  //console.log(metaMaskOpen , "HERE")
+
+
+  const connectToMetaMask = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    // Prompt user for account connections
+    await provider.send("eth_requestAccounts")
+    .then((response) => {
+
+    })
+    .catch((error) => {
+        window.location.reload();
+    });
+    const signer = provider.getSigner();
+    await signer.getAddress()
+    .then((response) => {
+      setMainAccount(response);
+    })
+    //console.log(mainAccount, "main account check")
+    }
+
+
+    return (
+        <div>
+            <button className="button" id="connectButton" 
+              onClick={connectToMetaMask}>
+              
+              {mainAccount ? mainAccount : "Please connect to MetaMask!"}
+              
+            </button>
+        </div>
+    )
+}
+
+export default Button;
