@@ -1,6 +1,6 @@
 import AudioMain from './AudioMain.js';
-import MetaMaskButton from './MetaMaskButton.js';
-import useHandleEthereum from './useHandleEthereum.js';
+import MetaMaskButton from './components/MetaMaskButton.js';
+import useHandleEthereum from './hooks/useHandleEthereum.js';
 
 import tracks from "./tracks";
 

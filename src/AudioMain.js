@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import AudioPlayer from  './AudioPlayer.jsx';
-import AudioControls from './AudioControls.jsx';
+import AudioPlayer from  './components/AudioPlayer.jsx';
 import tracks from "./tracks";
 
 //images
