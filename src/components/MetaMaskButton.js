@@ -29,6 +29,7 @@ const MetaMaskButton = ({mainAccount, setMainAccount}) => {
     })
     }
     
+
     //address abbreviation
     const cleanedMainAccount = mainAccount.slice(0,6) + "..." + mainAccount.substr(-4);
     
