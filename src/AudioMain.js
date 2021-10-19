@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ethers } from 'ethers';
 import AudioPlayer from  './components/AudioPlayer.jsx';
 import tracks from "./tracks";
 
@@ -7,14 +8,19 @@ import checkmark from './assets/greencheck.png';
 import red_x from './assets/Red_X.png';
 //styles
 import './AudioMain.css';
+import { useEffect } from 'react/cjs/react.development';
 
-const AudioMain = () => {
+//Contracts
+
+
+const AudioMain = ({mainAccount, UserInteractionContract}) => {
 
     const [trackNumber, setTrackNumber] = useState(0);
 
     const [currentTrack, setCurrentTrack] = useState('');
 
     const [playCount, setPlayCount] = useState(0);
+ 
 
 
     const AlbumOwnership = () => {
@@ -44,18 +50,49 @@ const AudioMain = () => {
         )
     }
 
+    const RegisterButton = () => {
+        const [registered, setRegistered] = useState(false)
+        //put useEffectHere
+
+
+        function register() {
+            try {UserInteractionContract.RegisterAddress()
+            .then((result) => console.log(result))}
+            //need to fix above to access state variable in contract
+            catch (error) {
+                console.log(error)
+            }
+        }
+
+        async function verify() {
+            await UserInteractionContract.verifyRegistration().
+            then((result) => setRegistered(result));
+        }
+
+
+    return (
+        <div>
+            <button className="buyAlbumButton" id="buyButton" onClick={register, verify}>
+            {registered == true ? "Registered!" : "Click here for one-time registration"}
+            {console.log(registered, "registered")}       
+            </button>
+        </div>
+    )
+}
+    
+
 
 
     return (
 
     <div>
         <AudioPlayer tracks={tracks} startingTrackIndex={trackNumber} />
-        
+        <RegisterButton />
         <AlbumStats />
         <div className="BuyDiv">
             <AlbumOwnership />
         </div>
-        
+
         <table className="mainTable">
          
             <thead>
@@ -111,7 +148,6 @@ const AudioMain = () => {
         )}
        </table>
 
-       
 
     </div>
 

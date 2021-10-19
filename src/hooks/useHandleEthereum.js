@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 
 import { ethers } from 'ethers';
 
+//import {UserInteractionContract} from 
+
+
+
 
 const useHandleEthereum = () => {
     
@@ -10,6 +14,8 @@ const useHandleEthereum = () => {
     const [signer, setSigner] = useState('');
 
     const [provider, setProvider] = useState('');
+
+    const [registered, setRegistered] = useState(false);
 
     useEffect(()=> {
         if (window.ethereum) {
@@ -52,6 +58,22 @@ const useHandleEthereum = () => {
         }
 
     },[])
+
+    /*
+        useEffect(()=> {
+
+            UserInteractionContract.verifyRegistration();
+
+            if (registered == false) {
+                console.log("FALSE!")
+              } else {
+                alert("please connect to Metamask")
+              }
+
+        },[])
+
+        */
+
     return {mainAccount, setMainAccount, signer, provider};
 }
 

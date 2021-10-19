@@ -1,41 +1,48 @@
 import { React } from 'react';
+import { ethers } from 'ethers';
 import './BuyAlbumButton.css';
+
+import UserInteraction from '../artifacts/contracts/UserInteraction.sol/UserInteraction.json';
+
 
 // need to import vault contract address
 
-import { ethers } from 'ethers';
 
 
-const BuyAlbumButton = ({mainAccount, signer, provider}) => {
+
+const BuyAlbumButton = ({mainAccount}) => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner(0);
+
+    const userInteractionContractAddress = "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512";
+
+//console.log(signer, 'signer')
+
+    const UserInteractionContract = new ethers.Contract(userInteractionContractAddress, UserInteraction.abi, signer);
 
 
     const BuyAlbum = async () => {
-        console.log(signer, "MAIN ACCOUNT CHECK");
-        const tx = ({
-            //to: owner,
-            to: 0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199,
-            value: ethers.utils.parseEther("1.0")
-        });
-        const txHash = signer.sendTransaction({
-            method: 'eth-sendTransaction',
-            params : [tx],
-        })  
-        .then((txHash) => console.log('txHash', txHash))
-        .catch((error) => console.error);
-       
-        
-    }
+        //await UserInteractionContract.Buy(1, 1, {value: 1000000})
+        try {await UserInteractionContract.Buy(1 , 1, {value : 1000000})
+        .then((result) => console.log(result))}
+        catch (error) {
+            console.log(error)
+        }
+
     
+    }
  
-    console.log(mainAccount);
+
+  
+    
 
 
     return (
         <div>
-            <button className="buyAlbumButton" id="connectButton" onClick={BuyAlbum}
+            <button className="buyAlbumButton" id="buyButton" onClick={BuyAlbum}
               >
               
-              {mainAccount ? "Buy Album" : "Please connect to MetaMask to buy album!"}
+              {mainAccount ? "Buy Album for $10" : "Please connect to MetaMask to buy album!"}
               
             </button>
         </div>
