@@ -22,6 +22,32 @@ td, th {
     height: auto;
   }
 
+/*temp play button DELETE FROM FINAL!!!!!!!!*/  
+
+button.tempPlayButton {
+  display: inline-block;
+  padding:0.5em 1em;
+  border:0.16em solid #FFFFFF;
+  box-sizing: border-box;
+  width: 25%;
+  text-transform:uppercase;
+  font-family:'Roboto',sans-serif;
+  font-weight:800;
+  font-size: larger;
+  color:#FFFFFF;
+  text-align:center;
+  transition: all 0.15s;
+  float: right;
+}
+button.tempPlayButton:hover{
+  color:#DDDDDD;
+  border-color:#DDDDDD;
+}
+button.tempPlayButton:active{
+  color:#BBBBBB;
+  border-color:#BBBBBB;
+}
+
 /* play button styles */
 
 .playButton {

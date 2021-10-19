@@ -8,20 +8,20 @@ import checkmark from './assets/greencheck.png';
 import red_x from './assets/Red_X.png';
 //styles
 import './AudioMain.css';
-import { useEffect } from 'react/cjs/react.development';
 
 //Contracts
 
 
-const AudioMain = ({mainAccount, UserInteractionContract}) => {
+const AudioMain = ({mainAccount, registration, UserInteractionContract}) => {
 
     const [trackNumber, setTrackNumber] = useState(0);
 
     const [currentTrack, setCurrentTrack] = useState('');
 
     const [playCount, setPlayCount] = useState(0);
- 
 
+    const [registered, setRegistered] = useState(false)
+   
 
     const AlbumOwnership = () => {
         const [owned, setOwned] = useState(false);
@@ -51,9 +51,6 @@ const AudioMain = ({mainAccount, UserInteractionContract}) => {
     }
 
     const RegisterButton = () => {
-        const [registered, setRegistered] = useState(false)
-        //put useEffectHere
-
 
         function register() {
             try {UserInteractionContract.RegisterAddress()
@@ -62,6 +59,7 @@ const AudioMain = ({mainAccount, UserInteractionContract}) => {
             catch (error) {
                 console.log(error)
             }
+            verify();
         }
 
         async function verify() {
@@ -72,13 +70,32 @@ const AudioMain = ({mainAccount, UserInteractionContract}) => {
 
     return (
         <div>
-            <button className="buyAlbumButton" id="buyButton" onClick={register, verify}>
-            {registered == true ? "Registered!" : "Click here for one-time registration"}
-            {console.log(registered, "registered")}       
+            {registered == true ?
+            <button className="buyAlbumButton" id="buyButton">
+            {"Registered!"}   
             </button>
+            : <button className="buyAlbumButton" id="buyButton" onClick={register}>
+            {"Click here for one-time registration"}   
+            </button>}
+            
         </div>
     )
 }
+
+    //FIX THIS DOES NOT WORK. TEMPORARY ONLY
+    const playSong = async() => {
+        try{ await UserInteractionContract.Play({value : 1308805763219})
+        .then((result) => console.log(result, "play song result"))}
+        catch (error) {
+            console.log(error)
+        }
+
+        return (
+            <button className="tempPlayButton" id="tempPlayButton">
+                Temp Play
+            </button>
+        )
+    }
     
 
 
@@ -86,8 +103,9 @@ const AudioMain = ({mainAccount, UserInteractionContract}) => {
     return (
 
     <div>
-        <AudioPlayer tracks={tracks} startingTrackIndex={trackNumber} />
+        <AudioPlayer tracks={tracks} mainAccount={mainAccount} startingTrackIndex={trackNumber} playSong={playSong} />
         <RegisterButton />
+        <playSong />
         <AlbumStats />
         <div className="BuyDiv">
             <AlbumOwnership />

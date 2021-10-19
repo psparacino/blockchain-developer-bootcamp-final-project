@@ -15,38 +15,53 @@ library Verification {
 */
 contract UserInteraction is RootContract {
         
-        mapping(address => uint) public userPurchases;
+        mapping(address => bool) public userPurchase;
         
         //keep track of deployed payment channels
 
         mapping(address => address) public userPaymentChannel;
 
-        //should use a constructor to demystify the songs and what the paths represent below
-        constructor () {}
+        //should use a constructor to demystify the songs and what the paths represent below(?)
+
         
-        //need to fix this function
+        //Play and Buy operations
+
         function Play(uint albumID, uint songID) payable public userRegistered {
             uint current_song_count = albumStats[msg.sender][albumID].songStats[songID].playCount;
             if (current_song_count > 1) {
                 current_song_count + 1;
                 albumStats[msg.sender][albumID].totalSongPlays + 1;
+                albumDirectory[1].songList[songID].playCount + 1;
             // @dev will call function from payment channel here
             } else {
                 current_song_count = 1;
                 albumStats[msg.sender][albumID].totalSongPlays = 1;
+                albumDirectory[1].songList[songID].playCount = 1;
             }
+            owner.transfer(msg.value);
 
             //https://ethereum.stackexchange.com/questions/50237/how-to-split-funds-in-single-send-transaction
           
         }
 
-        function Buy(uint albumID, uint price) payable public userRegistered returns(bool) {
-            require(msg.value > price);
-            registeredUsers[msg.sender].userAlbumsOwned.push(albumID);
-            //will call function from payment channel instance here
+        function Buy(uint albumID) payable public /*add modifier check */ {
+            //require(msg.value == price, "price too low");
+            
+            
             owner.transfer(msg.value);
-            return true;
+            registeredUsers[msg.sender].userAlbumsOwned.push(albumID);
+            userPurchase[msg.sender] = true;
         }
+
+        function getAlbumOwnership() public view returns(bool) {
+            if (userPurchase[msg.sender] == true) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+
 
         //handling individual Payment Channels
 

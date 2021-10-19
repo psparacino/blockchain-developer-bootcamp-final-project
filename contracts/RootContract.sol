@@ -71,10 +71,19 @@ contract RootContract {
     }
 
     function RegisterAddress() public returns(bool) {   
-        return registeredUsers[msg.sender].registered = true;
-        
+        return registeredUsers[msg.sender].registered = true;       
     }
     // functions to update arrays https://deanschmid1.medium.com/using-function-to-modify-structs-directly-in-solidity-mappings-809ccce6201b
+
+    function verifyRegistration() view public returns(bool) {
+        if (registeredUsers[msg.sender].registered == true) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+    
     
     function getRegisteredAddress(address userAddress) view public returns(bool) {
         console.log("User is registered", registeredUsers[msg.sender].registered);

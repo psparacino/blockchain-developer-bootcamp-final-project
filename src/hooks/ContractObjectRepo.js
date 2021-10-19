@@ -46,7 +46,7 @@ const ContractObjectRepo = () => {
             
             //User Interaction Contract + Root Contract
 
-            const userInteractionContractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+            const userInteractionContractAddress = "0x0165878A594ca255338adfa4d48449f69242Eb8F";
             const UserInteractionContractObject = await new ethers.Contract(userInteractionContractAddress, UserInteraction.abi, signer);
             setUserInteractionContract(UserInteractionContractObject);
             
