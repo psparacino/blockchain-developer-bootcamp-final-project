@@ -97,6 +97,10 @@ button.buyButton {
     border-color:#BBBBBB;
   }
 
+  .submitButton {
+    background-color: lightgray;
+  }
+
   .ownedCheckLeft {
     max-width: 5%;
     vertical-align: bottom;

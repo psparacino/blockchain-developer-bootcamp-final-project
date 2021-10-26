@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import AudioPlayer from  './components/AudioPlayer.jsx';
 import tracks from "./tracks";
@@ -20,9 +20,11 @@ const AudioMain = ({mainAccount, registration, UserInteractionContract}) => {
 
     const [playCount, setPlayCount] = useState(0);
 
-    const [registered, setRegistered] = useState(false)
-   
+    const [registered, setRegistered] = useState(false);
 
+
+   
+/*
     const AlbumOwnership = () => {
         const [owned, setOwned] = useState(false);
 
@@ -36,12 +38,22 @@ const AudioMain = ({mainAccount, registration, UserInteractionContract}) => {
             </div>
         )
     }
+    */
 
     const AlbumStats = () => {
+        //useEffect Hook
+        async function getPlays() {
+            let plays = await UserInteractionContract.getPlayCount(1);
+            console.log(typeof plays);
+            return plays;
+        }
+
+        //need to use Contract.on to read events/logs and changes in state
+
 
         return (
             <div style={{textAlign : 'center', marginTop : '40px'}}>
-                <p>{currentTrack} PLAYS (ALL USERS): 0</p>
+                <p>{currentTrack} PLAYS (ALL USERS): {getPlays} TEST</p>
                 <p>{currentTrack} Album Purchases: (ALL USERS): 0</p>
             </div>
         
@@ -83,17 +95,94 @@ const AudioMain = ({mainAccount, registration, UserInteractionContract}) => {
 }
 
     //FIX THIS DOES NOT WORK. TEMPORARY ONLY
-    const playSong = async() => {
-        try{ await UserInteractionContract.Play({value : 1308805763219})
-        .then((result) => console.log(result, "play song result"))}
-        catch (error) {
-            console.log(error)
+    const PlaySong = () => {
+
+        async function playSong() {
+            let result = await UserInteractionContract.Play(1, 1)
+            .then((result) => console.log(result, "play result"));
+            console.log(result.data.message, "play result")
         }
+ 
 
         return (
-            <button className="tempPlayButton" id="tempPlayButton">
+            <button className="tempPlayButton" id="tempPlayButton" onClick={playSong}>
                 Temp Play
             </button>
+        )
+    }
+
+    const DepositBalance = () => {
+
+        const [depositAmount, setDepositAmount] = useState(0);
+
+        const handleSubmit = (event) => {
+            event.preventDefault();
+            alert(depositAmount + ' deposited to player bank')
+          }
+        const onChange = (event) => {
+            setDepositAmount(event.target.value);
+        } ;
+        function deposit() {
+            try {UserInteractionContract.depositBalance({value : depositAmount})
+                .then((result) => console.log(result))}
+                //need to fix above to access state variable in contract
+                catch (error) {
+                    console.log(error)
+                }
+        }
+        
+/*
+        function useDepositEth() {
+        useEffect(()=> {
+            deposit();
+            async function deposit() {
+                let result = await UserInteractionContract.depositBalance({value: depositAmount});
+                console.log(result.json, "deposit result")
+            }
+
+        }, [])
+        
+    }
+    */
+
+
+        return (
+            <>
+                <div> Input value: {depositAmount}</div>
+                <form onSubmit={handleSubmit}>
+                <label>Enter deposit amount:
+                <input
+                    type="number"
+                    defaultValue="enter deposit amount" 
+                    value={depositAmount}
+                    onChange={onChange}
+                />
+                </label>
+                <button className="submitButton" type="submit" onClick={deposit}>Submit Balance</button>
+            </form>
+          </>
+            
+        )
+
+    }
+
+    const GetDepositBalance = () => {
+        const [balance, setBalance] = useState(0);
+        
+
+            useEffect(() => {
+                try {UserInteractionContract.getDepositBalance()
+                    .then((result) => setBalance(result.toString()))}
+                    //need to fix above to access state variable in contract
+                    catch (error) {
+                        console.log(error, "DESPOSIT RESULT ERROR")
+                    }
+            
+        }, [DepositBalance]);
+    
+        
+        return (
+            <p>Current Balance: {balance}</p>
         )
     }
     
@@ -103,13 +192,13 @@ const AudioMain = ({mainAccount, registration, UserInteractionContract}) => {
     return (
 
     <div>
-        <AudioPlayer tracks={tracks} mainAccount={mainAccount} startingTrackIndex={trackNumber} playSong={playSong} />
+        <AudioPlayer tracks={tracks} mainAccount={mainAccount} startingTrackIndex={trackNumber} />
         <RegisterButton />
-        <playSong />
+        <PlaySong />
         <AlbumStats />
-        <div className="BuyDiv">
-            <AlbumOwnership />
-        </div>
+        <DepositBalance />
+        <GetDepositBalance />
+
 
         <table className="mainTable">
          
