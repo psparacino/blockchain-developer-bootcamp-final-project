@@ -24,18 +24,16 @@ describe("UserInteraction Tests", function () {
     });
 
     it("should register user", async function() {
-      const result1 = await userContract.RegisterAddress({from : owner.address});
+      await userContract.RegisterAddress({from : owner.address});
       const result2 = await userContract.verifyRegistration({from : owner.address});
-      console.log(result1.toString(), result2.toString(), "REGISTER CHECK");
-      expect(result1).to.equal(result2);
+      expect(result2).to.equal(true);
     });
   
   
     it("should deposit a balance of 100 to the player bank", async function () {
       await userContract.RegisterAddress({from : owner.address});
       await userContract.depositBalance({from : owner.address, value : 100});
-      const result = await userContract.getDepositBalance({from : owner.address}).toString();
-      console.log((await userContract.getDepositBalance({from : owner.address})).toString(), "CHECKING");
+      const result = (await userContract.getDepositBalance({from : owner.address})).toNumber();
       expect(result).to.equal(100);
 
     });

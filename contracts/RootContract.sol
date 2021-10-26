@@ -12,7 +12,7 @@ library Verification {
 
 contract RootContract {
 
-    address payable owner;
+    address public owner;
 
     uint albumCounter;
 
@@ -85,21 +85,12 @@ contract RootContract {
     }
       
     function getRegisteredAddress(address userAddress) view public returns(bool) {
-        console.log("User is registered", registeredUsers[msg.sender].registered);
+       ///console.log("User is registered", registeredUsers[msg.sender].registered);
         return registeredUsers[userAddress].registered;
     }
 
+    receive() external payable {}
     fallback () external payable {}
 
 
 }
-
-
-///
-
-
-
-
-
-
-//should have songID generator. albumID + Song ID

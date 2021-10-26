@@ -35,43 +35,35 @@ contract UserInteraction is RootContract {
 
         event AmountDeposited(address _depositer, uint _amount);
         
-        event WithdrawalComplete(address withdrawee, uint _amount);
+        event WithdrawalComplete(address withdrawee, uint _amount, uint current_balance);
 
 
         //should use a constructor to demystify the songs and what the paths represent below(?)
 
 
         //User Deposit
-        function depositBalance(uint _amount) public payable {
-            
-            require(_amount > 0);
-            require(msg.value == _amount);
-            owner.transfer(_amount);
-            
-            userPlayBalance[msg.sender] += _amount;
 
-            emit AmountDeposited(msg.sender, _amount);
-
+        function depositBalance() public payable userRegistered {
+            require(msg.value > 0);
+            userPlayBalance[msg.sender] += msg.value;
+       
+            emit AmountDeposited(msg.sender, msg.value);
         }
         
         function getDepositBalance() public view returns(uint) {
             return userPlayBalance[msg.sender];
         }
 
-        function withdrawBalance() public payable userRegistered {
-            //require(userPlayBalance[msg.sender] > 0, "user balance is Zero");
+        function withdrawBalance(uint256 _amount) external userRegistered {
+            require(_amount <= userPlayBalance[msg.sender], "not enough value");
+            //check for reentrancy
+            userPlayBalance[msg.sender] -= _amount;
 
-            address payable withdrawee = payable(msg.sender);
-
-            uint balance = userPlayBalance[withdrawee];
-
-            userPlayBalance[msg.sender] = 0;
+            (bool sent, ) = msg.sender.call{value:_amount}("");
+            require(sent, "Failed to send Ether");
             
-            withdrawee.transfer(balance);
             
-            emit WithdrawalComplete(msg.sender, balance);
-
-            
+            emit WithdrawalComplete(msg.sender, _amount, userPlayBalance[msg.sender]);
         }
 
 
@@ -79,6 +71,7 @@ contract UserInteraction is RootContract {
         //Play and Buy operations
 
         function Play(uint albumID, uint songID) public userRegistered returns(bool){
+            require(userPlayBalance[msg.sender] > 0, "deposit eth to listen");
             uint price = 1308805763219;
             uint current_song_count = albumStats[msg.sender][albumID].songStats[songID].playCount;
 
@@ -105,19 +98,21 @@ contract UserInteraction is RootContract {
             return totalSongCount[songID];
         }
 
-
-        function Buy(uint albumID) payable public /*add modifier check */ {
+        function Buy(uint albumID) payable public userRegistered {
             //change this to chainlink oracle price
             uint price = 2621229059106300;
             require(msg.value == price, "price too low");
             
-            owner.transfer(msg.value);
+
+            (bool sent, ) = owner.call{value: price}("");
+            require(sent, "Failed to send Ether");
+            
             registeredUsers[msg.sender].userAlbumsOwned.push(albumID);
             userAlbumPurchase[msg.sender] = true;
 
             emit AlbumPurchased(albumID);
 
-            console.log("album successfully purchased");
+            ///console.log("album successfully purchased");
         }
 
         function getAlbumOwnership() public view returns(bool) {
@@ -126,6 +121,14 @@ contract UserInteraction is RootContract {
             } else {
                 return false;
             }
+        }
+
+        function getVaultAddress() public view returns(address) {
+            return address(this);
+        }
+        
+        function getVault() public view returns(uint) {
+            return address(this).balance;
         }
 
         //handling individual Payment Channels
