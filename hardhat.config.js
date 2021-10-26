@@ -18,7 +18,8 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
  */
 module.exports = {
   paths: {
-    artifacts: './frontend/src/artifacts',
+    sources: './contracts',
+    artifacts: './src/artifacts',
   },
   networks: {
     hardhat: {

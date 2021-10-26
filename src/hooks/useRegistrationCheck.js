@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 import { ethers } from 'ethers';
 
-import ContractObjectRepo from "./ContractObjectRepo";
+import useContractObjectRepo from "./useContractObjectRepo.js";
 
 
 
@@ -11,7 +11,7 @@ const useRegistrationCheck = () => {
 
 const [registration, setRegistration] = useState(false);
 
-const {UserInteractionContract} = ContractObjectRepo();
+const {UserInteractionContract} = useContractObjectRepo();
 
  if (UserInteractionContract != undefined) {
     RegistrationCheck();

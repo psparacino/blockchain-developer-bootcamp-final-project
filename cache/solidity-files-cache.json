@@ -1,114 +1,6 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/Users/peter/Documents/Development/Consensys/blockchain-developer-bootcamp-final-project/node_modules/hardhat/console.sol": {
-      "lastModificationDate": 1634230546358,
-      "contentHash": "cc4777addd464ea56fa35b1c45df0591",
-      "sourceName": "hardhat/console.sol",
-      "solcConfig": {
-        "version": "0.8.4",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        ">=0.4.22 <0.9.0"
-      ],
-      "artifacts": [
-        "console"
-      ]
-    },
-    "/Users/peter/Documents/Development/Consensys/blockchain-developer-bootcamp-final-project/contracts/UserInteraction.sol": {
-      "lastModificationDate": 1635265780270,
-      "contentHash": "a566da11bd417e859399325085ddd836",
-      "sourceName": "contracts/UserInteraction.sol",
-      "solcConfig": {
-        "version": "0.8.4",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "hardhat/console.sol",
-        "./RootContract.sol",
-        "./PaymentChannelFactory.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "UserInteraction"
-      ]
-    },
-    "/Users/peter/Documents/Development/Consensys/blockchain-developer-bootcamp-final-project/contracts/RootContract.sol": {
-      "lastModificationDate": 1635262165379,
-      "contentHash": "184304ffe05bd8b8cce0f768ec5f8a31",
-      "sourceName": "contracts/RootContract.sol",
-      "solcConfig": {
-        "version": "0.8.4",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "hardhat/console.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "RootContract"
-      ]
-    },
     "/Users/peter/Documents/Development/Consensys/blockchain-developer-bootcamp-final-project/contracts/PaymentChannelFactory.sol": {
       "lastModificationDate": 1634224114751,
       "contentHash": "df0e9b302c03e16c5f1f6f1e8f294184",
@@ -145,6 +37,40 @@
       ],
       "artifacts": [
         "PaymentChannelFactory"
+      ]
+    },
+    "/Users/peter/Documents/Development/Consensys/blockchain-developer-bootcamp-final-project/node_modules/hardhat/console.sol": {
+      "lastModificationDate": 1634230546358,
+      "contentHash": "cc4777addd464ea56fa35b1c45df0591",
+      "sourceName": "hardhat/console.sol",
+      "solcConfig": {
+        "version": "0.8.4",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.22 <0.9.0"
+      ],
+      "artifacts": [
+        "console"
       ]
     },
     "/Users/peter/Documents/Development/Consensys/blockchain-developer-bootcamp-final-project/node_modules/@openzeppelin/contracts/utils/cryptography/ECDSA.sol": {
@@ -285,6 +211,80 @@
       ],
       "artifacts": [
         "IERC1271"
+      ]
+    },
+    "/Users/peter/Documents/Development/Consensys/blockchain-developer-bootcamp-final-project/contracts/UserInteraction.sol": {
+      "lastModificationDate": 1635270282213,
+      "contentHash": "bee5db835b909653c5aa8456f4a18daa",
+      "sourceName": "contracts/UserInteraction.sol",
+      "solcConfig": {
+        "version": "0.8.4",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "hardhat/console.sol",
+        "./RootContract.sol",
+        "./PaymentChannelFactory.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "UserInteraction"
+      ]
+    },
+    "/Users/peter/Documents/Development/Consensys/blockchain-developer-bootcamp-final-project/contracts/RootContract.sol": {
+      "lastModificationDate": 1635262165379,
+      "contentHash": "184304ffe05bd8b8cce0f768ec5f8a31",
+      "sourceName": "contracts/RootContract.sol",
+      "solcConfig": {
+        "version": "0.8.4",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "hardhat/console.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "RootContract"
       ]
     }
   }

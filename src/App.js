@@ -5,8 +5,7 @@ import BuyAlbumButton from './components/BuyAlbumButton.js';
 //import hooks
 import useHandleEthereum from './hooks/useHandleEthereum.js';
 import useRegistrationCheck from './hooks/useRegistrationCheck.js';
-import ContractObjectRepo from './hooks/ContractObjectRepo.js'
-
+import useContractObjectRepo from './hooks/useContractObjectRepo.js';
 
 import tracks from "./tracks";
 
@@ -15,7 +14,7 @@ import { useState } from 'react';
 
 function App() {
   const {mainAccount, setMainAccount, signer, provider} = useHandleEthereum();
-  const {UserInteractionContract} = ContractObjectRepo();
+  const {UserInteractionContract} = useContractObjectRepo();
   const {registration} = useRegistrationCheck();
 
 

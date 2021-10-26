@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ethers } from 'ethers';
+import { utils, ethers } from 'ethers';
 import AudioPlayer from  './components/AudioPlayer.jsx';
 import tracks from "./tracks";
 
@@ -44,7 +44,7 @@ const AudioMain = ({mainAccount, registration, UserInteractionContract}) => {
         //useEffect Hook
         async function getPlays() {
             let plays = await UserInteractionContract.getPlayCount(1);
-            console.log(typeof plays);
+            console.log(plays, 'plays check');
             return plays;
         }
 
@@ -66,7 +66,7 @@ const AudioMain = ({mainAccount, registration, UserInteractionContract}) => {
 
         function register() {
             try {UserInteractionContract.RegisterAddress()
-            .then((result) => console.log(result))}
+            .then((result) => console.log(result, 'registration successful'))}
             //need to fix above to access state variable in contract
             catch (error) {
                 console.log(error)
@@ -97,11 +97,16 @@ const AudioMain = ({mainAccount, registration, UserInteractionContract}) => {
     //FIX THIS DOES NOT WORK. TEMPORARY ONLY
     const PlaySong = () => {
 
-        async function playSong() {
-            let result = await UserInteractionContract.Play(1, 1)
-            .then((result) => console.log(result, "play result"));
-            console.log(result.data.message, "play result")
-        }
+        function playSong() {
+            try{UserInteractionContract.Play(1, 1).
+                then((result) => console.log(result))
+            }
+            catch(err) {
+                console.log(err)}
+            }
+
+            
+        
  
 
         return (
@@ -110,6 +115,7 @@ const AudioMain = ({mainAccount, registration, UserInteractionContract}) => {
             </button>
         )
     }
+    console.log(UserInteractionContract, "Object")
 
     const DepositBalance = () => {
 
@@ -117,48 +123,36 @@ const AudioMain = ({mainAccount, registration, UserInteractionContract}) => {
 
         const handleSubmit = (event) => {
             event.preventDefault();
-            alert(depositAmount + ' deposited to player bank')
           }
-        const onChange = (event) => {
-            setDepositAmount(event.target.value);
-        } ;
-        function deposit() {
-            try {UserInteractionContract.depositBalance({value : depositAmount})
-                .then((result) => console.log(result))}
-                //need to fix above to access state variable in contract
-                catch (error) {
-                    console.log(error)
-                }
-        }
-        
-/*
-        function useDepositEth() {
-        useEffect(()=> {
-            deposit();
-            async function deposit() {
-                let result = await UserInteractionContract.depositBalance({value: depositAmount});
-                console.log(result.json, "deposit result")
-            }
 
-        }, [])
-        
-    }
-    */
+        const onChange = (event) => {
+            const amount = event.target.value;
+            if (amount > 0) {
+                let weiAmount = utils.parseEther((amount).toString());
+                setDepositAmount(weiAmount.toString());
+                console.log(depositAmount);
+            }
+            
+
+        } ;
+        async function deposit() {
+            const response = await UserInteractionContract.depositBalance({value : depositAmount});
+            console.log(response, "play response")
+        }
 
 
         return (
             <>
                 <div> Input value: {depositAmount}</div>
                 <form onSubmit={handleSubmit}>
-                <label>Enter deposit amount:
+                <label>Enter deposit amount in ETH: {utils.etherSymbol}
                 <input
                     type="number"
-                    defaultValue="enter deposit amount" 
                     value={depositAmount}
                     onChange={onChange}
                 />
                 </label>
-                <button className="submitButton" type="submit" onClick={deposit}>Submit Balance</button>
+                <button className="submitButton" type="submit" onClick={deposit}>Submit Amount to Player Bank</button>
             </form>
           </>
             
@@ -166,19 +160,21 @@ const AudioMain = ({mainAccount, registration, UserInteractionContract}) => {
 
     }
 
+    //how to update without a page refresh?
     const GetDepositBalance = () => {
         const [balance, setBalance] = useState(0);
         
-
+        
             useEffect(() => {
                 try {UserInteractionContract.getDepositBalance()
-                    .then((result) => setBalance(result.toString()))}
+                    .then((result) => setBalance(utils.formatEther(result.toString()).toString()))}
                     //need to fix above to access state variable in contract
                     catch (error) {
                         console.log(error, "DESPOSIT RESULT ERROR")
                     }
             
         }, [DepositBalance]);
+        
     
         
         return (

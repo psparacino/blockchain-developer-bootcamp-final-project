@@ -44,9 +44,9 @@ contract UserInteraction is RootContract {
         //User Deposit
 
         function depositBalance() public payable userRegistered {
-            require(msg.value > 0);
+        
             userPlayBalance[msg.sender] += msg.value;
-       
+
             emit AmountDeposited(msg.sender, msg.value);
         }
         
