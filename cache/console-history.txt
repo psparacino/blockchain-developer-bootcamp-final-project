@@ -1,0 +1,10 @@
+0xb09da8a5B236fE0295A345035287e80bb0008290get
+0xb09da8a5B236fE0295A345035287e80bb0008290.balance
+.exit
+0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0
+.exit
+.help
+npx help
+help
+exit()
+RootContract.address

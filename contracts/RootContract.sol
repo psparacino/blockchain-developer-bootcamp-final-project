@@ -14,19 +14,15 @@ contract RootContract {
 
     address public owner;
 
-    uint albumCounter;
-
-    uint private platform;
+    uint public albumCounter;
 
     mapping(address => User) public registeredUsers;
 
-    mapping(address => Artist) public registeredArtists;
-
-    mapping(uint => Album) public albumDirectory;
+    mapping(uint => Song) public songList;
 
     mapping(address => mapping(uint => Album)) public albumStats; //Albums user has listened to.
     
-    mapping(address => uint) balances;  
+    mapping(address => uint) internal balances;  
 
 
     struct User {
@@ -47,7 +43,7 @@ contract RootContract {
         address artist;
         string albumName;
         Song[] songList;
-        mapping(uint => Song) songStats;                 //user --> album id=>songID
+        mapping(uint => Song) songStats;                 //user --> album id=>songNumber
         uint totalAlbumPurchases;
         uint totalSongPlays;
     }
@@ -55,7 +51,6 @@ contract RootContract {
 
     struct Song {
         uint songID;
-        string songTitle;
         string songName;
         uint playCount;
     }
@@ -68,12 +63,21 @@ contract RootContract {
 
     constructor() {
         owner = payable(msg.sender);
+        albumCounter = 1;
+
+        songList[1] = Song(1, 'FutureClub', 0);
     }
 
-    function RegisterAddress() public returns(bool) {   
-        return registeredUsers[msg.sender].registered = true;       
+    function RegisterAddress() public returns(bool) {
+        registeredUsers[msg.sender].registered = true; 
+        registeredUsers[msg.sender].userAlbumsOwned.push(0);
+        return true;      
     }
     // functions to update arrays https://deanschmid1.medium.com/using-function-to-modify-structs-directly-in-solidity-mappings-809ccce6201b
+
+    function getRegisteredAddress(address userAddress) public view returns(bool registration, uint256[] memory albumsOwned) {   
+        return (registeredUsers[userAddress].registered, registeredUsers[userAddress].userAlbumsOwned);       
+    }
 
     function verifyRegistration() view public returns(bool) {
         if (registeredUsers[msg.sender].registered == true) {
@@ -81,13 +85,12 @@ contract RootContract {
         } else {
             return false;
         }
+    }
 
+    function getSongInfo(uint songNumber) view public returns(uint id, string memory title, uint playCount) {
+        return (songList[songNumber].songID, songList[songNumber].songName, songList[songNumber].playCount);
     }
-      
-    function getRegisteredAddress(address userAddress) view public returns(bool) {
-       ///console.log("User is registered", registeredUsers[msg.sender].registered);
-        return registeredUsers[userAddress].registered;
-    }
+
 
     receive() external payable {}
     fallback () external payable {}

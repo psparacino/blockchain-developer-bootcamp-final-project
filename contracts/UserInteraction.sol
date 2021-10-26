@@ -54,7 +54,9 @@ contract UserInteraction is RootContract {
             return userPlayBalance[msg.sender];
         }
 
-        function withdrawBalance(uint256 _amount) external userRegistered {
+        function withdrawBalance(uint256 _amount) external userRegistered returns(uint) {
+            uint newBalance;
+
             require(_amount <= userPlayBalance[msg.sender], "not enough value");
             //check for reentrancy
             userPlayBalance[msg.sender] -= _amount;
@@ -64,6 +66,10 @@ contract UserInteraction is RootContract {
             
             
             emit WithdrawalComplete(msg.sender, _amount, userPlayBalance[msg.sender]);
+            
+            newBalance = userPlayBalance[msg.sender];
+
+            return newBalance;
         }
 
 
@@ -103,6 +109,7 @@ contract UserInteraction is RootContract {
             uint price = 2621229059106300;
             require(msg.value == price, "price too low");
             
+            userPlayBalance[msg.sender] -= price;
 
             (bool sent, ) = owner.call{value: price}("");
             require(sent, "Failed to send Ether");
