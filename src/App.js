@@ -11,11 +11,15 @@ import tracks from "./tracks";
 
 import './App.css';
 import { useState } from 'react';
+import useGetBalance from './hooks/useGetBalance.js';
+import useAlbumPurchaseConfirm from './hooks/useAlbumPurchaseConfirm.js';
 
 function App() {
   const {mainAccount, setMainAccount, signer, provider} = useHandleEthereum();
-  const {UserInteractionContract} = useContractObjectRepo();
-  const {registration} = useRegistrationCheck();
+  const {UserInteractionContract, OwnershipTokenContract} = useContractObjectRepo();
+  const {registration, setRegistration} = useRegistrationCheck();
+  const {balance, setBalance} = useGetBalance();
+  const {purchased, setPurchased} = useAlbumPurchaseConfirm();
 
 
   return (
@@ -23,9 +27,26 @@ function App() {
       <header className="App-header">
         <MetaMaskButton style="color: black" mainAccount={mainAccount} setMainAccount={setMainAccount}/>
         {mainAccount ?
-        <BuyAlbumButton mainAccount={mainAccount} signer={signer} provider={provider} UserInteractionContract={UserInteractionContract} /> :
+          <BuyAlbumButton 
+            mainAccount={mainAccount} 
+            signer={signer} 
+            provider={provider} 
+            UserInteractionContract={UserInteractionContract} 
+            OwnershipTokenContract={OwnershipTokenContract} 
+            purchased={purchased} 
+            setPurchased={setPurchased}             
+            /> 
+          :
         null}
-        <AudioMain mainAccount={mainAccount} registration={registration} UserInteractionContract={UserInteractionContract} />
+        <AudioMain 
+          mainAccount={mainAccount} 
+          balance={balance} 
+          setBalance={setBalance} 
+          registration={registration} 
+          setRegistration={setRegistration} 
+          UserInteractionContract={UserInteractionContract} 
+
+        />
         
       </header>
     </div>

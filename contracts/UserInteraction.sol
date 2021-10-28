@@ -33,7 +33,7 @@ contract UserInteraction is RootContract {
 
         event AlbumPurchased(uint _albumID);
 
-        event AmountDeposited(address _depositer, uint _amount);
+        event AmountDeposited(address _depositer, uint _amount, bool success);
         
         event WithdrawalComplete(address withdrawee, uint _amount, uint current_balance);
 
@@ -47,18 +47,18 @@ contract UserInteraction is RootContract {
         
             userPlayBalance[msg.sender] += msg.value;
 
-            emit AmountDeposited(msg.sender, msg.value);
+            emit AmountDeposited(msg.sender, msg.value, true);
         }
         
         function getDepositBalance() public view returns(uint) {
             return userPlayBalance[msg.sender];
         }
 
-        function withdrawBalance(uint256 _amount) external userRegistered returns(uint) {
+        function withdrawBalance(uint256 _amount) external userRegistered nonReentrant returns(uint) {
             uint newBalance;
 
             require(_amount <= userPlayBalance[msg.sender], "not enough value");
-            //check for reentrancy
+
             userPlayBalance[msg.sender] -= _amount;
 
             (bool sent, ) = msg.sender.call{value:_amount}("");
@@ -80,8 +80,6 @@ contract UserInteraction is RootContract {
             require(userPlayBalance[msg.sender] > 0, "deposit eth to listen");
             uint price = 1308805763219;
             uint current_song_count = albumStats[msg.sender][albumID].songStats[songID].playCount;
-
-            //require(msg.value == price);  
 
             if (totalSongCount[songID] > 0) {
                 current_song_count ++;

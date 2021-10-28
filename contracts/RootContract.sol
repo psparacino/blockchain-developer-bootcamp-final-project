@@ -3,6 +3,8 @@ pragma solidity ^0.8.0;
 
 import "hardhat/console.sol";
 
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+
 /*
 library Verification {
     //placeholder
@@ -10,9 +12,9 @@ library Verification {
 }
 */
 
-contract RootContract {
+contract RootContract is ReentrancyGuard {
 
-    address public owner;
+    address public  owner;
 
     uint public albumCounter;
 
@@ -23,6 +25,8 @@ contract RootContract {
     mapping(address => mapping(uint => Album)) public albumStats; //Albums user has listened to.
     
     mapping(address => uint) internal balances;  
+
+    event UserRegistered(address registree, bool registered);
 
 
     struct User {
@@ -67,10 +71,11 @@ contract RootContract {
 
         songList[1] = Song(1, 'FutureClub', 0);
     }
-
+ 
     function RegisterAddress() public returns(bool) {
         registeredUsers[msg.sender].registered = true; 
         registeredUsers[msg.sender].userAlbumsOwned.push(0);
+        emit UserRegistered(msg.sender, true);
         return true;      
     }
     // functions to update arrays https://deanschmid1.medium.com/using-function-to-modify-structs-directly-in-solidity-mappings-809ccce6201b

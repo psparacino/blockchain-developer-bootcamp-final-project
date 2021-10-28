@@ -13,28 +13,23 @@ const [registration, setRegistration] = useState(false);
 
 const {UserInteractionContract} = useContractObjectRepo();
 
- if (UserInteractionContract != undefined) {
-    RegistrationCheck();
- }
-
-
-    async function RegistrationCheck() {
-
 
     useEffect(() =>{
-    try {UserInteractionContract.verifyRegistration().
-    then((result) => setRegistration(result))}
-    catch (error) {
-        console.log(error)
+        if (UserInteractionContract) {        
+        UserInteractionContract.verifyRegistration()
+        .then((result) => {
+            setRegistration(result);
+            console.log(result, "registratration result")
+
+        })
+        .catch((error) => console.log(error))
     }
-    },[])
-}
+
+    },[UserInteractionContract])
 
 
-       
 
-
-    return {registration};
+    return {registration, setRegistration};
 }
 
 export default useRegistrationCheck;

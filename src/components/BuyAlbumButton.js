@@ -6,26 +6,23 @@ import './BuyAlbumButton.css';
 
 
 
-const BuyAlbumButton = ({mainAccount, UserInteractionContract}) => {
+const BuyAlbumButton = ({mainAccount, purchased, setPurchased, OwnershipTokenContract, UserInteractionContract}) => {
 
-    const [ownershipStatus, setOwnershipStatus] = useState(false);
 
 
     const BuyAlbum = async () => {
         //await UserInteractionContract.Buy(1, 1, {value: 1000000})
-        try {await UserInteractionContract.Buy(1 , {value : 2621229059106300})
-        .then((result) => console.log(result))}
-        catch (error) {
-            console.log(error)
-        }
+        await UserInteractionContract.Buy(1 , {value : 2621229059106300});
+
         Ownership();
+        OwnershipTokenContract.safeMint(mainAccount);
     }
 
 
     const Ownership = () => {
         //await UserInteractionContract.Buy(1, 1, {value: 1000000})
         try { UserInteractionContract.getAlbumOwnership()
-        .then((result) => setOwnershipStatus(result))}
+        .then((result) => setPurchased(result))}
         catch (error) {
             console.log(error)
         }  
@@ -36,7 +33,7 @@ const BuyAlbumButton = ({mainAccount, UserInteractionContract}) => {
 
     return (
         <div>
-            {ownershipStatus == true ?
+            {purchased ?
             <button className="buyAlbumButton" id="buyButton">            
               {"Album Purchased! Listen at will"}           
             </button>
@@ -44,7 +41,7 @@ const BuyAlbumButton = ({mainAccount, UserInteractionContract}) => {
             <button className="buyAlbumButton" id="buyButton" onClick={BuyAlbum}>            
               {"Buy Album!"}           
             </button>}
-            {console.log(ownershipStatus, "ownership")}
+            {console.log(purchased, "ownership")}
         </div>
     )
 }
