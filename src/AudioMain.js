@@ -9,6 +9,11 @@ import red_x from './assets/Red_X.png';
 //styles
 import './AudioMain.css';
 
+
+//components
+
+//import DepositWithdrawal from './AudioMainComponents/DepositWithdrawal.js';
+
 //Contracts
 
 
@@ -52,7 +57,7 @@ const AudioMain = ({mainAccount, balance, setBalance, registration, setRegistrat
                         console.log(error, "DESPOSIT RESULT ERROR")
                     }
             
-        }, [DepositBalance]);
+        }, [DepositWithdrawal]);
         
     
         
@@ -107,7 +112,8 @@ const AudioMain = ({mainAccount, balance, setBalance, registration, setRegistrat
     const PlaySong = () => {
 
         async function playSong() {
-            await UserInteractionContract.Play(1, 1);
+            await UserInteractionContract.Play(1, 1)
+            .then(GetBalance())
             }
   
 
@@ -119,9 +125,41 @@ const AudioMain = ({mainAccount, balance, setBalance, registration, setRegistrat
     }
     console.log(UserInteractionContract, "Object")
 
-    const DepositBalance = ({setBalance}) => {
+    async function GetBalance() {
+        UserInteractionContract.on("AmountDeposited" , (address, uint, success) => {
+            console.log(address, uint, success);
+                if (success) {
+                    UserInteractionContract.getDepositBalance()
+                    .then((result) => (setBalance(utils.formatEther(result.toString()))));
+                    console.log(balance, "DEPOSIT EVENT");
+                }
+            } 
+        )
 
-        const [depositAmount, setDepositAmount] = useState(0);
+        UserInteractionContract.on("WithdrawalComplete" , (address, uint, balance, success) => {
+            console.log(address, uint, success);
+                if (success) {
+                    UserInteractionContract.getDepositBalance()
+                    .then((result) => (setBalance(utils.formatEther(result.toString()))));
+                    console.log(balance, "WITHDRAWAL EVENT");
+                }
+            } 
+        )
+
+        UserInteractionContract.on("SongPlayed" , (songID, success) => {
+            console.log(songID, success);
+                if (success) {
+                    UserInteractionContract.getDepositBalance()
+                    .then((result) => (setBalance(utils.formatEther(result.toString()))));
+                    console.log(balance, "PLAY EVENT");
+                }
+            } 
+        )
+    }
+
+    const DepositWithdrawal = ({setBalance}) => {
+
+        const [inputAmount, setInputAmount] = useState(0);
 
         const handleSubmit = (event) => {
             event.preventDefault();
@@ -137,13 +175,13 @@ const AudioMain = ({mainAccount, balance, setBalance, registration, setRegistrat
         const onChange = (event) => {
             const amount = event.target.value;
             if (amount == 0 || null) {
-                setDepositAmount(0);
+                setInputAmount(0);
 
             } else {
                 let weiAmount = utils.parseEther((amount).toString());
                 //console.log(weiAmount.toString())
-                setDepositAmount(weiAmount.toString());
-                //console.log(depositAmount);
+                setInputAmount(weiAmount.toString());
+                //console.log(inputAmount);
             }
             
 
@@ -151,7 +189,8 @@ const AudioMain = ({mainAccount, balance, setBalance, registration, setRegistrat
 
  
         function deposit() {
-            UserInteractionContract.depositBalance({value : depositAmount})
+            console.log(inputAmount, "deposit input amount")
+            UserInteractionContract.depositBalance({value : inputAmount})
             .then((result) => {
                 console.log(result, 'deposit successful')
                 
@@ -160,32 +199,24 @@ const AudioMain = ({mainAccount, balance, setBalance, registration, setRegistrat
             .catch((error) => console.log(error)) 
             GetBalance();
         }
-            /*
-            const updatedBalance = await UserInteractionContract.getDepositBalance();
-            const setBalanceNum = utils.formatEther(updatedBalance.toString()).toString();
-            setBalance(setBalanceNum)
-            console.log(setBalanceNum, 'SET BALANCE NUM')
-            console.log(response, "deposit response")
-            */
-            
-        
 
-        async function GetBalance() {
-            UserInteractionContract.on("AmountDeposited" , (address, uint, success) => {
-                console.log(address, uint, success);
-                    if (success) {
-                        UserInteractionContract.getDepositBalance()
-                        .then((result) => (console.log(result.toString())));
-                        console.log(balance, "DEPOSIT EVENT");
-                    }
-                }
-            )
+        function withdrawal() {
+            console.log(inputAmount, "withdrawal input amount")
+            UserInteractionContract.withdrawBalance({value:inputAmount})
+            .then((result) => {
+                console.log(result, 'withdrawal successful')
+                
+                
+            })
+            .catch((error) => console.log(error, "withdrawal Error")) 
+            GetBalance();
         }
+
 
 
         return (
             <>
-                <div> Input value: {formatString(depositAmount)}</div>
+                <div> Input value: {formatString(inputAmount)}</div>
                 <form onSubmit={handleSubmit}>
                 <label>Enter deposit amount in ETH: {utils.etherSymbol}
                 <input
@@ -195,7 +226,7 @@ const AudioMain = ({mainAccount, balance, setBalance, registration, setRegistrat
                 />
                 </label>
                 <button className="submitButton" type="submit" onClick={deposit}>Submit Amount to Player Bank</button>
-                <p>Current Balance: {balance ? balance : "No current balance"}</p>
+                <button className="submitButton" type="submit" onClick={withdrawal}>Wtihdraw Amount from Player Bank</button>
             </form>
           </>
             
@@ -203,13 +234,10 @@ const AudioMain = ({mainAccount, balance, setBalance, registration, setRegistrat
 
     }
 
+    
+
     //how to update without a page refresh?
     const GetDepositBalance = () => {
-
-               
- 
-        
-    
         
         return (
             <p>Current Balance: {balance}</p>
@@ -226,7 +254,7 @@ const AudioMain = ({mainAccount, balance, setBalance, registration, setRegistrat
         <AudioPlayer tracks={tracks} mainAccount={mainAccount} startingTrackIndex={trackNumber} />    
         <PlaySong />
         <AlbumStats />
-        <DepositBalance setBalance={setBalance} />
+        <DepositWithdrawal setBalance={setBalance} />
         <GetDepositBalance balance={balance} />
 
 

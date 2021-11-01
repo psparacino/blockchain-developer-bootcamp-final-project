@@ -6,6 +6,8 @@ import { ethers } from 'ethers';
 
 import UserInteraction from '../artifacts/contracts/UserInteraction.sol/UserInteraction.json';
 
+import OwnershipToken from '../artifacts/contracts/OwnershipToken.sol/OwnershipToken.json';
+
 
 
 
@@ -48,12 +50,12 @@ const useContractObjectRepo = () => {
               //Token Contract
 
               const ownerShipTokenContractAddress = "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82";
-              const OwnerShipTokenContractObject = await new ethers.Contract(ownerShipTokenContractAddress, UserInteraction.abi, signer);
+              const OwnerShipTokenContractObject = await new ethers.Contract(ownerShipTokenContractAddress, OwnershipToken.abi, signer);
               setOwnershipTokenContract(OwnerShipTokenContractObject);
 
         }
 
-    },[])
+    },[]) 
     return {UserInteractionContract, OwnershipTokenContract};
 }
 

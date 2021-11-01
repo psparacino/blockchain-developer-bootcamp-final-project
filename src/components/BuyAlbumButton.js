@@ -10,23 +10,28 @@ const BuyAlbumButton = ({mainAccount, purchased, setPurchased, OwnershipTokenCon
 
 
 
-    const BuyAlbum = async () => {
+    const BuyAlbum = () => {
         //await UserInteractionContract.Buy(1, 1, {value: 1000000})
-        await UserInteractionContract.Buy(1 , {value : 2621229059106300});
+        UserInteractionContract.Buy(1 , {value : 2621229059106300})
+        .then(OwnershipTokenContract.safeMint(mainAccount))
+        .then(Ownership());
+   
 
         Ownership();
-        OwnershipTokenContract.safeMint(mainAccount);
+        
     }
-
 
     const Ownership = () => {
         //await UserInteractionContract.Buy(1, 1, {value: 1000000})
-        try { UserInteractionContract.getAlbumOwnership()
-        .then((result) => setPurchased(result))}
-        catch (error) {
-            console.log(error)
-        }  
-        
+        UserInteractionContract.on("AlbumPurchased" , (uint, success) => {
+            console.log(uint, success, "purchase log");
+                if (success) {
+                    UserInteractionContract.getAlbumOwnership()
+                    .then((result) => (setPurchased(result)));
+                    
+                }
+            }
+        )       
     }
  
 

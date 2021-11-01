@@ -14,7 +14,7 @@ library Verification {
 
 contract RootContract is ReentrancyGuard {
 
-    address public  owner;
+    address public owner;
 
     uint public albumCounter;
 

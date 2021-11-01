@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import "hardhat/console.sol";
 
 import './RootContract.sol';
-import './PaymentChannelFactory.sol';
+import './ChainlinkOracle.sol';
 
 
 /*
@@ -13,7 +13,7 @@ library Verification {
 
 }
 */
-contract UserInteraction is RootContract {
+contract UserInteraction is RootContract, PriceConsumerV3 {
 
         //total play count of song irrespective of user
 
@@ -29,13 +29,13 @@ contract UserInteraction is RootContract {
 
         //Events
 
-        event SongPlayed(uint _songID);
+        event SongPlayed(uint _songID, bool success);
 
-        event AlbumPurchased(uint _albumID);
+        event AlbumPurchased(uint _albumID, bool success);
 
         event AmountDeposited(address _depositer, uint _amount, bool success);
         
-        event WithdrawalComplete(address withdrawee, uint _amount, uint current_balance);
+        event WithdrawalComplete(address withdrawee, uint _amount, uint current_balance, bool success);
 
 
         //should use a constructor to demystify the songs and what the paths represent below(?)
@@ -54,31 +54,33 @@ contract UserInteraction is RootContract {
             return userPlayBalance[msg.sender];
         }
 
-        function withdrawBalance(uint256 _amount) external userRegistered nonReentrant returns(uint) {
+        function withdrawBalance() external payable userRegistered nonReentrant returns(uint) {
             uint newBalance;
 
-            require(_amount <= userPlayBalance[msg.sender], "not enough value");
+            require(msg.value <= userPlayBalance[msg.sender], "not enough value");
 
-            userPlayBalance[msg.sender] -= _amount;
+            userPlayBalance[msg.sender] -= msg.value;
 
-            (bool sent, ) = msg.sender.call{value:_amount}("");
+            (bool sent, ) = msg.sender.call{value: msg.value}("");
             require(sent, "Failed to send Ether");
             
             
-            emit WithdrawalComplete(msg.sender, _amount, userPlayBalance[msg.sender]);
+            emit WithdrawalComplete(msg.sender, msg.value, userPlayBalance[msg.sender], true);
             
             newBalance = userPlayBalance[msg.sender];
 
             return newBalance;
         }
 
-
+        function getEthPrice() public view returns(uint) {
+            return uint(PriceConsumerV3.getLatestPrice());
+        }
         
         //Play and Buy operations
 
         function Play(uint albumID, uint songID) public userRegistered returns(bool){
             require(userPlayBalance[msg.sender] > 0, "deposit eth to listen");
-            uint price = 1308805763219;
+            uint price = getEthPrice();
             uint current_song_count = albumStats[msg.sender][albumID].songStats[songID].playCount;
 
             if (totalSongCount[songID] > 0) {
@@ -91,7 +93,7 @@ contract UserInteraction is RootContract {
             
             userPlayBalance[msg.sender] -= price;
 
-            emit SongPlayed(songID);
+            emit SongPlayed(songID, true);
             return true;
 
             //https://ethereum.stackexchange.com/questions/50237/how-to-split-funds-in-single-send-transaction
@@ -102,7 +104,7 @@ contract UserInteraction is RootContract {
             return totalSongCount[songID];
         }
 
-        function Buy(uint albumID) payable public userRegistered {
+        function Buy(uint albumID) payable external userRegistered {
             //change this to chainlink oracle price
             uint price = 2621229059106300;
             require(msg.value == price, "price too low");
@@ -115,7 +117,7 @@ contract UserInteraction is RootContract {
             registeredUsers[msg.sender].userAlbumsOwned.push(albumID);
             userAlbumPurchase[msg.sender] = true;
 
-            emit AlbumPurchased(albumID);
+            emit AlbumPurchased(albumID, true);
 
             ///console.log("album successfully purchased");
         }
