@@ -3,9 +3,7 @@ import { utils, ethers } from 'ethers';
 import AudioPlayer from  './components/AudioPlayer.jsx';
 import tracks from "./tracks";
 
-//images
-import checkmark from './assets/greencheck.png';
-import red_x from './assets/Red_X.png';
+
 //styles
 import './AudioMain.css';
 
@@ -17,7 +15,7 @@ import './AudioMain.css';
 //Contracts
 
 
-const AudioMain = ({mainAccount, balance, setBalance, registration, setRegistration, UserInteractionContract}) => {
+const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, setRegistration, UserInteractionContract}) => {
 
     const [trackNumber, setTrackNumber] = useState(0);
 
@@ -25,25 +23,40 @@ const AudioMain = ({mainAccount, balance, setBalance, registration, setRegistrat
 
     const [playCount, setPlayCount] = useState(0);
 
-    //const [registered, setRegistered] = useState(false);
+    console.log(UserInteractionContract, "Contract Object")
 
 
-   
-/*
-    const AlbumOwnership = () => {
-        const [owned, setOwned] = useState(false);
+    async function GetBalance() {
+        UserInteractionContract.on("AmountDeposited" , (address, uint, success) => {
+            console.log(address, uint, success);
+                if (success) {
+                    UserInteractionContract.getDepositBalance()
+                    .then((result) => (setBalance(utils.formatEther(result.toString()))));
+                    console.log(balance, "DEPOSIT EVENT");
+                }
+            } 
+        )
 
-        return (
-            <div style={{margin: 'auto'}}>
-                <img className="ownedCheckLeft" src={owned ? checkmark : red_x} />
-                <button className="buyButton" id="buy_button" onClick={() => setOwned(!owned)}>
-                    {owned ? "ALBUM OWNED!"  : "--> BUY ALBUM <--"}
-                </button>
-                <img className="ownedCheckRight" src={owned ? checkmark : red_x} />
-            </div>
+        UserInteractionContract.on("WithdrawalComplete" , (address, uint, balance, success) => {
+            console.log(address, uint, success);
+                if (success) {
+                    UserInteractionContract.getDepositBalance()
+                    .then((result) => (setBalance(utils.formatEther(result.toString()))));
+                    console.log(balance, "WITHDRAWAL EVENT");
+                }
+            } 
+        )
+
+        UserInteractionContract.on("SongPlayed" , (songID, success) => {
+            console.log(songID.toNumber(), success);
+                if (success) {
+                    UserInteractionContract.getDepositBalance()
+                    .then((result) => (setBalance(utils.formatEther(result.toString()))));
+                    console.log(balance, "PLAY EVENT");
+                }
+            } 
         )
     }
-    */
 
     const AlbumStats = () => {
         const [stats, setStats] = useState(0);
@@ -69,7 +82,7 @@ const AudioMain = ({mainAccount, balance, setBalance, registration, setRegistrat
         
         )
     }
-    
+     
 
     const RegisterButton = ({registration, setRegistration}) => {
 
@@ -108,56 +121,33 @@ const AudioMain = ({mainAccount, balance, setBalance, registration, setRegistrat
     )
 }
 
-    //FIX THIS DOES NOT WORK. TEMPORARY ONLY
+
     const PlaySong = () => {
 
         async function playSong() {
             await UserInteractionContract.Play(1, 1)
             .then(GetBalance())
+            console.log("song successfully played")
             }
   
 
         return (
-            <button className="tempPlayButton" id="tempPlayButton" onClick={playSong}>
-                Temp Play
-            </button>
+            <div>
+                {purchased ?
+                <button className="tempPlayButton">
+                    payment disabled because album is bought
+                </button>
+                :
+                <button className="tempPlayButton"  onClick={playSong}>
+                    Temp Play
+                </button>
+                }
+            </div>
+
         )
     }
-    console.log(UserInteractionContract, "Object")
-
-    async function GetBalance() {
-        UserInteractionContract.on("AmountDeposited" , (address, uint, success) => {
-            console.log(address, uint, success);
-                if (success) {
-                    UserInteractionContract.getDepositBalance()
-                    .then((result) => (setBalance(utils.formatEther(result.toString()))));
-                    console.log(balance, "DEPOSIT EVENT");
-                }
-            } 
-        )
-
-        UserInteractionContract.on("WithdrawalComplete" , (address, uint, balance, success) => {
-            console.log(address, uint, success);
-                if (success) {
-                    UserInteractionContract.getDepositBalance()
-                    .then((result) => (setBalance(utils.formatEther(result.toString()))));
-                    console.log(balance, "WITHDRAWAL EVENT");
-                }
-            } 
-        )
-
-        UserInteractionContract.on("SongPlayed" , (songID, success) => {
-            console.log(songID, success);
-                if (success) {
-                    UserInteractionContract.getDepositBalance()
-                    .then((result) => (setBalance(utils.formatEther(result.toString()))));
-                    console.log(balance, "PLAY EVENT");
-                }
-            } 
-        )
-    }
-
-    const DepositWithdrawal = ({setBalance}) => {
+  
+    const DepositWithdrawal = () => {
 
         const [inputAmount, setInputAmount] = useState(0);
 
@@ -226,7 +216,7 @@ const AudioMain = ({mainAccount, balance, setBalance, registration, setRegistrat
                 />
                 </label>
                 <button className="submitButton" type="submit" onClick={deposit}>Submit Amount to Player Bank</button>
-                <button className="submitButton" type="submit" onClick={withdrawal}>Wtihdraw Amount from Player Bank</button>
+                <button className="submitButton" type="submit" onClick={withdrawal}>Withdraw Amount from Player Bank</button>
             </form>
           </>
             
@@ -234,7 +224,6 @@ const AudioMain = ({mainAccount, balance, setBalance, registration, setRegistrat
 
     }
 
-    
 
     //how to update without a page refresh?
     const GetDepositBalance = () => {
@@ -245,16 +234,14 @@ const AudioMain = ({mainAccount, balance, setBalance, registration, setRegistrat
     }
     
 
-
-
     return (
 
     <div>
         <RegisterButton registration={registration} setRegistration={setRegistration}/>
-        <AudioPlayer tracks={tracks} mainAccount={mainAccount} startingTrackIndex={trackNumber} />    
+        <AudioPlayer tracks={tracks} mainAccount={mainAccount} startingTrackIndex={trackNumber} PlaySong={PlaySong} />    
         <PlaySong />
         <AlbumStats />
-        <DepositWithdrawal setBalance={setBalance} />
+        <DepositWithdrawal UserInteractionContract={UserInteractionContract} />
         <GetDepositBalance balance={balance} />
 
 

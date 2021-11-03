@@ -6,6 +6,7 @@ import BuyAlbumButton from './components/BuyAlbumButton.js';
 import useHandleEthereum from './hooks/useHandleEthereum.js';
 import useRegistrationCheck from './hooks/useRegistrationCheck.js';
 import useContractObjectRepo from './hooks/useContractObjectRepo.js';
+import useUpdates from './hooks/useContractObjectRepo.js'; 
 
 import tracks from "./tracks";
 
@@ -44,9 +45,11 @@ function App() {
           setBalance={setBalance} 
           registration={registration} 
           setRegistration={setRegistration} 
-          UserInteractionContract={UserInteractionContract} 
+          UserInteractionContract={UserInteractionContract}
+          purchased={purchased} 
 
         />
+        <useUpdates balance={balance} setBalance={setBalance} UserInteractionContract={UserInteractionContract} />
         
       </header>
     </div>

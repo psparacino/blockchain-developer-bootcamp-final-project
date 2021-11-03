@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import "hardhat/console.sol";
 
 import './RootContract.sol';
-import './ChainlinkOracle.sol';
+//import './ChainlinkOracle.sol';
 
 
 /*
@@ -13,7 +13,7 @@ library Verification {
 
 }
 */
-contract UserInteraction is RootContract, PriceConsumerV3 {
+contract UserInteraction is RootContract {
 
         //total play count of song irrespective of user
 
@@ -71,16 +71,18 @@ contract UserInteraction is RootContract, PriceConsumerV3 {
 
             return newBalance;
         }
-
+        /*
         function getEthPrice() public view returns(uint) {
             return uint(PriceConsumerV3.getLatestPrice());
         }
+        */
         
         //Play and Buy operations
 
         function Play(uint albumID, uint songID) public userRegistered returns(bool){
+            uint price = 1308805763219;
             require(userPlayBalance[msg.sender] > 0, "deposit eth to listen");
-            uint price = getEthPrice();
+            //uint price = getEthPrice();        
             uint current_song_count = albumStats[msg.sender][albumID].songStats[songID].playCount;
 
             if (totalSongCount[songID] > 0) {
@@ -128,14 +130,6 @@ contract UserInteraction is RootContract, PriceConsumerV3 {
             } else {
                 return false;
             }
-        }
-
-        function getVaultAddress() public view returns(address) {
-            return address(this);
-        }
-        
-        function getVault() public view returns(uint) {
-            return address(this).balance;
         }
 
         //handling individual Payment Channels

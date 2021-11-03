@@ -7,7 +7,7 @@ import "./styles.css";
  * Read the blog post here:
  * https://letsbuildui.dev/articles/building-an-audio-player-with-react-hooks
  */
-const AudioPlayer = ({ mainAccount, tracks, startingTrackIndex}) => {
+const AudioPlayer = ({ PlaySong, tracks, startingTrackIndex}) => {
   // State
   const [trackIndex, setTrackIndex] = useState(startingTrackIndex);
   const [trackProgress, setTrackProgress] = useState(0);
@@ -130,6 +130,7 @@ const AudioPlayer = ({ mainAccount, tracks, startingTrackIndex}) => {
           onPrevClick={toPrevTrack}
           onNextClick={toNextTrack}
           onPlayPauseClick={setIsPlaying}
+          PlaySong={PlaySong}
         /> 
         <input
           type="range"

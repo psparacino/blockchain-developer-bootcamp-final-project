@@ -8,7 +8,8 @@ const AudioControls = ({
   isPlaying,
   onPlayPauseClick,
   onPrevClick,
-  onNextClick
+  onNextClick,
+  PlaySong
 }) => (
   <div className="audio-controls">
     <button
