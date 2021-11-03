@@ -130,7 +130,6 @@ const AudioPlayer = ({ PlaySong, tracks, startingTrackIndex}) => {
           onPrevClick={toPrevTrack}
           onNextClick={toNextTrack}
           onPlayPauseClick={setIsPlaying}
-          PlaySong={PlaySong}
         /> 
         <input
           type="range"

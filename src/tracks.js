@@ -7,7 +7,7 @@ import lastoria from "./assets/LaStoria.mp3";
 // All of these artists are at https://pixabay.com/music/search/mood/laid%20back/
 export default [
   {
-    title: "shenanigans",
+    title: "Shenanigans",
     artist: "Anouman",
     audioSrc: shenanigans,
     image: imgSrc,

@@ -30,7 +30,7 @@ describe("UserInteraction Tests", function () {
     it("deposit 100, then withdraw 50 from player balance", async function () {
       await userContract.RegisterAddress({from : owner.address});
       await userContract.depositBalance({from : owner.address, value : 100});
-      await userContract.withdrawBalance({from : owner.address, value: 50});
+      await userContract.withdrawBalance(50, {from : owner.address});
       const result = (await userContract.getDepositBalance({from : owner.address})).toNumber();
       expect(result).to.equal(50);
     });

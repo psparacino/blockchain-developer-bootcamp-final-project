@@ -39,11 +39,11 @@ const BuyAlbumButton = ({mainAccount, purchased, setPurchased, OwnershipTokenCon
     return (
         <div>
             {purchased ?
-            <button className="buyAlbumButton" id="buyButton">            
+            <button className="standardButton" id="buyButton">            
               {"Album Purchased! Listen at will"}           
             </button>
             :
-            <button className="buyAlbumButton" id="buyButton" onClick={BuyAlbum}>            
+            <button className="standardButton" id="buyButton" onClick={BuyAlbum}>            
               {"Buy Album!"}           
             </button>}
             {console.log(purchased, "ownership")}

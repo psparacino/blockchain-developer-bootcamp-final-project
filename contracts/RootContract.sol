@@ -23,8 +23,6 @@ contract RootContract is ReentrancyGuard {
     mapping(uint => Song) public songList;
 
     mapping(address => mapping(uint => Album)) public albumStats; //Albums user has listened to.
-    
-    mapping(address => uint) internal balances;  
 
     event UserRegistered(address registree, bool registered);
 

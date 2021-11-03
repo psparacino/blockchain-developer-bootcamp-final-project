@@ -76,8 +76,9 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
         
         return (
             <div style={{textAlign : 'center', marginTop : '40px'}}>
-                <p>{currentTrack} PLAYS (ALL USERS): {stats}</p>
-                <p>{currentTrack} Album Purchases: (ALL USERS): 0</p>
+                <p>{currentTrack} Total Plays (all users/all songs): {stats}</p>
+                <p>{currentTrack} Total Plays (all users/all songs): {stats}</p>
+                <p>{currentTrack} Album Purchases (all users): {stats}</p>
             </div>
         
         )
@@ -110,10 +111,10 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
     return (
         <div>
             {registration ?
-            <button className="buyAlbumButton" id="buyButton">
+            <button className="standardButton" id="registerButton">
             Registered!   
             </button>
-            : <button className="buyAlbumButton" id="buyButton" onClick={register}>
+            : <button className="standardButton" id="registerButton" onClick={register}>
             Click here for one-time registration  
             </button>}
             
@@ -192,7 +193,7 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
 
         function withdrawal() {
             console.log(inputAmount, "withdrawal input amount")
-            UserInteractionContract.withdrawBalance({value:inputAmount})
+            UserInteractionContract.withdrawBalance(inputAmount)
             .then((result) => {
                 console.log(result, 'withdrawal successful')
                 
@@ -238,9 +239,11 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
 
     <div>
         <RegisterButton registration={registration} setRegistration={setRegistration}/>
-        <AudioPlayer tracks={tracks} mainAccount={mainAccount} startingTrackIndex={trackNumber} PlaySong={PlaySong} />    
-        <PlaySong />
-        <AlbumStats />
+        <div>
+            <AudioPlayer tracks={tracks} mainAccount={mainAccount} startingTrackIndex={trackNumber} PlaySong={PlaySong} /> 
+            <AlbumStats />
+        </div>           
+        <PlaySong />     
         <DepositWithdrawal UserInteractionContract={UserInteractionContract} />
         <GetDepositBalance balance={balance} />
 

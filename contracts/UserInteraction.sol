@@ -54,23 +54,18 @@ contract UserInteraction is RootContract {
             return userPlayBalance[msg.sender];
         }
 
-        function withdrawBalance() external payable userRegistered nonReentrant returns(uint) {
-            uint newBalance;
+        function withdrawBalance(uint256 _amount) external userRegistered {
+            require(_amount <= userPlayBalance[msg.sender], "not enough value");
+            
+            userPlayBalance[msg.sender] -= _amount;
 
-            require(msg.value <= userPlayBalance[msg.sender], "not enough value");
-
-            userPlayBalance[msg.sender] -= msg.value;
-
-            (bool sent, ) = msg.sender.call{value: msg.value}("");
+             (bool sent, ) = payable(msg.sender).call{value:_amount}("");
             require(sent, "Failed to send Ether");
             
             
-            emit WithdrawalComplete(msg.sender, msg.value, userPlayBalance[msg.sender], true);
-            
-            newBalance = userPlayBalance[msg.sender];
-
-            return newBalance;
+            emit WithdrawalComplete(msg.sender, _amount, userPlayBalance[msg.sender], true);
         }
+
         /*
         function getEthPrice() public view returns(uint) {
             return uint(PriceConsumerV3.getLatestPrice());
