@@ -244,7 +244,7 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
         <DepositWithdrawal UserInteractionContract={UserInteractionContract} />
         <GetDepositBalance balance={balance} />
 
-
+{/*
         <table className="mainTable">
          
             <thead>
@@ -300,11 +300,13 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
         )}
        </table>
 
-
+ */}
     </div>
 
 
+
     )
+   
 
 }
 

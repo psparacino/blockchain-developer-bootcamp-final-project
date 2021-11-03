@@ -214,8 +214,8 @@
       ]
     },
     "/Users/peter/Documents/Development/Consensys/blockchain-developer-bootcamp-final-project/contracts/UserInteraction.sol": {
-      "lastModificationDate": 1635800939011,
-      "contentHash": "0e8e9790d8ca0b87a6d4723f82c3f234",
+      "lastModificationDate": 1635882251589,
+      "contentHash": "6f6ed31b78a3f9c305b16f266b67fdea",
       "sourceName": "contracts/UserInteraction.sol",
       "solcConfig": {
         "version": "0.8.0",
@@ -241,8 +241,7 @@
       },
       "imports": [
         "hardhat/console.sol",
-        "./RootContract.sol",
-        "./ChainlinkOracle.sol"
+        "./RootContract.sol"
       ],
       "versionPragmas": [
         "^0.8.0"
