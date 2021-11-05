@@ -44,8 +44,8 @@ describe("RootContract Tests", function () {
 
     it("have struct for Song", async function() {
     //expect({User: {registered: true}}).to.have.deep.property('User.registered', true);
-    const result = await userContract.getSongInfo(1);
-    expect(result[0], result[1], result[2]).to.equal(1, "FutureClub", 1)
+    const result = await userContract.getSongInfo(0);
+    expect(result[0], result[1], result[2].toNumber()).to.equal(1, "Shenanigans", 0)
     });
       
   

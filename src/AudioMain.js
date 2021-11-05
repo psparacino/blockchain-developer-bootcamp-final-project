@@ -7,15 +7,21 @@ import tracks from "./tracks";
 //styles
 import './AudioMain.css';
 
+import './DepositWithdrawal.css';
+
 
 //components
+
+import BuyAlbumButton from './components/BuyAlbumButton.js';
+
+import PleaseRegister from './components/PleaseRegister.jsx';
 
 //import DepositWithdrawal from './AudioMainComponents/DepositWithdrawal.js';
 
 //Contracts
 
 
-const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, setRegistration, UserInteractionContract}) => {
+const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, setPurchased, UserInteractionContract, OwnershipTokenContract}) => {
 
     const [trackNumber, setTrackNumber] = useState(0);
 
@@ -61,76 +67,38 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
     const AlbumStats = () => {
         const [stats, setStats] = useState(0);
         
-        
-            useEffect(() => {
-                try {UserInteractionContract.getPlayCount(1)
-                    .then((result) => setStats(result.toString()))}
-                    //need to fix above to access state variable in contract
-                    catch (error) {
-                        console.log(error, "DESPOSIT RESULT ERROR")
-                    }
-            
-        }, [DepositWithdrawal]);
-        
-    
-        
+
+        UserInteractionContract.getPlayCount(1)
+            .then((result) => setStats(result.toString()))
+            //need to fix above to access state variable in contract
+ 
         return (
             <div style={{textAlign : 'center', marginTop : '40px'}}>
                 <p>{currentTrack} Total Plays (all users/all songs): {stats}</p>
-                <p>{currentTrack} Total Plays (all users/all songs): {stats}</p>
-                <p>{currentTrack} Album Purchases (all users): {stats}</p>
+                <p>{currentTrack} Plays: {stats}</p>               
             </div>
         
         )
     }
-     
+  
 
-    const RegisterButton = ({registration, setRegistration}) => {
-
-        function register() {
-            UserInteractionContract.RegisterAddress()
-            .then((result) => {
-                console.log(result, 'registration successful')
-                
-            })
-            .catch((error) => console.log(error)) 
-            Verify();       
-        }
-
-        async function Verify() {
-            UserInteractionContract.on("UserRegistered" , (address, success) => {
-                console.log(address, success);
-                    if (success) {
-                        setRegistration(true);
-                    }
-                }
-            )
-        }
-
-
-    return (
-        <div>
-            {registration ?
-            <button className="standardButton" id="registerButton">
-            Registered!   
-            </button>
-            : <button className="standardButton" id="registerButton" onClick={register}>
-            Click here for one-time registration  
-            </button>}
-            
-        </div>
-    )
-}
 
 
     const PlaySong = () => {
-
-        async function playSong() {
-            await UserInteractionContract.Play(1, 1)
-            .then(GetBalance())
-            console.log("song successfully played")
+            
+        async function initiatePlay() {
+            UserInteractionContract.Play(1, 1)
+                .then(
+                    UserInteractionContract.on("SongPlayed" , (songID, success) => {
+                        //console.log(songID.toNumber(), success);
+                            if (success) {
+                                GetBalance();
+                                console.log(balance, "song successfully played and post balance");
+                            }
+                        })
+                )
             }
-  
+            
 
         return (
             <div>
@@ -139,7 +107,7 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
                     payment disabled because album is bought
                 </button>
                 :
-                <button className="tempPlayButton"  onClick={playSong}>
+                <button className="tempPlayButton"  onClick={initiatePlay}>
                     Temp Play
                 </button>
                 }
@@ -206,18 +174,27 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
 
 
         return (
-            <>
-                <div> Input value: {formatString(inputAmount)}</div>
+            <>          
                 <form onSubmit={handleSubmit}>
-                <label>Enter deposit amount in ETH: {utils.etherSymbol}
-                <input
-                    type="number"
-                    step="any"
-                    onChange={onChange}
-                />
-                </label>
-                <button className="submitButton" type="submit" onClick={deposit}>Submit Amount to Player Bank</button>
-                <button className="submitButton" type="submit" onClick={withdrawal}>Withdraw Amount from Player Bank</button>
+                <div className="inputAmount" style={{paddingTop: "20px"}} >
+                    <div>
+                        <label>
+                            <input
+                                className="inputAmount"
+                                type="number"
+                                step="any"
+                                onChange={onChange}
+                                placeholder="Enter Amount in ETH"
+                            /> 
+                        </label> 
+                    </div>
+                </div>
+
+                <div className="txButtons">                           
+                    <button className="submitButton" id="deposit" type="submit" onClick={deposit}>Submit Amount to Player Bank</button>
+                    <button className="submitButton" id="withdrawal" type="submit" onClick={withdrawal}>Withdraw Amount from Player Bank</button>
+                </div>
+
             </form>
           </>
             
@@ -226,26 +203,73 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
     }
 
 
-    //how to update without a page refresh?
+
     const GetDepositBalance = () => {
         
         return (
-            <p>Current Balance: {balance}</p>
+            <div className="getBalance">
+                Current Player Bank: {balance}
+            </div>
         )
     }
     
 
     return (
-
-    <div>
-        <RegisterButton registration={registration} setRegistration={setRegistration}/>
         <div>
-            <AudioPlayer tracks={tracks} mainAccount={mainAccount} startingTrackIndex={trackNumber} PlaySong={PlaySong} /> 
-            <AlbumStats />
-        </div>           
-        <PlaySong />     
-        <DepositWithdrawal UserInteractionContract={UserInteractionContract} />
-        <GetDepositBalance balance={balance} />
+        
+        
+            {registration ?   
+            <div>
+                <div className="songContainer">           
+                    <>
+                        <div className="buyAlbumButtonContainer">
+
+                            <BuyAlbumButton
+                            mainAccount={mainAccount}
+                            purchased={purchased}
+                            setPurchased={setPurchased}
+                            OwnershipTokenContract={OwnershipTokenContract}
+                            UserInteractionContract={UserInteractionContract}
+                            GetBalance={GetBalance}
+                            />
+                            
+
+                        </div>
+
+
+                        <div className="audioPlayerDiv">
+                            <AudioPlayer tracks={tracks} mainAccount={mainAccount} startingTrackIndex={trackNumber} PlaySong={PlaySong} />   
+                        </div>
+
+
+                        <AlbumStats />
+
+
+
+                        
+                   
+                       
+                    </>
+                </div>
+                <GetDepositBalance balance={balance} />        
+                <DepositWithdrawal UserInteractionContract={UserInteractionContract} />
+                <PlaySong />
+
+            </div>
+                  
+                 
+           
+            :
+            <PleaseRegister />}
+        </div>
+    )
+   
+
+}
+
+export default AudioMain;
+
+
 
 {/*
         <table className="mainTable">
@@ -304,13 +328,5 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
        </table>
 
  */}
-    </div>
 
-
-
-    )
-   
-
-}
-
-export default AudioMain;
+ 

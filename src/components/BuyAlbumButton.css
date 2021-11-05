@@ -6,6 +6,32 @@
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
-    float: bottom;
+    font-weight: bold;
+    font-size: 20px;
+  }
+
+  #buyButton {
+    background-color: transparent;
+    color: #FFF;
+    border: 10px solid rgb(27, 115, 174);
+    border-radius: 40px;
+    padding: 36px 20px;
+    display: inline-block;
+    font-size: 40px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-decoration: unset;
+
+
+    -webkit-transition: box-shadow 300ms ease-in, color 300ms ease-in;
+    transition: box-shadow 100ms ease-in, color 300ms ease-in;
+
+    color: darkslategrey
+  }
+
+  #buyButton:hover {
+    box-shadow: 0 0 40px 40px rgb(9, 123, 223) inset;
+    color: white;
+    text-decoration: underline;
   }

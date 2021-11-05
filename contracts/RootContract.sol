@@ -67,7 +67,9 @@ contract RootContract is ReentrancyGuard {
         owner = payable(msg.sender);
         albumCounter = 1;
 
-        songList[1] = Song(1, 'FutureClub', 0);
+        songList[0] = Song(1, 'Shenanigans', 0);
+        songList[1] = Song(2, 'InterDweller', 0);
+        songList[2] = Song(3, 'La Storia', 0);
     }
  
     function RegisterAddress() public returns(bool) {

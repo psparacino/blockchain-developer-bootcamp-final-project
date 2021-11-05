@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 
-import { ethers } from 'ethers';
-
 import useContractObjectRepo from "./useContractObjectRepo.js";
 
 
@@ -19,7 +17,7 @@ const {UserInteractionContract} = useContractObjectRepo();
         UserInteractionContract.verifyRegistration()
         .then((result) => {
             setRegistration(result);
-            console.log(result, "registratration result")
+            console.log(result, "registration result")
 
         })
         .catch((error) => console.log(error))

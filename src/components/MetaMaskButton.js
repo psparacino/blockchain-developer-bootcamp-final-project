@@ -40,7 +40,7 @@ const MetaMaskButton = ({mainAccount, setMainAccount}) => {
             <button className="button" id="connectButton" 
               onClick={connectToMetaMask}>
               
-              {mainAccount ? " METAMASK IS CONNECTED : " + cleanedMainAccount : "Please connect to MetaMask!"}
+              {mainAccount ? "METAMASK IS CONNECTED : " + cleanedMainAccount : "Please connect to MetaMask!"}
               
             </button>
         </div>

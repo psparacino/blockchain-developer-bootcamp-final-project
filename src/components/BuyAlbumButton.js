@@ -1,12 +1,13 @@
 import { useState, React } from 'react';
 import { ethers } from 'ethers';
 import './BuyAlbumButton.css';
+import useGetBalance from '../hooks/useGetBalance';
 
 
 
 
 
-const BuyAlbumButton = ({mainAccount, purchased, setPurchased, OwnershipTokenContract, UserInteractionContract}) => {
+const BuyAlbumButton = ({mainAccount, purchased, setPurchased, OwnershipTokenContract, UserInteractionContract, GetBalance}) => {
 
 
 
@@ -18,6 +19,7 @@ const BuyAlbumButton = ({mainAccount, purchased, setPurchased, OwnershipTokenCon
    
 
         Ownership();
+        GetBalance();
         
     }
 

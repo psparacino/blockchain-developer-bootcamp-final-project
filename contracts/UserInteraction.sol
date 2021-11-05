@@ -22,6 +22,8 @@ contract UserInteraction is RootContract {
         mapping(address => bool) public userAlbumPurchase;
 
         mapping(address => uint) public userPlayBalance;
+
+        
         
         //keep track of deployed payment channels
 

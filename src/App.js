@@ -1,6 +1,7 @@
 import AudioMain from './AudioMain.js';
 import MetaMaskButton from './components/MetaMaskButton.js';
 import BuyAlbumButton from './components/BuyAlbumButton.js';
+import RegisterButton from './components/RegisterButton.js'; 
 
 //import hooks
 import useHandleEthereum from './hooks/useHandleEthereum.js';
@@ -27,26 +28,18 @@ function App() {
     <div className="App">
       <header className="App-header">
         <MetaMaskButton style="color: black" mainAccount={mainAccount} setMainAccount={setMainAccount}/>
-        {mainAccount ?
-          <BuyAlbumButton 
-            mainAccount={mainAccount} 
-            signer={signer} 
-            provider={provider} 
-            UserInteractionContract={UserInteractionContract} 
-            OwnershipTokenContract={OwnershipTokenContract} 
-            purchased={purchased} 
-            setPurchased={setPurchased}             
-            /> 
-          :
-        null}
+        <RegisterButton registration={registration} setRegistration={setRegistration} UserInteractionContract={UserInteractionContract} />
         <AudioMain 
           mainAccount={mainAccount} 
           balance={balance} 
           setBalance={setBalance} 
           registration={registration} 
           setRegistration={setRegistration} 
-          UserInteractionContract={UserInteractionContract}
           purchased={purchased} 
+          setPurchased={setPurchased}
+          UserInteractionContract={UserInteractionContract}
+          OwnershipTokenContract={OwnershipTokenContract}
+
 
         />
         <useUpdates balance={balance} setBalance={setBalance} UserInteractionContract={UserInteractionContract} />
