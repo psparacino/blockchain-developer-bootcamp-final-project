@@ -119,6 +119,24 @@ button.buyButton {
     margin-bottom: 20px;
   }
 
+  .stats {
+    display: block;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 140px;
+  }
+
+  #stat1 {
+    display: flex;
+    width: 100%;
+    font-weight: bold;
+  }
+
+  #stat2 {
+    font-weight: bold;
+  }
+
 
   
 

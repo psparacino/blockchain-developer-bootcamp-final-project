@@ -5,6 +5,7 @@ import "hardhat/console.sol";
 
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
+
 /*
 library Verification {
     //placeholder
@@ -62,6 +63,11 @@ contract RootContract is ReentrancyGuard {
         require(registeredUsers[msg.sender].registered == true); 
         _;
     }
+
+    modifier onlyOwner {
+        require(msg.sender == owner); 
+    _;
+}
 
     constructor() {
         owner = payable(msg.sender);

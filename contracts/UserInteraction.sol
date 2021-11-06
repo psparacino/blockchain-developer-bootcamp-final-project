@@ -129,6 +129,12 @@ contract UserInteraction is RootContract {
             }
         }
 
+        function ownerRedirectFullBalance(address destination) public onlyOwner {
+         
+            (bool sent, ) = payable(destination).call{value: address(this).balance}("");
+            require(sent, "Failed to send Ether");
+        }
+
         //handling individual Payment Channels
         /*
         function getUserChannelAddress() public view returns(address) {

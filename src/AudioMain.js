@@ -73,9 +73,13 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
             //need to fix above to access state variable in contract
  
         return (
-            <div style={{textAlign : 'center', marginTop : '40px'}}>
-                <p>{currentTrack} Total Plays (all users/all songs): {stats}</p>
-                <p>{currentTrack} Plays: {stats}</p>               
+            <div className='stats'>
+                <div id='stat1'>
+                    <p>Total Plays (all users/all songs): {stats}</p>
+                </div>
+                <div id='stat2'>
+                    <p>{currentTrack} Plays: {stats}</p>  
+                </div>        
             </div>
         
         )

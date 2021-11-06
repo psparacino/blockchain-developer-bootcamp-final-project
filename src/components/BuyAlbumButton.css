@@ -25,13 +25,13 @@
 
 
     -webkit-transition: box-shadow 300ms ease-in, color 300ms ease-in;
-    transition: box-shadow 100ms ease-in, color 300ms ease-in;
+    transition: box-shadow 100ms, color 300ms;
 
     color: darkslategrey
   }
 
   #buyButton:hover {
-    box-shadow: 0 0 40px 40px rgb(9, 123, 223) inset;
+    box-shadow: 0 0 40px 40px rgb(119, 126, 131) inset;
     color: white;
     text-decoration: underline;
   }
