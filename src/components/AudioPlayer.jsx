@@ -7,11 +7,12 @@ import "./styles.css";
  * Read the blog post here:
  * https://letsbuildui.dev/articles/building-an-audio-player-with-react-hooks
  */
-const AudioPlayer = ({ PlaySong, tracks, startingTrackIndex}) => {
+const AudioPlayer = ({tracks, startingTrackIndex, UserInteractionContract, setCurrentTrack, GetBalance}) => {
   // State
   const [trackIndex, setTrackIndex] = useState(startingTrackIndex);
   const [trackProgress, setTrackProgress] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [hasPaid, setHasPaid] = useState(false);
 
   // Destructure for conciseness
   const { title, artist, color, image, audioSrc } = tracks[trackIndex];
@@ -62,28 +63,66 @@ const AudioPlayer = ({ PlaySong, tracks, startingTrackIndex}) => {
   const toPrevTrack = () => {
     if (trackIndex - 1 < 0) {
       setTrackIndex(tracks.length - 1);
+      setCurrentTrack(tracks.length - 1);
     } else {
       setTrackIndex(trackIndex - 1);
+      setCurrentTrack(trackIndex - 1);
     }
+    setHasPaid(false);
+    
   };
 
   const toNextTrack = () => {
     if (trackIndex < tracks.length - 1) {
       setTrackIndex(trackIndex + 1);
+      setCurrentTrack(trackIndex + 1);
     } else {
       setTrackIndex(0);
+      setCurrentTrack(0);
     }
+    setHasPaid(false);
   };
 
-  useEffect(() => {
-    setTrackIndex(startingTrackIndex);
+  async function initiatePlay() {
+    UserInteractionContract.Play(1, trackIndex)
+        .then(
+            UserInteractionContract.on("SongPlayed" , (songID, success) => {
+                //console.log(songID.toNumber(), success);
+                    if (success) {
+                        
+                        setHasPaid(true);
+                        console.log(trackIndex, "song successfully played and post balance");
+                    }
+                })
+        )
+    }
 
-  }, [startingTrackIndex])
+  useEffect(() => {
+    if (hasPaid) {
+
+      audioRef.current.pause();
+
+      audioRef.current = new Audio(audioSrc);
+      setTrackProgress(audioRef.current.currentTime);
+  
+      if (isReady.current) {
+        audioRef.current.play();
+        setIsPlaying(true);
+        startTimer();
+      } else {
+        // Set the isReady ref as true for the next pass
+        isReady.current = true;
+      }
+    };
+
+  }, [hasPaid])
 
   useEffect(() => {
-    if (isPlaying) {
+    if (isPlaying && hasPaid) {
       audioRef.current.play();
       startTimer();
+    } else if (isPlaying && !hasPaid) {
+      initiatePlay();
     } else {
       audioRef.current.pause();
     }
@@ -96,7 +135,7 @@ const AudioPlayer = ({ PlaySong, tracks, startingTrackIndex}) => {
     audioRef.current = new Audio(audioSrc);
     setTrackProgress(audioRef.current.currentTime);
 
-    if (isReady.current) {
+    if (isReady.current && hasPaid) {
       audioRef.current.play();
       setIsPlaying(true);
       startTimer();

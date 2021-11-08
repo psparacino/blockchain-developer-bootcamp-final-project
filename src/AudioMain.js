@@ -25,9 +25,9 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
 
     const [trackNumber, setTrackNumber] = useState(0);
 
-    const [currentTrack, setCurrentTrack] = useState('');
+    const [currentTrack, setCurrentTrack] = useState(0);
 
-    const [playCount, setPlayCount] = useState(0);
+    
 
     console.log(UserInteractionContract, "Contract Object")
 
@@ -52,6 +52,7 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
                 }
             } 
         )
+        //check if this is cuasing double event
 
         UserInteractionContract.on("SongPlayed" , (songID, success) => {
             console.log(songID.toNumber(), success);
@@ -97,7 +98,7 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
                         //console.log(songID.toNumber(), success);
                             if (success) {
                                 GetBalance();
-                                console.log(balance, "song successfully played and post balance");
+                                console.log(1, "song successfully played and post balance");
                             }
                         })
                 )
@@ -242,7 +243,14 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
 
 
                         <div className="audioPlayerDiv">
-                            <AudioPlayer tracks={tracks} mainAccount={mainAccount} startingTrackIndex={trackNumber} PlaySong={PlaySong} />   
+                            <AudioPlayer 
+                                tracks={tracks} 
+                                mainAccount={mainAccount} 
+                                startingTrackIndex={trackNumber}  
+                                UserInteractionContract={UserInteractionContract}
+                                GetBalance={GetBalance}
+                                setCurrentTrack={setCurrentTrack}
+                                />   
                         </div>
 
 
