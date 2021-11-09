@@ -7,12 +7,6 @@ import './RootContract.sol';
 //import './ChainlinkOracle.sol';
 
 
-/*
-library Verification {
-    //placeholder
-
-}
-*/
 contract UserInteraction is RootContract {
 
         //total play count of song irrespective of user
@@ -22,6 +16,8 @@ contract UserInteraction is RootContract {
         mapping(address => bool) public userAlbumPurchase;
 
         mapping(address => uint) public userPlayBalance;
+
+        uint totalAlbumsPurchased;
 
         
         
@@ -80,13 +76,12 @@ contract UserInteraction is RootContract {
             uint price = userAlbumPurchase[msg.sender] ? 0 : 1308805763219;
             require(userPlayBalance[msg.sender] > 0, "deposit eth to listen");
             //uint price = getEthPrice();        
-            uint current_song_count = albumStats[msg.sender][albumID].songStats[songID].playCount;
 
             if (totalSongCount[songID] > 0) {
-                current_song_count ++;
+                albumStats[msg.sender][albumID].songStats[songID].playCount ++;
                 totalSongCount[songID] ++; 
             } else {
-            current_song_count = 1;
+            albumStats[msg.sender][albumID].songStats[songID].playCount = 1;
             totalSongCount[songID] = 1;     
             }
             
@@ -101,6 +96,11 @@ contract UserInteraction is RootContract {
         function getPlayCount(uint songID) public view returns(uint) {
             return totalSongCount[songID];
         }
+
+        function getUserPlayCount(uint albumID, uint songID) public view returns(uint) {
+            return albumStats[msg.sender][albumID].songStats[songID].playCount;
+        }
+
 
         function getAggregatePlayCount(uint songID, uint songID2, uint songID3) public view returns(uint) {
             return totalSongCount[songID] + totalSongCount[songID2] + totalSongCount[songID3];
@@ -118,6 +118,7 @@ contract UserInteraction is RootContract {
             
             registeredUsers[msg.sender].userAlbumsOwned.push(albumID);
             userAlbumPurchase[msg.sender] = true;
+            totalAlbumsPurchased += 1;
 
             emit AlbumPurchased(albumID, true);
 
@@ -130,6 +131,10 @@ contract UserInteraction is RootContract {
             } else {
                 return false;
             }
+        }
+
+        function getTotalAlbumsPurchased() public view returns(uint) {
+            return totalAlbumsPurchased;
         }
 
         function ownerRedirectFullBalance(address destination) public onlyOwner {

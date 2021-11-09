@@ -42,13 +42,13 @@ const useContractObjectRepo = () => {
                      
             //User Interaction Contract + Root Contract
 
-            const userInteractionContractAddress = "0xa85233C63b9Ee964Add6F2cffe00Fd84eb32338f";
+            const userInteractionContractAddress = "0x0165878A594ca255338adfa4d48449f69242Eb8F";
             const UserInteractionContractObject = await new ethers.Contract(userInteractionContractAddress, UserInteraction.abi, signer);
             setUserInteractionContract(UserInteractionContractObject);
             
               //Token Contract
 
-              const ownerShipTokenContractAddress = "0x4A679253410272dd5232B3Ff7cF5dbB88f295319";
+              const ownerShipTokenContractAddress = "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853";
               const OwnerShipTokenContractObject = await new ethers.Contract(ownerShipTokenContractAddress, OwnershipToken.abi, signer);
               setOwnershipTokenContract(OwnerShipTokenContractObject);
 

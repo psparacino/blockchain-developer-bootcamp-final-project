@@ -9,6 +9,10 @@ import useGetBalance from '../hooks/useGetBalance';
 
 const BuyAlbumButton = ({mainAccount, balance, purchased, setPurchased, OwnershipTokenContract, needMoney, setNeedMoney, UserInteractionContract, GetBalance}) => {
 
+    const [albumPurchases, setAlbumPurchases] = useState(0);
+
+    UserInteractionContract.getTotalAlbumsPurchased()
+        .then((result) => setAlbumPurchases(result.toString()));
 
     const BuyAlbum = () => {
 
@@ -46,15 +50,22 @@ const BuyAlbumButton = ({mainAccount, balance, purchased, setPurchased, Ownershi
 
     return (
         <div>
-            {purchased ?
-            <button className="standardButton" id="buyButton">            
-              {"Album Purchased! Listen at will"}           
-            </button>
-            :
-            <button className="standardButton" id="buyButton" onClick={BuyAlbum}>            
-              {"Buy Album!"}           
-            </button>}
-            {console.log(purchased, "ownership")}
+            <div>
+                {purchased ?
+                <button className="standardButton" id="buyButton">            
+                {"Album Purchased! Listen at will"}           
+                </button>
+                :
+                <button className="standardButton" id="buyButton" onClick={BuyAlbum}>            
+                {"Buy Album!"}           
+                </button>}
+                {console.log(purchased, "ownership")}
+            </div>
+            <div>
+                <h5>
+                    Total Albums Purchased: {albumPurchases}
+                </h5>       
+            </div>
         </div>
     )
 }

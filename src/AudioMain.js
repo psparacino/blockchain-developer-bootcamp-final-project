@@ -16,6 +16,8 @@ import BuyAlbumButton from './components/BuyAlbumButton.js';
 
 import PleaseRegister from './components/PleaseRegister.jsx';
 
+import PleaseConnect from './components/PleaseConnect.jsx'; 
+
 //import DepositWithdrawal from './AudioMainComponents/DepositWithdrawal.js';
 
 //Contracts
@@ -68,8 +70,10 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
     }
 
     const AlbumStats = () => {
-        const [stats, setStats] = useState(0);
+        
         const [totalStats, setTotalStats] = useState(0);
+        const [stats, setStats] = useState(0);
+        const [userStats, setUserStats] = useState(0);
 
         function songTitle(currentTrack) {
             if (currentTrack == 0) {
@@ -85,9 +89,12 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
             .then((result) => setStats(result.toString()));
             //need to fix above to access state variable in contract
         
-        
-            UserInteractionContract.getAggregatePlayCount(0, 1, 2)
-            .then((result) => setTotalStats(result.toString()));
+    
+        UserInteractionContract.getAggregatePlayCount(0, 1, 2)
+        .then((result) => setTotalStats(result.toString()));
+
+        UserInteractionContract.getUserPlayCount(1, currentTrack)
+        .then((result) => setUserStats(result.toString()));
  
         return (
             <div className='stats'>
@@ -95,48 +102,16 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
                     <p>Total Plays (all users/all songs): {totalStats}</p>
                 </div>
                 <div id='stat2'>
-                    <p>{songTitle(currentTrack)} Play Count: {stats}</p>  
+                    <p>{songTitle(currentTrack)} Total Play Count: {stats}</p>  
+                </div>
+                <div id='stat2'>
+                    <p>{songTitle(currentTrack)} User Play Count: {userStats}</p>  
                 </div>        
             </div>
         
         )
     }
-  
 
-/*
-
-    const PlaySong = () => {
-            
-        async function initiatePlay() {
-            UserInteractionContract.Play(1, 1)
-                .then(
-                    UserInteractionContract.once("SongPlayed" , (songID, success) => {
-                        //console.log(songID.toNumber(), success);
-                            if (success) {
-                                GetBalance();
-                                console.log(1, "song successfully played and post balance");
-                            }
-                        })
-                )
-            }
-            
-
-        return (
-            <div>
-                {purchased ?
-                <button className="tempPlayButton">
-                    payment disabled because album is bought
-                </button>
-                :
-                <button className="tempPlayButton"  onClick={initiatePlay}>
-                    Temp Play
-                </button>
-                }
-            </div>
-
-        )
-    }
-    */
   
     const DepositWithdrawal = () => {
 
@@ -193,7 +168,7 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
                 <div className="inputAmount">
                     <div>
                     {needMoney ? 
-                    <h5 style={{textAlign : 'center'}}> DEPOSIT ETH TO CONTINUE </h5>
+                    <h3 style={{textAlign : 'center'}}> DEPOSIT ETH TO CONTINUE </h3>
                     :
                     null}
                         <label>
@@ -236,7 +211,9 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
         <div>
         
         
-            {registration ?   
+            {mainAccount ?
+             
+            registration ?   
             <div>
                 <div className="songContainer">           
                     <>
@@ -289,7 +266,10 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
                  
            
             :
-            <PleaseRegister />}
+            <PleaseRegister />
+            :
+            <PleaseConnect />
+            }
         </div>
     )
    
