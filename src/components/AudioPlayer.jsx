@@ -22,7 +22,8 @@ const AudioPlayer = ({
   const [trackProgress, setTrackProgress] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasPaid, setHasPaid] = useState(false);
-  const [loaded, setLoaded] = useState(false);
+
+
 
   // Destructure for conciseness
   const { title, artist, color, image, audioSrc } = tracks[trackIndex];
@@ -93,6 +94,12 @@ const AudioPlayer = ({
     setHasPaid(false);
   };
 
+  const setPurchase = () => {
+    if (purchased) {
+      setHasPaid(true);
+    }
+  }
+
 
 
 
@@ -115,16 +122,14 @@ const AudioPlayer = ({
         GetBalance();
     }
 
-  } else {
-      setNeedMoney(true);
+    } else {
+        setNeedMoney(true);
+    }
   }
-  }
-
-
-     
-    
+  
 
   useEffect(() => {
+    setPurchase();
     if (hasPaid) {
 
       audioRef.current.pause();
