@@ -1,18 +1,28 @@
 import React, { useState, useEffect, useRef } from "react";
 import AudioControls from "./AudioControls.jsx";
 import Backdrop from "./BackDrop.jsx";
+import { ethers } from "ethers";
 import "./styles.css";
+import { useImperativeHandle } from "react/cjs/react.development";
 
 /*
  * Read the blog post here:
  * https://letsbuildui.dev/articles/building-an-audio-player-with-react-hooks
  */
-const AudioPlayer = ({tracks, startingTrackIndex, UserInteractionContract, setCurrentTrack, GetBalance}) => {
+const AudioPlayer = ({
+    tracks, 
+    startingTrackIndex, 
+    UserInteractionContract, 
+    setCurrentTrack, 
+    setNeedMoney, 
+    purchased,
+    GetBalance}) => {
   // State
   const [trackIndex, setTrackIndex] = useState(startingTrackIndex);
   const [trackProgress, setTrackProgress] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasPaid, setHasPaid] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   // Destructure for conciseness
   const { title, artist, color, image, audioSrc } = tracks[trackIndex];
@@ -83,19 +93,36 @@ const AudioPlayer = ({tracks, startingTrackIndex, UserInteractionContract, setCu
     setHasPaid(false);
   };
 
+
+
+
+
+  console.log(isPlaying, hasPaid, "isPlaying and hasPaid on Load")
+
   async function initiatePlay() {
-    UserInteractionContract.Play(1, trackIndex)
-        .then(
-            UserInteractionContract.on("SongPlayed" , (songID, success) => {
-                //console.log(songID.toNumber(), success);
-                    if (success) {
-                        
-                        setHasPaid(true);
-                        console.log(trackIndex, "song successfully played and post balance");
-                    }
-                })
-        )
+    const userBalance = await UserInteractionContract.getDepositBalance();
+    if (userBalance > 1308805763219) {
+      setNeedMoney(false)
+    //const tx = await UserInteractionContract.Play(1, trackIndex);
+    //UserInteractionContract.Play(1, trackIndex)
+      let tx = await UserInteractionContract.Play(1, trackIndex);
+
+      let receipt = await tx.wait();
+    //console.log(receipt.events?.filter((SongPlayed) => {return SongPlayed.event == "SongPlayed"}), "LOGGED");
+    //console.log(receipt, "receipt")
+      if (receipt) {
+        setHasPaid(true)
+        GetBalance();
     }
+
+  } else {
+      setNeedMoney(true);
+  }
+  }
+
+
+     
+    
 
   useEffect(() => {
     if (hasPaid) {
@@ -104,9 +131,11 @@ const AudioPlayer = ({tracks, startingTrackIndex, UserInteractionContract, setCu
 
       audioRef.current = new Audio(audioSrc);
       setTrackProgress(audioRef.current.currentTime);
+
   
-      if (isReady.current) {
+      if (isReady.current && hasPaid) {
         audioRef.current.play();
+        console.log("1")
         setIsPlaying(true);
         startTimer();
       } else {
@@ -116,12 +145,14 @@ const AudioPlayer = ({tracks, startingTrackIndex, UserInteractionContract, setCu
     };
 
   }, [hasPaid])
-
+  //change 144 to conditional to allow playing without paying
   useEffect(() => {
     if (isPlaying && hasPaid) {
       audioRef.current.play();
+      
       startTimer();
     } else if (isPlaying && !hasPaid) {
+      console.log("2")
       initiatePlay();
     } else {
       audioRef.current.pause();
@@ -137,6 +168,7 @@ const AudioPlayer = ({tracks, startingTrackIndex, UserInteractionContract, setCu
 
     if (isReady.current && hasPaid) {
       audioRef.current.play();
+      console.log("3")
       setIsPlaying(true);
       startTimer();
     } else {
@@ -193,3 +225,4 @@ const AudioPlayer = ({tracks, startingTrackIndex, UserInteractionContract, setCu
 };
 
 export default AudioPlayer;
+

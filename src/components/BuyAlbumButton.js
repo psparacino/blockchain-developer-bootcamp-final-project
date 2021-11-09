@@ -1,5 +1,5 @@
 import { useState, React } from 'react';
-import { ethers } from 'ethers';
+import { ethers, utils } from 'ethers';
 import './BuyAlbumButton.css';
 import useGetBalance from '../hooks/useGetBalance';
 
@@ -7,19 +7,25 @@ import useGetBalance from '../hooks/useGetBalance';
 
 
 
-const BuyAlbumButton = ({mainAccount, purchased, setPurchased, OwnershipTokenContract, UserInteractionContract, GetBalance}) => {
-
+const BuyAlbumButton = ({mainAccount, balance, purchased, setPurchased, OwnershipTokenContract, needMoney, setNeedMoney, UserInteractionContract, GetBalance}) => {
 
 
     const BuyAlbum = () => {
-        //await UserInteractionContract.Buy(1, 1, {value: 1000000})
-        UserInteractionContract.Buy(1 , {value : 2621229059106300})
-        .then(OwnershipTokenContract.safeMint(mainAccount))
-        .then(Ownership());
+
+        console.log(utils.parseEther(balance).toString(), "balance")
+        if (utils.parseEther(balance).toString() > "2621229059106300") {
+            setNeedMoney(false);
+            UserInteractionContract.Buy(1 , {value : 2621229059106300})
+            .then(OwnershipTokenContract.safeMint(mainAccount))
+            .then(Ownership());
    
 
-        Ownership();
+        
         GetBalance();
+
+    } else {
+        setNeedMoney(true);
+    }
         
     }
 

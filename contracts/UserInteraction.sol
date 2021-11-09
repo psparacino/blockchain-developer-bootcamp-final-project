@@ -77,7 +77,7 @@ contract UserInteraction is RootContract {
         //Play and Buy operations
 
         function Play(uint albumID, uint songID) public userRegistered returns(bool){
-            uint price = 1308805763219;
+            uint price = userAlbumPurchase[msg.sender] ? 0 : 1308805763219;
             require(userPlayBalance[msg.sender] > 0, "deposit eth to listen");
             //uint price = getEthPrice();        
             uint current_song_count = albumStats[msg.sender][albumID].songStats[songID].playCount;
@@ -95,12 +95,15 @@ contract UserInteraction is RootContract {
             emit SongPlayed(songID, true);
             return true;
 
-            //https://ethereum.stackexchange.com/questions/50237/how-to-split-funds-in-single-send-transaction
           
         }
 
         function getPlayCount(uint songID) public view returns(uint) {
             return totalSongCount[songID];
+        }
+
+        function getAggregatePlayCount(uint songID, uint songID2, uint songID3) public view returns(uint) {
+            return totalSongCount[songID] + totalSongCount[songID2] + totalSongCount[songID3];
         }
 
         function Buy(uint albumID) payable external userRegistered {

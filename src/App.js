@@ -24,11 +24,19 @@ function App() {
   const {purchased, setPurchased} = useAlbumPurchaseConfirm();
 
 
+
   return (
     <div className="App">
-      <header className="App-header">
+      <header className="App-header">    
+      </header>
+      <div className="MetaMaskConnect">
         <MetaMaskButton style="color: black" mainAccount={mainAccount} setMainAccount={setMainAccount}/>
+      </div>
+      
+        {mainAccount ?
         <RegisterButton registration={registration} setRegistration={setRegistration} UserInteractionContract={UserInteractionContract} />
+        :
+        null}
         <AudioMain 
           mainAccount={mainAccount} 
           balance={balance} 
@@ -43,8 +51,6 @@ function App() {
 
         />
         <useUpdates balance={balance} setBalance={setBalance} UserInteractionContract={UserInteractionContract} />
-        
-      </header>
     </div>
   );
 }

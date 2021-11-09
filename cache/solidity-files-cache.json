@@ -214,8 +214,8 @@
       ]
     },
     "/Users/peter/Documents/Development/Consensys/blockchain-developer-bootcamp-final-project/contracts/UserInteraction.sol": {
-      "lastModificationDate": 1636156430406,
-      "contentHash": "e8918e5356c8b8364dfee297c41e6dad",
+      "lastModificationDate": 1636418518935,
+      "contentHash": "b40944dafa4519ef26179a3525f6becc",
       "sourceName": "contracts/UserInteraction.sol",
       "solcConfig": {
         "version": "0.8.0",
