@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import "hardhat/console.sol";
 
 import './RootContract.sol';
-//import './ChainlinkOracle.sol';
+import './ChainlinkOracle.sol';
 
 
 contract UserInteraction is RootContract {
@@ -17,7 +17,9 @@ contract UserInteraction is RootContract {
 
         mapping(address => uint) public userPlayBalance;
 
-        uint totalAlbumsPurchased;
+        uint totalAlbumsPurchased = 0;
+
+        PriceConsumerV3 public ChainLinkContract;
 
         
         
@@ -34,9 +36,14 @@ contract UserInteraction is RootContract {
         event AmountDeposited(address _depositer, uint _amount, bool success);
         
         event WithdrawalComplete(address withdrawee, uint _amount, uint current_balance, bool success);
+        
+        constructor() {
+            ChainLinkContract = PriceConsumerV3(0x8A791620dd6260079BF849Dc5567aDC3F2FdC318);
+        }  
 
-
-        //should use a constructor to demystify the songs and what the paths represent below(?)
+        function getEthPriceToday() public view returns(int256) {
+            return ChainLinkContract.getLatestPrice();
+        }
 
 
         //User Deposit

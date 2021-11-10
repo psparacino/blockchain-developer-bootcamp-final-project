@@ -32,8 +32,10 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
     const [needMoney, setNeedMoney] = useState(false);
 
     
+    console.log(process.env.REACT_APP_INFURA_URL, "INFURA")
+    console.log(UserInteractionContract, "Contract Object");
 
-    console.log(UserInteractionContract, "Contract Object")
+    mainAccount ? console.log(UserInteractionContract.getEthPriceToday(), "Eth Price Today") : console.log("not connected");
 
 
     async function GetBalance() {
@@ -101,10 +103,10 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
                 <div id='stat1'>
                     <p>Total Plays (all users/all songs): {totalStats}</p>
                 </div>
-                <div id='stat2'>
+                <div id='stat1'>
                     <p>{songTitle(currentTrack)} Total Play Count: {stats}</p>  
                 </div>
-                <div id='stat2'>
+                <div id='stat1'>
                     <p>{songTitle(currentTrack)} User Play Count: {userStats}</p>  
                 </div>        
             </div>

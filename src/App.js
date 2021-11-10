@@ -11,6 +11,7 @@ import useUpdates from './hooks/useContractObjectRepo.js';
 
 import tracks from "./tracks";
 
+
 import './App.css';
 import { useState } from 'react';
 import useGetBalance from './hooks/useGetBalance.js';
