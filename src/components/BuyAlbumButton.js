@@ -17,9 +17,9 @@ const BuyAlbumButton = ({mainAccount, balance, purchased, setPurchased, Ownershi
     const BuyAlbum = () => {
 
         console.log(utils.parseEther(balance).toString(), "balance")
-        if (utils.parseEther(balance).toString() > "2621229059106329") {
+        if (utils.parseEther(balance).toString() > "2621229059106299") {
             setNeedMoney(false);
-            UserInteractionContract.Buy(1 , {value : 2621229059106330})
+            UserInteractionContract.Buy(1 , {value : 2621229059106300})
             .then(OwnershipTokenContract.safeMint(mainAccount))
             .then(Ownership());
    
@@ -34,7 +34,6 @@ const BuyAlbumButton = ({mainAccount, balance, purchased, setPurchased, Ownershi
     }
 
     const Ownership = () => {
-        //await UserInteractionContract.Buy(1, 1, {value: 1000000})
         UserInteractionContract.on("AlbumPurchased" , (uint, success) => {
             console.log(uint, success, "purchase log");
                 if (success) {
