@@ -103,6 +103,7 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
  
         return (
             <div className='stats'>
+            //table
                 <div id='stat1'>
                     <p>Total Plays (all users/all songs): {totalStats}</p>
                 </div>
