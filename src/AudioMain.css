@@ -106,9 +106,17 @@ button.buyButton {
   }
   .buyAlbumButtonContainer {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
 
+  }
+
+  .albumNotice {
+    margin-top: 160px;
+    width: 100%;
+    font-size: smaller;
+    text-align: center;
   }
 
   .getBalance {

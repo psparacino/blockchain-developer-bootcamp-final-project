@@ -38,7 +38,7 @@ contract UserInteraction is RootContract {
         event WithdrawalComplete(address withdrawee, uint _amount, uint current_balance, bool success);
         
         constructor() {
-            ChainLinkContract = PriceConsumerV3(0x8A791620dd6260079BF849Dc5567aDC3F2FdC318);
+            ChainLinkContract = PriceConsumerV3(0x80d1188714a4d2B4BEfeC0571ed583d4b03C4b1B);
         }  
 
         function getEthPriceToday() public view returns(int256) {

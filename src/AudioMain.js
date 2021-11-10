@@ -32,10 +32,13 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
     const [needMoney, setNeedMoney] = useState(false);
 
     
-    console.log(process.env.REACT_APP_INFURA_URL, "INFURA")
     console.log(UserInteractionContract, "Contract Object");
-
-    mainAccount ? console.log(UserInteractionContract.getEthPriceToday(), "Eth Price Today") : console.log("not connected");
+    async function getEthPrice() {
+        UserInteractionContract.getEthPriceToday().
+        then(result => console.log(result.toString(), "promise return"))
+        
+    }
+    mainAccount ? console.log(getEthPrice(), "Eth Price Today") : console.log("not connected");
 
 
     async function GetBalance() {
@@ -58,7 +61,7 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
                 }
             } 
         )
-        //check if this is cuasing double event
+
 
         UserInteractionContract.on("SongPlayed" , (songID, success) => {
             console.log(songID.toNumber(), success);
@@ -130,9 +133,8 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
 
             } else {
                 let weiAmount = utils.parseEther((amount).toString());
-                //console.log(weiAmount.toString())
                 setInputAmount(weiAmount.toString());
-                //console.log(inputAmount);
+
             }
             
 
@@ -219,8 +221,9 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
             <div>
                 <div className="songContainer">           
                     <>
+                        
                         <div className="buyAlbumButtonContainer">
-
+                            <h8 className="albumNotice">Unlimited free plays after album is purchased</h8>
                             <BuyAlbumButton
                             mainAccount={mainAccount}
                             balance={balance}
@@ -251,17 +254,11 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
 
 
                         <AlbumStats />
-
-
-
-                        
-                   
-                       
+    
                     </>
                 </div>
                 <GetDepositBalance balance={balance} />        
                 <DepositWithdrawal UserInteractionContract={UserInteractionContract} />
-                {/*<PlaySong />*/}
 
             </div>
                   
@@ -282,62 +279,6 @@ export default AudioMain;
 
 
 
-{/*
-        <table className="mainTable">
-         
-            <thead>
-                <tr>
-                    <th>
-                        Play Song
-                    </th>
-                    <th>
-                        Title
-                    </th>
-                    <th>
-                        Artist
-                    </th>
-                    <th>
-                        Your Play Count
-                    </th>
-                    <th>
-                        Album Art
-                    </th>
-                </tr>
-            </thead>  
-            
-       
-        {tracks.map((track, index) =>            
-                   
-            <tr>
-                <td>
-                    <button className="playButton" 
-                    onClick={
-                        () => {
-                            setTrackNumber(index);
-                            setCurrentTrack(track.title);
-                            
-                         
-                        }         
-                    }>
-                    {'▶️'}
-                    </button>
-                </td>
-                <td>
-                    {track.title}
-                </td>
-                <td>
-                    {track.artist}
-                </td>
-                <td>
-                {playCount}
-                </td>
-                <td>
-                   <img className="albumArt" src={track.image} />
-                </td>
-            </tr>
-        )}
-       </table>
 
- */}
 
  
