@@ -5,12 +5,13 @@ import useContractObjectRepo from "./useContractObjectRepo.js";
 
 
 
+
+
 const useRegistrationCheck = () => {
 
 const [registration, setRegistration] = useState(false);
 
 const {UserInteractionContract} = useContractObjectRepo();
-
 
     useEffect(() =>{
         if (UserInteractionContract) {        
@@ -24,6 +25,8 @@ const {UserInteractionContract} = useContractObjectRepo();
     }
 
     },[UserInteractionContract])
+
+    
 
 
 

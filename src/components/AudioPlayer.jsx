@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import AudioControls from "./AudioControls.jsx";
 import Backdrop from "./BackDrop.jsx";
-import { ethers } from "ethers";
+import { ethers, utils } from "ethers";
 import "./styles.css";
 import { useImperativeHandle } from "react/cjs/react.development";
 
@@ -12,10 +12,13 @@ import { useImperativeHandle } from "react/cjs/react.development";
 const AudioPlayer = ({
     tracks, 
     startingTrackIndex, 
-    UserInteractionContract, 
+    UserInteractionContract,
+    setIsLoading, 
     setCurrentTrack, 
     setNeedMoney, 
     purchased,
+    setPurchased,
+    setBalance,
     GetBalance}) => {
   // State
   const [trackIndex, setTrackIndex] = useState(startingTrackIndex);
@@ -100,16 +103,25 @@ const AudioPlayer = ({
     }
   }
 
+  if (UserInteractionContract) {        
+    UserInteractionContract.getAlbumOwnership()
+    .then((result) => {
+        setPurchased(result);
+        console.log(result, "purchase result")
+
+    })
+    .catch((error) => console.log(error))
+}
 
 
 
-
-  console.log(isPlaying, hasPaid, "isPlaying and hasPaid on Load")
+  //console.log(isPlaying, hasPaid, "isPlaying and hasPaid on Load")
 
   async function initiatePlay() {
     const userBalance = await UserInteractionContract.getDepositBalance();
     if (userBalance > 1308805763219) {
       setNeedMoney(false)
+      setIsLoading(true)
     //const tx = await UserInteractionContract.Play(1, trackIndex);
     //UserInteractionContract.Play(1, trackIndex)
       let tx = await UserInteractionContract.Play(1, trackIndex);
@@ -119,7 +131,10 @@ const AudioPlayer = ({
     //console.log(receipt, "receipt")
       if (receipt) {
         setHasPaid(true)
+        setIsLoading(false)
         GetBalance();
+        UserInteractionContract.getDepositBalance()
+        .then((result) => (setBalance(utils.formatEther(result.toString()))))
     }
 
     } else {
@@ -140,7 +155,7 @@ const AudioPlayer = ({
   
       if (isReady.current && hasPaid) {
         audioRef.current.play();
-        console.log("1")
+        //console.log("1")
         setIsPlaying(true);
         startTimer();
       } else {
@@ -157,7 +172,7 @@ const AudioPlayer = ({
       
       startTimer();
     } else if (isPlaying && !hasPaid) {
-      console.log("2")
+      //console.log("2")
       initiatePlay();
     } else {
       audioRef.current.pause();
@@ -173,7 +188,7 @@ const AudioPlayer = ({
 
     if (isReady.current && hasPaid) {
       audioRef.current.play();
-      console.log("3")
+      //console.log("3")
       setIsPlaying(true);
       startTimer();
     } else {

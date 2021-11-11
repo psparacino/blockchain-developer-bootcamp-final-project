@@ -1,29 +1,24 @@
 import AudioMain from './AudioMain.js';
 import MetaMaskButton from './components/MetaMaskButton.js';
-import BuyAlbumButton from './components/BuyAlbumButton.js';
 import RegisterButton from './components/RegisterButton.js'; 
 
 //import hooks
 import useHandleEthereum from './hooks/useHandleEthereum.js';
 import useRegistrationCheck from './hooks/useRegistrationCheck.js';
 import useContractObjectRepo from './hooks/useContractObjectRepo.js';
-import useUpdates from './hooks/useContractObjectRepo.js'; 
-
-import tracks from "./tracks";
-
-
-import './App.css';
-import { useState } from 'react';
 import useGetBalance from './hooks/useGetBalance.js';
 import useAlbumPurchaseConfirm from './hooks/useAlbumPurchaseConfirm.js';
 
+import './App.css';
+
+
+
 function App() {
-  const {mainAccount, setMainAccount, signer, provider} = useHandleEthereum();
+  const {mainAccount, setMainAccount} = useHandleEthereum();
   const {UserInteractionContract, OwnershipTokenContract} = useContractObjectRepo();
   const {registration, setRegistration} = useRegistrationCheck();
   const {balance, setBalance} = useGetBalance();
   const {purchased, setPurchased} = useAlbumPurchaseConfirm();
-
 
 
   return (
@@ -51,7 +46,6 @@ function App() {
 
 
         />
-        <useUpdates balance={balance} setBalance={setBalance} UserInteractionContract={UserInteractionContract} />
     </div>
   );
 }

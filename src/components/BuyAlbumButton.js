@@ -7,18 +7,37 @@ import useGetBalance from '../hooks/useGetBalance';
 
 
 
-const BuyAlbumButton = ({mainAccount, balance, purchased, setPurchased, OwnershipTokenContract, needMoney, setNeedMoney, UserInteractionContract, GetBalance}) => {
+const BuyAlbumButton = ({
+    mainAccount, 
+    balance, 
+    purchased, 
+    setPurchased, 
+    OwnershipTokenContract, 
+    needMoney, 
+    setNeedMoney, 
+    setIsLoading, 
+    UserInteractionContract, 
+    GetBalance}) => {
 
     const [albumPurchases, setAlbumPurchases] = useState(0);
 
     UserInteractionContract.getTotalAlbumsPurchased()
         .then((result) => setAlbumPurchases(result.toString()));
 
-    const BuyAlbum = () => {
+    UserInteractionContract.getAlbumOwnership()
+        .then((result) => (setPurchased(result)));
+    
+    if (balance > 0.026212290591062299) {
+        setNeedMoney(false)
+    }
 
-        console.log(utils.parseEther(balance).toString(), "balance")
-        if (utils.parseEther(balance).toString() > "2621229059106299") {
-            setNeedMoney(false);
+    const BuyAlbum = () => {
+        console.log(balance, 'PRICE BALANCE')
+        //console.log(typeof(utils.formatEther(parseInt("26212290591062299", 10))), "PRICEbalance")
+        if (balance > 0.026212290591062299) {
+            setIsLoading(true);
+            console.log(needMoney, "needMoney")
+            console.log(balance, "buyAlbumbalance")
             UserInteractionContract.Buy(1 , {value : 2621229059106300})
             .then(OwnershipTokenContract.safeMint(mainAccount))
             .then(Ownership());
@@ -52,7 +71,8 @@ const BuyAlbumButton = ({mainAccount, balance, purchased, setPurchased, Ownershi
             <div>
                 {purchased ?
                 <button className="standardButton" id="buyButton">            
-                {"Album Purchased! Listen at will"}           
+                {"Album Purchased! Listen at will"}  
+                {setIsLoading(false)}         
                 </button>
                 :
                 <button className="standardButton" id="buyButton" onClick={BuyAlbum}>            

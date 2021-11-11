@@ -105,19 +105,41 @@ button.buyButton {
     padding-top: 40px;
   }
   .buyAlbumButtonContainer {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-
+    display: block;
+    text-align: center;
+    padding-top: 160px;
   }
 
   .albumNotice {
-    margin-top: 160px;
     width: 100%;
     font-size: smaller;
     text-align: center;
   }
+
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+   
+  }
+
+    td, tr {
+    width: 100%;
+    border: solid 4px  rgb(27, 115, 174);;
+    border-collapse: collapse;
+    border-spacing: 2px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  tr.noBorder th {
+    border: 0;
+    
+  }
+
+
 
   .getBalance {
     display: flex;
@@ -127,13 +149,7 @@ button.buyButton {
     margin-bottom: 20px;
   }
 
-  .stats {
-    display: block;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    margin-top: 140px;
-  }
+
 
   #stat1 {
     display: flex;

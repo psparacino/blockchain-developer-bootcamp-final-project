@@ -23,7 +23,16 @@ import PleaseConnect from './components/PleaseConnect.jsx';
 //Contracts
 
 
-const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, setPurchased, UserInteractionContract, OwnershipTokenContract}) => {
+const AudioMain = ({
+        mainAccount, 
+        balance, 
+        setBalance, 
+        purchased, 
+        setPurchased,
+        registration,
+        setRegistration, 
+        UserInteractionContract, 
+        OwnershipTokenContract}) => {
 
     const [trackNumber, setTrackNumber] = useState(0);
 
@@ -31,32 +40,52 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
 
     const [needMoney, setNeedMoney] = useState(false);
 
+    const [isLoading, setIsLoading] = useState(false);
     
-    console.log(UserInteractionContract, "Contract Object");
+    //console.log(UserInteractionContract, "Contract Object");
+    
     async function getEthPrice() {
-        UserInteractionContract.getEthPriceToday().
-        then(result => console.log(result.toString(), "promise return"))
+        if (mainAccount)
+        {await UserInteractionContract.getEthPriceToday().
+        then(result => console.log(result.toString(), "promise return"))}
         
     }
-    mainAccount ? console.log(getEthPrice(), "Eth Price Today") : console.log("not connected");
+    //getEthPrice();
+
+    useEffect(() =>{
+        if (mainAccount) {        
+        UserInteractionContract.verifyRegistration()
+        .then((result) => {
+            setRegistration(result);
+            console.log(result, "registration result")
+
+        })
+        .catch((error) => console.log(error))
+    }
+
+    },[mainAccount])
+
 
 
     async function GetBalance() {
         UserInteractionContract.on("AmountDeposited" , (address, uint, success) => {
-            console.log(address, uint, success);
                 if (success) {
                     UserInteractionContract.getDepositBalance()
-                    .then((result) => (setBalance(utils.formatEther(result.toString()))));
+                    .then((result) => (setBalance(utils.formatEther(result.toString()))))
+                    .then(setIsLoading(false))
                     console.log(balance, "DEPOSIT EVENT");
+                }
+                if (balance > 0.026212290591062299) {
+                    setNeedMoney(false)
                 }
             } 
         )
 
         UserInteractionContract.on("WithdrawalComplete" , (address, uint, balance, success) => {
-            console.log(address, uint, success);
                 if (success) {
                     UserInteractionContract.getDepositBalance()
-                    .then((result) => (setBalance(utils.formatEther(result.toString()))));
+                    .then((result) => (setBalance(utils.formatEther(result.toString()))))
+                    .then(setIsLoading(false))
                     console.log(balance, "WITHDRAWAL EVENT");
                 }
             } 
@@ -64,10 +93,10 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
 
 
         UserInteractionContract.on("SongPlayed" , (songID, success) => {
-            console.log(songID.toNumber(), success);
                 if (success) {
                     UserInteractionContract.getDepositBalance()
                     .then((result) => (setBalance(utils.formatEther(result.toString()))))
+                    .then(setIsLoading(false))
                     console.log(balance, "PLAY EVENT");
                 }
             } 
@@ -103,16 +132,21 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
  
         return (
             <div className='stats'>
-            //table
-                <div id='stat1'>
-                    <p>Total Plays (all users/all songs): {totalStats}</p>
-                </div>
-                <div id='stat1'>
-                    <p>{songTitle(currentTrack)} Total Play Count: {stats}</p>  
-                </div>
-                <div id='stat1'>
-                    <p>{songTitle(currentTrack)} User Play Count: {userStats}</p>  
-                </div>        
+                    
+                    <table className='statsTable'> 
+                    <tr>
+                        <th className="noBorder"> <h3>Stats</h3> </th>
+                    </tr>
+                    <tr>
+                        <td>Total Plays (all users/all songs): {totalStats}</td>
+                    </tr> 
+                    <tr>
+                        <td>{songTitle(currentTrack)} Total Play Count: {stats}</td>  
+                    </tr>
+               
+                        <td>{songTitle(currentTrack)} User Play Count: {userStats}</td>  
+                   
+                </table>       
             </div>
         
         )
@@ -122,6 +156,8 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
     const DepositWithdrawal = () => {
 
         const [inputAmount, setInputAmount] = useState(0);
+
+        const [nonZero, setNonZero] = useState(false);
 
         const handleSubmit = (event) => {
             event.preventDefault();
@@ -143,18 +179,32 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
 
  
         function deposit() {
+            
             console.log(inputAmount, "deposit input amount")
-            UserInteractionContract.depositBalance({value : inputAmount})
-            .then((result) => {
-                console.log(result, 'deposit successful');
-                
-            })
-            .catch((error) => console.log(error));
-            GetBalance();
+            console.log(isLoading, "isLoading")
+            if (inputAmount > 0) {
+                setNonZero(false);
+                setIsLoading(true);
+                console.log(isLoading, "isLoading")
+                UserInteractionContract.depositBalance({value : inputAmount})
+                .then((result) => {
+                    console.log(result, 'deposit successful');
+                    
+                })
+                .catch((error) => console.log(error));
+                GetBalance();}
+            else {
+                setNonZero(true);
+                setIsLoading(false);
+            }
         }
 
         function withdrawal() {
             console.log(inputAmount, "withdrawal input amount")
+            
+            if (inputAmount > 0){
+            setNonZero(false);
+            setIsLoading(true);
             UserInteractionContract.withdrawBalance(inputAmount)
             .then((result) => {
                 console.log(result, 'withdrawal successful')
@@ -163,6 +213,9 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
             })
             .catch((error) => console.log(error, "withdrawal Error")) 
             GetBalance();
+            } else {
+                setNonZero(true);
+            }
         }
 
 
@@ -173,7 +226,15 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
                 <div className="inputAmount">
                     <div>
                     {needMoney ? 
-                    <h3 style={{textAlign : 'center'}}> DEPOSIT ETH TO CONTINUE </h3>
+                    <h3 style={{textAlign : 'center', color: 'red'}}>DEPOSIT ETH TO CONTINUE</h3>
+                    :
+                    null}
+                    {nonZero ? 
+                    <h3 style={{textAlign : 'center', color: 'red'}}>ENTER AN AMOUNT GREATER THAN ZERO</h3>
+                    :
+                    null}
+                    {isLoading ? 
+                    <h3 style={{textAlign : 'center', color: 'green'}}>Waiting for contract response...</h3>
                     :
                     null}
                         <label>
@@ -192,17 +253,21 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
                     <button className="submitButton" id="deposit" type="submit" onClick={deposit}>Submit Amount to Player Bank</button>
                     <button className="submitButton" id="withdrawal" type="submit" onClick={withdrawal}>Withdraw Amount from Player Bank</button>
                 </div>
-
             </form>
-          </>
-            
+          </>          
         )
-
     }
 
-
-
     const GetDepositBalance = () => {
+        useEffect(() =>{
+            if (UserInteractionContract) {        
+            UserInteractionContract.getDepositBalance()
+            .then((result) => setBalance(utils.formatEther(result.toString()).toString()))
+            .catch( (error) => {
+                console.log(error)
+            });}
+    
+        },[])    
         
         return (
             <div className="getBalance">
@@ -221,23 +286,26 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
             registration ?   
             <div>
                 <div className="songContainer">           
-                    <>
-                        
+                    <>                      
                         <div className="buyAlbumButtonContainer">
-                            <h8 className="albumNotice">Unlimited free plays after album is purchased</h8>
-                            <BuyAlbumButton
-                            mainAccount={mainAccount}
-                            balance={balance}
-                            purchased={purchased}
-                            setPurchased={setPurchased}
-                            OwnershipTokenContract={OwnershipTokenContract}
-                            UserInteractionContract={UserInteractionContract}
-                            GetBalance={GetBalance}
-                            needMoney={needMoney}
-                            setNeedMoney={setNeedMoney}
-                            />
                             
-
+                            <BuyAlbumButton
+                                className="buttonContainer"
+                                mainAccount={mainAccount}
+                                balance={balance}
+                                purchased={purchased}
+                                setPurchased={setPurchased}
+                                isLoading={isLoading}
+                                setIsLoading={setIsLoading}
+                                OwnershipTokenContract={OwnershipTokenContract}
+                                UserInteractionContract={UserInteractionContract}
+                                GetBalance={GetBalance}
+                                needMoney={needMoney}
+                                setNeedMoney={setNeedMoney}
+                            />
+                            <div className="albumNotice">
+                                <h5>Unlimited free plays after album is purchased</h5>
+                            </div>
                         </div>
 
 
@@ -247,9 +315,12 @@ const AudioMain = ({mainAccount, balance, setBalance, purchased, registration, s
                                 startingTrackIndex={trackNumber}  
                                 UserInteractionContract={UserInteractionContract}
                                 GetBalance={GetBalance}
+                                setBalance={setBalance}
+                                setIsLoading={setIsLoading}
                                 setCurrentTrack={setCurrentTrack}
                                 setNeedMoney={setNeedMoney}
                                 purchased={purchased}
+                                setPurchased={setPurchased}
                                 />   
                         </div>
 
@@ -282,4 +353,70 @@ export default AudioMain;
 
 
 
- 
+ /*
+
+ return (
+        <div>
+        
+        
+            {mainAccount ?
+             
+            registration ?   
+            <div>
+                <div className="songContainer">           
+                    <>
+                        
+                        <div className="buyAlbumButtonContainer">
+                            
+                            <BuyAlbumButton
+                            className="buttonContainer"
+                            mainAccount={mainAccount}
+                            balance={balance}
+                            purchased={purchased}
+                            setPurchased={setPurchased}
+                            OwnershipTokenContract={OwnershipTokenContract}
+                            UserInteractionContract={UserInteractionContract}
+                            GetBalance={GetBalance}
+                            needMoney={needMoney}
+                            setNeedMoney={setNeedMoney}
+                            />
+                            <div className="albumNotice">
+                                <h5> Unlimited free plays after album is purchased</h5>
+                            </div>
+                        </div>
+
+
+                        <div className="audioPlayerDiv">
+                            <AudioPlayer 
+                                tracks={tracks} 
+                                startingTrackIndex={trackNumber}  
+                                UserInteractionContract={UserInteractionContract}
+                                GetBalance={GetBalance}
+                                setBalance={setBalance}
+                                setCurrentTrack={setCurrentTrack}
+                                setNeedMoney={setNeedMoney}
+                                purchased={purchased}
+                                />   
+                        </div>
+
+
+                        <AlbumStats />
+    
+                    </>
+                </div>
+                <GetDepositBalance balance={balance} />        
+                <DepositWithdrawal UserInteractionContract={UserInteractionContract} />
+
+            </div>
+                  
+                 
+           
+            :
+            <PleaseRegister />
+            :
+            <PleaseConnect />
+            }
+        </div>
+    )
+
+    */
