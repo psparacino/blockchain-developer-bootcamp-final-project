@@ -103,16 +103,6 @@ const AudioPlayer = ({
     }
   }
 
-  if (UserInteractionContract) {        
-    UserInteractionContract.getAlbumOwnership()
-    .then((result) => {
-        setPurchased(result);
-        console.log(result, "purchase result")
-
-    })
-    .catch((error) => console.log(error))
-}
-
 
 
   //console.log(isPlaying, hasPaid, "isPlaying and hasPaid on Load")

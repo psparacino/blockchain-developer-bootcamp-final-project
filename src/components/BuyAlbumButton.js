@@ -70,9 +70,8 @@ const BuyAlbumButton = ({
         <div>
             <div>
                 {purchased ?
-                <button className="standardButton" id="buyButton">            
-                {"Album Purchased! Listen at will"}  
-                {setIsLoading(false)}         
+                <button className="standardButton" id="boughtButton">            
+                {"Album Purchased! Listen at will"}          
                 </button>
                 :
                 <button className="standardButton" id="buyButton" onClick={BuyAlbum}>            

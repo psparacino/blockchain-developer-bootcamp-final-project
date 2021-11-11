@@ -10,7 +10,7 @@
     font-size: 20px;
   }
 
-  #buyButton {
+  #buyButton, #boughtButton {
     background-color: transparent;
     color: #FFF;
     border: 10px solid rgb(27, 115, 174);
@@ -22,11 +22,8 @@
     letter-spacing: 1px;
     cursor: pointer;
     text-decoration: unset;
-
-
     -webkit-transition: box-shadow 300ms ease-in, color 300ms ease-in;
     transition: box-shadow 100ms, color 300ms;
-
     color: darkslategrey
   }
 
