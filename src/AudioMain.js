@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { utils, ethers } from 'ethers';
+import { utils } from 'ethers';
 import AudioPlayer from  './components/AudioPlayer.jsx';
 import tracks from "./tracks";
 
@@ -41,16 +41,10 @@ const AudioMain = ({
     const [needMoney, setNeedMoney] = useState(false);
 
     const [isLoading, setIsLoading] = useState(false);
+
     
     //console.log(UserInteractionContract, "Contract Object");
     
-    async function getEthPrice() {
-        if (mainAccount)
-        {await UserInteractionContract.getEthPriceToday().
-        then(result => console.log(result.toString(), "promise return"))}
-        
-    }
-    //getEthPrice();
 
     useEffect(() =>{
         if (mainAccount) {        
@@ -64,8 +58,6 @@ const AudioMain = ({
     }
 
     },[mainAccount])
-
-
 
     async function GetBalance() {
         UserInteractionContract.on("AmountDeposited" , (address, uint, success) => {
@@ -103,6 +95,26 @@ const AudioMain = ({
         )
     }
 
+
+
+    const GetDailyFiatPrices = () => {
+        const [ethPriceToday, setEthPriceToday] = useState(0);
+
+        UserInteractionContract.getEthPriceToday()
+        .then(result => console.log(result.toString()));
+        
+        const adjustedPrice = Math.floor(ethPriceToday, 1000)
+        console.log(adjustedPrice, 'ethPriceToday')
+
+        return (
+            <p></p>
+        )
+
+
+        }
+
+      
+
     const AlbumStats = () => {
         
         const [totalStats, setTotalStats] = useState(0);
@@ -110,9 +122,9 @@ const AudioMain = ({
         const [userStats, setUserStats] = useState(0);
 
         function songTitle(currentTrack) {
-            if (currentTrack == 0) {
+            if (currentTrack === 0) {
                 return 'Shenanigans'
-            } else if (currentTrack == 1) {
+            } else if (currentTrack === 1) {
                 return 'InterDweller'
             } else {
                 return 'La Storia'
@@ -120,32 +132,35 @@ const AudioMain = ({
         }
 
         UserInteractionContract.getPlayCount(currentTrack)
-            .then((result) => setStats(result.toString()));
+            .then((result) => setStats(result.toString()))
+            .catch((error)=> console.log(error))
             //need to fix above to access state variable in contract
         
     
         UserInteractionContract.getAggregatePlayCount(0, 1, 2)
-        .then((result) => setTotalStats(result.toString()));
-
+            .then((result) => setTotalStats(result.toString()))
+            .catch((error)=> console.log(error));
         UserInteractionContract.getUserPlayCount(1, currentTrack)
-        .then((result) => setUserStats(result.toString()));
+            .then((result) => setUserStats(result.toString()))
+            .catch((error)=> console.log(error));
  
         return (
-            <div className='stats'>
-                    
-                    <table className='statsTable'> 
-                    <tr>
-                        <th className="noBorder"> <h3>Stats</h3> </th>
-                    </tr>
-                    <tr>
-                        <td>Total Plays (all users/all songs): {totalStats}</td>
-                    </tr> 
-                    <tr>
-                        <td>{songTitle(currentTrack)} Total Play Count: {stats}</td>  
-                    </tr>
-               
-                        <td>{songTitle(currentTrack)} User Play Count: {userStats}</td>  
-                   
+            <div className='stats'>             
+                <table className='statsTable'> 
+                    <tbody>
+                        <tr>
+                            <th className="noBorder"> <h3>Stats</h3> </th>
+                        </tr>
+                        <tr>
+                            <td>Total Plays (all users/all songs): {totalStats}</td>
+                        </tr> 
+                        <tr>
+                            <td>{songTitle(currentTrack)} Total Play Count: {stats}</td>  
+                        </tr>
+                        <tr>             
+                            <td>{songTitle(currentTrack)} User Play Count: {userStats}</td>  
+                        </tr>
+                    </tbody>
                 </table>       
             </div>
         
@@ -165,7 +180,7 @@ const AudioMain = ({
 
         const onChange = (event) => {
             const amount = event.target.value;
-            if (amount == 0 || null) {
+            if (amount === 0 || null) {
                 setInputAmount(0);
 
             } else {
@@ -191,7 +206,7 @@ const AudioMain = ({
                     console.log(result, 'deposit successful');
                     
                 })
-                .catch((error) => console.log(error));
+                .catch(() => setIsLoading(false));
                 GetBalance();}
             else {
                 setNonZero(true);
@@ -211,7 +226,7 @@ const AudioMain = ({
                 
                 
             })
-            .catch((error) => console.log(error, "withdrawal Error")) 
+            .catch(() => setIsLoading(false)); 
             GetBalance();
             } else {
                 setNonZero(true);
@@ -221,7 +236,8 @@ const AudioMain = ({
 
 
         return (
-            <>          
+            <> { purchased ?
+            null :          
                 <form onSubmit={handleSubmit}>
                 <div className="inputAmount">
                     <div>
@@ -254,6 +270,7 @@ const AudioMain = ({
                     <button className="submitButton" id="withdrawal" type="submit" onClick={withdrawal}>Withdraw Amount from Player Bank</button>
                 </div>
             </form>
+            }
           </>          
         )
     }
@@ -270,10 +287,19 @@ const AudioMain = ({
         },[])    
         
         return (
-            <div className="getBalance">
-                Current Player Bank: {balance}
-            </div>
+         <div>
+        {  purchased ?  
+                <div className="getBalance">
+                    Album Purchased: Bank Refunded
+                </div>    
+                :
+
+                <div className="getBalance">
+                    Current Player Bank: {balance}
+                </div>}
+                </div>
         )
+        
     }
     
 
@@ -288,7 +314,7 @@ const AudioMain = ({
                 <div className="songContainer">           
                     <>                      
                         <div className="buyAlbumButtonContainer">
-                            
+                            <>
                             <BuyAlbumButton
                                 className="buttonContainer"
                                 mainAccount={mainAccount}
@@ -303,9 +329,11 @@ const AudioMain = ({
                                 needMoney={needMoney}
                                 setNeedMoney={setNeedMoney}
                             />
-                            <div className="albumNotice">
-                                <h5>Unlimited free plays after album is purchased</h5>
+                            <div className="albumNotice">                            
+                                <p>*Unlimited free plays after album is purchased</p>
+                                <p>*Player Bank refunded after album purchase</p>
                             </div>
+                            </>
                         </div>
 
 
@@ -326,6 +354,7 @@ const AudioMain = ({
 
 
                         <AlbumStats />
+                        <GetDailyFiatPrices />
     
                     </>
                 </div>
@@ -348,75 +377,3 @@ const AudioMain = ({
 }
 
 export default AudioMain;
-
-
-
-
-
- /*
-
- return (
-        <div>
-        
-        
-            {mainAccount ?
-             
-            registration ?   
-            <div>
-                <div className="songContainer">           
-                    <>
-                        
-                        <div className="buyAlbumButtonContainer">
-                            
-                            <BuyAlbumButton
-                            className="buttonContainer"
-                            mainAccount={mainAccount}
-                            balance={balance}
-                            purchased={purchased}
-                            setPurchased={setPurchased}
-                            OwnershipTokenContract={OwnershipTokenContract}
-                            UserInteractionContract={UserInteractionContract}
-                            GetBalance={GetBalance}
-                            needMoney={needMoney}
-                            setNeedMoney={setNeedMoney}
-                            />
-                            <div className="albumNotice">
-                                <h5> Unlimited free plays after album is purchased</h5>
-                            </div>
-                        </div>
-
-
-                        <div className="audioPlayerDiv">
-                            <AudioPlayer 
-                                tracks={tracks} 
-                                startingTrackIndex={trackNumber}  
-                                UserInteractionContract={UserInteractionContract}
-                                GetBalance={GetBalance}
-                                setBalance={setBalance}
-                                setCurrentTrack={setCurrentTrack}
-                                setNeedMoney={setNeedMoney}
-                                purchased={purchased}
-                                />   
-                        </div>
-
-
-                        <AlbumStats />
-    
-                    </>
-                </div>
-                <GetDepositBalance balance={balance} />        
-                <DepositWithdrawal UserInteractionContract={UserInteractionContract} />
-
-            </div>
-                  
-                 
-           
-            :
-            <PleaseRegister />
-            :
-            <PleaseConnect />
-            }
-        </div>
-    )
-
-    */

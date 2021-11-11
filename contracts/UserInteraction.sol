@@ -70,19 +70,13 @@ contract UserInteraction is RootContract {
             
             emit WithdrawalComplete(msg.sender, _amount, userPlayBalance[msg.sender], true);
         }
-
-        /*
-        function getEthPrice() public view returns(uint) {
-            return uint(PriceConsumerV3.getLatestPrice());
-        }
-        */
         
         //Play and Buy operations
 
         function Play(uint albumID, uint songID) public userRegistered returns(bool){
             uint price = userAlbumPurchase[msg.sender] ? 0 : 1308805763219;
             require(userPlayBalance[msg.sender] > 0, "deposit eth to listen");
-            //uint price = getEthPrice();        
+               
 
             if (totalSongCount[songID] > 0) {
                 albumStats[msg.sender][albumID].songStats[songID].playCount ++;
@@ -112,25 +106,38 @@ contract UserInteraction is RootContract {
         function getAggregatePlayCount(uint songID, uint songID2, uint songID3) public view returns(uint) {
             return totalSongCount[songID] + totalSongCount[songID2] + totalSongCount[songID3];
         }
+          
 
         function Buy(uint albumID) payable external userRegistered {
             //change this to chainlink oracle price
             uint price = 2621229059106300;
             require(msg.value == price, "price too low");
             
-            userPlayBalance[msg.sender] -= price;
-
-            (bool sent, ) = owner.call{value: price}("");
-            require(sent, "Failed to send Ether");
+            int adjustedPrice = userPlayBalance[msg.sender] > 0 ? int(userPlayBalance[msg.sender]) - int(price) : int(price);
             
             registeredUsers[msg.sender].userAlbumsOwned.push(albumID);
             userAlbumPurchase[msg.sender] = true;
             totalAlbumsPurchased += 1;
 
+            if (adjustedPrice > 0) {
+                userPlayBalance[msg.sender] = 0;
+                (bool sent, ) = payable(msg.sender).call{value: uint(adjustedPrice)}("");
+                require(sent, "Failed to send Ether");
+                
+            } else {
+                userPlayBalance[msg.sender] = 0;
+                (bool sent, ) = owner.call{value: uint(adjustedPrice)}("");
+                require(sent, "Failed to send Ether");
+                
+            }
+            
+
+
             emit AlbumPurchased(albumID, true);
 
             ///console.log("album successfully purchased");
         }
+     
 
         function getAlbumOwnership() public view returns(bool) {
             if (userAlbumPurchase[msg.sender] == true) {

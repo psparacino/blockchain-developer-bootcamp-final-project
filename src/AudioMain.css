@@ -23,31 +23,6 @@ body{
   align-items: center;
 }
 
-/*temp play button DELETE FROM FINAL!!!!!!!!*/  
-
-button.tempPlayButton {
-  display: inline-block;
-  padding:0.5em 1em;
-  border:0.16em solid #FFFFFF;
-  box-sizing: border-box;
-  width: 25%;
-  text-transform:uppercase;
-  font-family:'Roboto',sans-serif;
-  font-weight:800;
-  font-size: larger;
-  color:#FFFFFF;
-  text-align:center;
-  transition: all 0.15s;
-}
-button.tempPlayButton:hover{
-  color:#DDDDDD;
-  border-color:#DDDDDD;
-}
-button.tempPlayButton:active{
-  color:#BBBBBB;
-  border-color:#BBBBBB;
-}
-
 /* play button styles */
 
 .playButton {
@@ -71,7 +46,7 @@ button.tempPlayButton:active{
 
 button.buyButton {
     display: inline-block;
-    padding:0.5em 1em;
+    padding:1em 1em;
     border:0.16em solid #FFFFFF;
     box-sizing: border-box;
     width: 25%;
@@ -107,7 +82,7 @@ button.buyButton {
   .buyAlbumButtonContainer {
     display: block;
     text-align: center;
-    padding-top: 160px;
+    padding-top: 10px;
   }
 
   .albumNotice {
@@ -122,6 +97,12 @@ button.buyButton {
     justify-content: center;
     align-items: center;
     text-align: center;
+    padding-bottom: 140px;
+
+    -webkit-transform:scale(0.75);
+    -moz-transform:scale(0.75);
+    -ms-transform:scale(0.75);
+    transform:scale(0.75);
    
   }
 

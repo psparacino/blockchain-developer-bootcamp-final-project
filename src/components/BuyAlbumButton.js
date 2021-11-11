@@ -1,7 +1,5 @@
 import { useState, React } from 'react';
-import { ethers, utils } from 'ethers';
 import './BuyAlbumButton.css';
-import useGetBalance from '../hooks/useGetBalance';
 
 
 
@@ -13,7 +11,6 @@ const BuyAlbumButton = ({
     purchased, 
     setPurchased, 
     OwnershipTokenContract, 
-    needMoney, 
     setNeedMoney, 
     setIsLoading, 
     UserInteractionContract, 
@@ -31,25 +28,23 @@ const BuyAlbumButton = ({
         setNeedMoney(false)
     }
 
-    const BuyAlbum = () => {
+    const BuyAlbum = async() => {
         console.log(balance, 'PRICE BALANCE')
-        //console.log(typeof(utils.formatEther(parseInt("26212290591062299", 10))), "PRICEbalance")
-        if (balance > 0.026212290591062299) {
-            setIsLoading(true);
-            console.log(needMoney, "needMoney")
-            console.log(balance, "buyAlbumbalance")
-            UserInteractionContract.Buy(1 , {value : 2621229059106300})
-            .then(OwnershipTokenContract.safeMint(mainAccount))
-            .then(Ownership());
+
+            let tx = await UserInteractionContract.Buy(1 , {value : 2621229059106300})
+            .then(setIsLoading(true))
+            .catch(() => setIsLoading(false));
+            
+            if (tx) {
+            let receipt = await tx.wait();
+              if (receipt) {
+                OwnershipTokenContract.safeMint(mainAccount)
+                .then(setIsLoading(false))
+                .then(GetBalance())
+                .then(Ownership());
+              }
+            }
    
-
-        
-        GetBalance();
-
-    } else {
-        setNeedMoney(true);
-    }
-        
     }
 
     const Ownership = () => {
@@ -57,7 +52,8 @@ const BuyAlbumButton = ({
             console.log(uint, success, "purchase log");
                 if (success) {
                     UserInteractionContract.getAlbumOwnership()
-                    .then((result) => (setPurchased(result)));
+                    .then((result) => (setPurchased(result))).
+                    then(setIsLoading(false))
                     
                 }
             }
@@ -68,14 +64,16 @@ const BuyAlbumButton = ({
 
     return (
         <div>
-            <div>
+            <div style={{paddingTop : '120px'}}>
                 {purchased ?
                 <button className="standardButton" id="boughtButton">            
-                {"Album Purchased! Listen at will"}          
+                    {"Album Purchased! Listen at will"} 
+                    {Ownership()}         
                 </button>
                 :
                 <button className="standardButton" id="buyButton" onClick={BuyAlbum}>            
-                {"Buy Album!"}           
+                    {"Buy Album!"}
+                    {<p style={{fontSize : "20px"}}>.002621 Eth</p>}           
                 </button>}
                 {console.log(purchased, "ownership")}
             </div>

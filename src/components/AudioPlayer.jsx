@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import AudioControls from "./AudioControls.jsx";
 import Backdrop from "./BackDrop.jsx";
-import { ethers, utils } from "ethers";
+import { utils } from "ethers";
 import "./styles.css";
-import { useImperativeHandle } from "react/cjs/react.development";
 
 /*
  * Read the blog post here:
@@ -17,7 +16,6 @@ const AudioPlayer = ({
     setCurrentTrack, 
     setNeedMoney, 
     purchased,
-    setPurchased,
     setBalance,
     GetBalance}) => {
   // State
@@ -109,27 +107,34 @@ const AudioPlayer = ({
 
   async function initiatePlay() {
     const userBalance = await UserInteractionContract.getDepositBalance();
-    if (userBalance > 1308805763219) {
-      setNeedMoney(false)
-      setIsLoading(true)
-    //const tx = await UserInteractionContract.Play(1, trackIndex);
-    //UserInteractionContract.Play(1, trackIndex)
-      let tx = await UserInteractionContract.Play(1, trackIndex);
+      if (!purchased) {
+          if (userBalance > 1308805763219) {
+          setNeedMoney(false)
+          setIsLoading(true)
+          let tx = await UserInteractionContract.Play(1, trackIndex)
+          .catch(() => setIsLoading(false));
+          
+          if (tx) {
+          let receipt = await tx.wait();
+        //console.log(receipt.events?.filter((SongPlayed) => {return SongPlayed.event == "SongPlayed"}), "LOGGED");
+        //console.log(receipt, "receipt")
+            if (receipt) {
+              setHasPaid(true)
+              setIsLoading(false)
+              GetBalance();
+              UserInteractionContract.getDepositBalance()
+              .then((result) => (setBalance(utils.formatEther(result.toString()))))
+            }
+          }
 
-      let receipt = await tx.wait();
-    //console.log(receipt.events?.filter((SongPlayed) => {return SongPlayed.event == "SongPlayed"}), "LOGGED");
-    //console.log(receipt, "receipt")
-      if (receipt) {
+          } else {
+              setNeedMoney(true);
+            }
+        
+      } else {
         setHasPaid(true)
-        setIsLoading(false)
-        GetBalance();
-        UserInteractionContract.getDepositBalance()
-        .then((result) => (setBalance(utils.formatEther(result.toString()))))
-    }
-
-    } else {
-        setNeedMoney(true);
-    }
+      }
+      
   }
   
 

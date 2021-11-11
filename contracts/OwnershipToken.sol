@@ -27,4 +27,5 @@ contract OwnershipToken is ERC721, Ownable {
     function getTokenID(address tokenOwner) view public returns(uint) {
         return tokenOwners[tokenOwner];
     }
+    //test
 }
