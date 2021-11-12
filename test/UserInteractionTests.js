@@ -44,13 +44,13 @@ describe("UserInteraction Tests", function () {
       expect(balance, playCount).to.equal(1, 1);
     });
 
-    it("buying album deducts from player balance and album ownership", async function () {
+    it("buying album deducts from player balance and transfers album ownership token", async function () {
       await userContract.RegisterAddress({from : owner.address});
       await userContract.depositBalance({from : owner.address, value : 2621229059106301});
       await userContract.Buy(1,{from : owner.address, value : 2621229059106300});
       const balance = (await userContract.getDepositBalance({from : owner.address})).toNumber();
       const ownership = (await userContract.getAlbumOwnership());
-      expect(balance, ownership).to.equal(1, true);
+      expect(balance, ownership).to.equal(0, true);
     });
 
 
