@@ -101,13 +101,29 @@ const AudioMain = ({
         const [ethPriceToday, setEthPriceToday] = useState(0);
 
         UserInteractionContract.getEthPriceToday()
-        .then(result => console.log(result.toString()));
+        .then(result => console.log(setEthPriceToday(Number(result.toString()))));
         
-        const adjustedPrice = Math.floor(ethPriceToday, 1000)
-        console.log(adjustedPrice, 'ethPriceToday')
+        const adjustedDailyPrice = Math.floor(ethPriceToday / 100000000)
 
         return (
-            <p></p>
+            <div className='stats'>             
+                <table className='statsTable'> 
+                    <tbody>
+                        <th>
+                        Oracle Watch
+                        </th>
+                        <tr>
+                            Eth Price Today: ${adjustedDailyPrice}
+                        </tr>
+                        <tr>
+                            Cost of album today: ${((.002621 * adjustedDailyPrice).toString()).slice(0, -4)}
+                        </tr> 
+                        <tr>
+                            Cost of stream today: ${((.000001308805763219 * adjustedDailyPrice).toString()).slice(0, -13)}
+                        </tr>
+                    </tbody>
+                </table>       
+            </div>
         )
 
 
@@ -159,6 +175,9 @@ const AudioMain = ({
                         </tr>
                         <tr>             
                             <td>{songTitle(currentTrack)} User Play Count: {userStats}</td>  
+                        </tr>
+                        <tr>
+                            <GetDailyFiatPrices />
                         </tr>
                     </tbody>
                 </table>       
@@ -354,7 +373,6 @@ const AudioMain = ({
 
 
                         <AlbumStats />
-                        <GetDailyFiatPrices />
     
                     </>
                 </div>

@@ -97,7 +97,6 @@ button.buyButton {
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding-bottom: 140px;
 
     -webkit-transform:scale(0.75);
     -moz-transform:scale(0.75);
