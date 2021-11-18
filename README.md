@@ -18,7 +18,7 @@ The next implementation with registered artists will use a payment splitter cont
 
 * [Design Pattern Decisions](./design_pattern_decisions.md)
 * [Avoiding Common Attacks](./avoiding_common_attacks.md)
-* [Deployed Contract Addresses (Kovan)](./deployed_addresses.md)
+* [Deployed Contract Addresses (Kovan)](./deployed_addresses.txt)
 
 
 
