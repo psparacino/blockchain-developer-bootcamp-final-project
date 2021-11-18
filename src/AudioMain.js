@@ -106,10 +106,10 @@ const AudioMain = ({
         return (
             <div className='stats'>             
                 <table className='statsTable'> 
-                    <tbody>
                         <th>
                         Oracle Watch
                         </th>
+                    <tbody>
                         <tr>
                             Eth Price: ${adjustedDailyPrice}
                         </tr>
@@ -160,10 +160,8 @@ const AudioMain = ({
         return (
             <div className='stats'>             
                 <table className='statsTable'> 
+                        <th className="noBorder"> <h3>Stats</h3> </th>
                     <tbody>
-                        <tr>
-                            <th className="noBorder"> <h3>Stats</h3> </th>
-                        </tr>
                         <tr>
                             <td>Total Plays (all users/all songs): {totalStats}</td>
                         </tr> 
