@@ -6,4 +6,4 @@
 ### Re-entrancy
  * In addition to using OpenZeppelin's Reentracy Guard, any contract state is always updated before the transaction is called.
 ### Tx.origin authentication
- * The owner is set in the constructor from msg.sender, tx.origin is never used.
+ * The owner is set in the constructor from msg.sender; tx.origin is never used.

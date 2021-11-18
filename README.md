@@ -11,7 +11,7 @@ The next implementation with registered artists will use a payment splitter cont
 ## App and Contract Locations
 
 * [JustStreamIt](https://psparacino.github.io/blockchain-developer-bootcamp-final-project/)
-* [Kovan Main Contract (Root+UserInteraction) Address](https://kovan.etherscan.io/address/0x19bB16EeF743b0C7AE4B05076BC60236A1A0406d)
+* [Kovan Main Contract (Root+UserInteraction) Address](https://kovan.etherscan.io/address/0x83A71D391677f78BbED848b414635EdCE6e6E9b4)
 * Main Ethereum Address for NFT certification: 0xe4632110872c2213b6E0C5B7b6a88583124a15a0
 
 ## Contract Details
@@ -59,7 +59,7 @@ The next implementation with registered artists will use a payment splitter cont
 5. Copy UserInteraction and OwnershipToken addresses from console into src/hooks/useContractObjectRepo.js
 
 ### Populating .env file
-If you choose to use your own env variables, two are required:
-REACT_APP_PRIVATE_KEY : private key to wallet
-REACT_APP_INFURA_URL : url to your infura endpoint
+If you choose to use your own .env variables, two are required:
+1. REACT_APP_PRIVATE_KEY : private key to wallet
+2. REACT_APP_INFURA_URL : url to your infura endpoint
 

@@ -1,7 +1,7 @@
 All Contracts Deployed on Kovan
 
-UserInteraction (+RootContract inherited): 0x19bB16EeF743b0C7AE4B05076BC60236A1A0406d
+UserInteraction (+RootContract inherited): 0x83A71D391677f78BbED848b414635EdCE6e6E9b4
 
-OwnershipToken: 0xFbd6a8cbe3717e477082cc112F14F342a24d342c
+OwnershipToken: 0xE7b3ab901E2384aE086a8e7c14ab68E3Be7C9112
 
 ChainlinkOracle: 0x80d1188714a4d2B4BEfeC0571ed583d4b03C4b1B
