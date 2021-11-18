@@ -40,21 +40,26 @@ The next implementation with registered artists will use a payment splitter cont
 
 ## Dependencies, Local Project Access, and Testing
 
-Local SetUp:
+### Local Set-up:
 1. Install dependencies: `npm i`
 2. Start front end: `npm run start`.
 3. Localhost at: `http://localhost:3000/`
 4. Connect to Kovan in Metamask
    
-Tests:
+### Tests:
 1. Confirm Hardhat is installed.
 2. If needed: [Install Hardhat](https://hardhat.org/getting-started/#installation)
 3. Run the contract tests: `npx hardhat test`
 
-Hardhat Local Development:
+### Hardhat Local Development:
 1. [Install Hardhat](https://hardhat.org/getting-started/#installation)--> `npm install --save-dev hardhat.`
 2. `npm install` for everything else.
 3. Start a local Hardhat node: `npx hardhat node`.
 4. Deploy contracts: `npx hardhat run --network localhost scripts/deploy.js`
 5. Copy UserInteraction and OwnershipToken addresses from console into src/hooks/useContractObjectRepo.js
+
+* Populating .env file
+If you choose to use your own env variables, two are required:
+REACT_APP_PRIVATE_KEY : private key to wallet
+REACT_APP_INFURA_URL : url to your infura endpoint
 
