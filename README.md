@@ -1,25 +1,27 @@
 # JustStreamIt - A Decentralized Audio Player
 
-JustStreamIt requires kovan eth to interact.  Get some here--> [https://faucets.chain.link/]
+JustStreamIt requires kovan eth to interact.  Get kETH here--> [https://faucets.chain.link/]
 
-JustStreamIt allows users to stream music on an on-demand model that charges micropayments per stream instead subscriptions.  All transactions are also public which discourages the prefential payout models of central streaming services.  
+JustStreamIt allows users to stream music in an on-demand model that charges micropayments per stream instead of monthly subscriptions.  All transactions are public which discourages the prefential payout models of central streaming services.  
 
 Users can also choose to purchase which will then allow them to stream any of the songs without charge.  On purchase they will receive an ERC721 token verifying their purchase of the album.
 
 The next implementation with registered artists will use a payment splitter contract combined with a micropayment channel to send funds directly to artists with less transactions/gas fees.
 
-# Contract Details
+## App and Contract Locations
+
+* [JustStreamIt](https://psparacino.github.io/blockchain-developer-bootcamp-final-project/)
+* [Kovan Main Contract (Root+UserInteraction) Address](https://kovan.etherscan.io/address/0x19bB16EeF743b0C7AE4B05076BC60236A1A0406d)
+* Main Ethereum Address for NFT certification: 0xe4632110872c2213b6E0C5B7b6a88583124a15a0
+
+## Contract Details
 
 * [Design Pattern Decisions](./design_pattern_decisions.md)
 * [Avoiding Common Attacks](./avoiding_common_attacks.md)
 * [Deployed Contract Addresses (Kovan)](./deployed_addresses.md)
 
 
-## App and Contract Locations
 
-* [Github Pages- JustStreamIt](https://psparacino.github.io/blockchain-developer-bootcamp-final-project/)
-* [Kovan Main Contract (Root+UserInteraction) Address](https://kovan.etherscan.io/address/0x19bB16EeF743b0C7AE4B05076BC60236A1A0406d)
-* Main Ethereum Address for NFT certification: 0xe4632110872c2213b6E0C5B7b6a88583124a15a0
 
 ## File structure
 
@@ -39,14 +41,20 @@ The next implementation with registered artists will use a payment splitter cont
 ## Dependencies, Local Project Access, and Testing
 
 Local SetUp:
+1. Install dependencies: `npm i`
+2. Start front end: `npm run start`.
+3. Localhost at: `http://localhost:3000/`
+4. Connect to Kovan in Metamask
+   
+Tests:
+1. Confirm Hardhat is installed.
+2. If needed: [Install Hardhat](https://hardhat.org/getting-started/#installation)
+3. Run the contract tests: `npx hardhat test`
+
+Hardhat Local Development:
 1. [Install Hardhat](https://hardhat.org/getting-started/#installation)--> `npm install --save-dev hardhat.`
 2. `npm install` for everything else.
 3. Start a local Hardhat node: `npx hardhat node`.
-4. Start front end: `npm run start`.
-5. npx hardhat run --network localhost scripts/deploy.js
-6. Localhost at: `http://localhost:3000/`
-
-Tests:
-1. Running the contract tests: `npx hardhat test`
-
+4. Deploy contracts: `npx hardhat run --network localhost scripts/deploy.js`
+5. Copy UserInteraction and OwnershipToken addresses from console into src/hooks/useContractObjectRepo.js
 

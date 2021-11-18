@@ -11,9 +11,9 @@ Please answer the following questions. Does your project:
 --Use at least two design patterns from the "Smart Contracts" section
 --Protect against two attack vectors from the "Smart Contracts" section with its the SWC number
 --Inherits from at least one library or interface
---Can be easily compiled, migrated and tested? YES/NO
+--Can be easily compiled, migrated and tested? YES
 
-4. Contain a Markdown file named design_pattern_decisions.md and avoiding_common_attacks.md? YES/NO
+4. Contain a Markdown file named design_pattern_decisions.md and avoiding_common_attacks.md? YES
 
 5. Have at least five smart contract unit tests that pass? YES
 
