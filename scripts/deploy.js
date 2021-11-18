@@ -4,11 +4,6 @@ async function main() {
     const userinteraction = await UserInteraction.deploy();
   
     console.log("UserInteraction deployed to:", userinteraction.address);
-
-    const OwnershipToken = await ethers.getContractFactory("OwnershipToken");
-    const ownershiptoken = await OwnershipToken.deploy();
-  
-    console.log("OwnershipToken deployed to:", ownershiptoken.address);
   }
   
   main()

@@ -343,8 +343,9 @@ const AudioMain = ({
                                 needMoney={needMoney}
                                 setNeedMoney={setNeedMoney}
                             />
-                            <div className="albumNotice">                            
+                            <div className="albumNotice" style={{fontSize : '15px'}}>                            
                                 <p>*Unlimited free plays after album is purchased</p>
+                                <p>*You will need to confirm two (2) transactions when buying (BUY and SAFEMINT)</p>
                                 <p>*Player Bank refunded after album purchase</p>
                             </div>
                             </>

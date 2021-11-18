@@ -748,44 +748,6 @@
         "IERC165"
       ]
     },
-    "/Users/peter/Documents/Development/Consensys/blockchain-developer-bootcamp-final-project/contracts/OwnershipToken.sol": {
-      "lastModificationDate": 1637170215736,
-      "contentHash": "06a79f9014539b338140fbe28ffe6876",
-      "sourceName": "contracts/OwnershipToken.sol",
-      "solcConfig": {
-        "version": "0.8.10",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/token/ERC721/ERC721.sol",
-        "@openzeppelin/contracts/access/Ownable.sol",
-        "@openzeppelin/contracts/utils/Counters.sol"
-      ],
-      "versionPragmas": [
-        "0.8.10"
-      ],
-      "artifacts": [
-        "OwnershipToken"
-      ]
-    },
     "/Users/peter/Documents/Development/Consensys/blockchain-developer-bootcamp-final-project/contracts/ChainlinkOracle.sol": {
       "lastModificationDate": 1637170248123,
       "contentHash": "18a05849cd4ad78d471cc0e8bc0ea0d8",
@@ -892,6 +854,117 @@
       ],
       "artifacts": [
         "AggregatorV3Interface"
+      ]
+    },
+    "/Users/peter/Documents/Development/Consensys/blockchain-developer-bootcamp-final-project/node_modules/@openzeppelin/contracts/access/AccessControl.sol": {
+      "lastModificationDate": 1634148453595,
+      "contentHash": "74fb01cf14d85fd1e7f25b22c6472e6e",
+      "sourceName": "@openzeppelin/contracts/access/AccessControl.sol",
+      "solcConfig": {
+        "version": "0.8.10",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IAccessControl.sol",
+        "../utils/Context.sol",
+        "../utils/Strings.sol",
+        "../utils/introspection/ERC165.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "AccessControl"
+      ]
+    },
+    "/Users/peter/Documents/Development/Consensys/blockchain-developer-bootcamp-final-project/node_modules/@openzeppelin/contracts/access/IAccessControl.sol": {
+      "lastModificationDate": 1634148453630,
+      "contentHash": "e2ed3260ca37d27f68b0ab41f692b407",
+      "sourceName": "@openzeppelin/contracts/access/IAccessControl.sol",
+      "solcConfig": {
+        "version": "0.8.10",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IAccessControl"
+      ]
+    },
+    "/Users/peter/Documents/Development/Consensys/blockchain-developer-bootcamp-final-project/contracts/OwnershipToken.sol": {
+      "lastModificationDate": 1637255511944,
+      "contentHash": "a37b1162a390e8205e34089ebc027c54",
+      "sourceName": "contracts/OwnershipToken.sol",
+      "solcConfig": {
+        "version": "0.8.10",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC721/ERC721.sol",
+        "@openzeppelin/contracts/access/AccessControl.sol",
+        "@openzeppelin/contracts/utils/Counters.sol"
+      ],
+      "versionPragmas": [
+        "0.8.10"
+      ],
+      "artifacts": [
+        "OwnershipToken"
       ]
     }
   }

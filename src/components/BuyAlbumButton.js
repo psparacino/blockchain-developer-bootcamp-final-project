@@ -43,7 +43,7 @@ const BuyAlbumButton = ({
                 .then(GetBalance())
                 .then(Ownership());
               }
-            }
+            }    
    
     }
 
