@@ -38,7 +38,7 @@ The next implementation with registered artists will use a payment splitter cont
 └── test                      X Contract tests using Chai and Hardhat
 ```
 
-## Dependencies, Local Project Access, and Testing
+## Dependencies, Testing, Local Hardhat Development, .env Population
 
 ### Local Set-up:
 1. Install dependencies: `npm i`
@@ -58,7 +58,7 @@ The next implementation with registered artists will use a payment splitter cont
 4. Deploy contracts: `npx hardhat run --network localhost scripts/deploy.js`
 5. Copy UserInteraction and OwnershipToken addresses from console into src/hooks/useContractObjectRepo.js
 
-* Populating .env file
+### Populating .env file
 If you choose to use your own env variables, two are required:
 REACT_APP_PRIVATE_KEY : private key to wallet
 REACT_APP_INFURA_URL : url to your infura endpoint
