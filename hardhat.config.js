@@ -31,6 +31,6 @@ module.exports = {
       accounts:[`${process.env.REACT_APP_PRIVATE_KEY}`],
     }
   }, 
-  solidity: '0.8.0'
+  solidity: '0.8.10'
 };
       

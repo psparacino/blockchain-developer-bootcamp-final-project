@@ -27,6 +27,7 @@ function App() {
       </header>
       <div className="MetaMaskConnect">
         <MetaMaskButton style="color: black" mainAccount={mainAccount} setMainAccount={setMainAccount}/>
+        <a style={{float: 'right', paddingTop: '5px' , fontSize : '15px'}} href={"https://faucets.chain.link/"}  target={"_blank"}>FILL UP ON KOVAN ETH IF YOU NEED 'EM</a>
       </div>
       
         {mainAccount ?

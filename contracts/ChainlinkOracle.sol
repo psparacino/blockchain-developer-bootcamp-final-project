@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity 0.8.10;
 
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
+
+/// @notice Standard Chainklink contract to access the Eth/USD oracle
 contract PriceConsumerV3 {
  
     AggregatorV3Interface internal priceFeed;

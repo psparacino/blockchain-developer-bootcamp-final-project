@@ -6,7 +6,6 @@ import tracks from "./tracks";
 
 //styles
 import './AudioMain.css';
-
 import './DepositWithdrawal.css';
 
 
@@ -18,9 +17,6 @@ import PleaseRegister from './components/PleaseRegister.jsx';
 
 import PleaseConnect from './components/PleaseConnect.jsx'; 
 
-//import DepositWithdrawal from './AudioMainComponents/DepositWithdrawal.js';
-
-//Contracts
 
 
 const AudioMain = ({
@@ -44,7 +40,8 @@ const AudioMain = ({
 
     
     //console.log(UserInteractionContract, "Contract Object");
-    
+
+    //ensures user is registered
 
     useEffect(() =>{
         if (mainAccount) {        
@@ -96,6 +93,7 @@ const AudioMain = ({
     }
 
 
+    //retrieves current eith price and calculates current album and stream prices 
 
     const GetDailyFiatPrices = () => {
         const [ethPriceToday, setEthPriceToday] = useState(0);
@@ -113,23 +111,21 @@ const AudioMain = ({
                         Oracle Watch
                         </th>
                         <tr>
-                            Eth Price Today: ${adjustedDailyPrice}
+                            Eth Price: ${adjustedDailyPrice}
                         </tr>
                         <tr>
-                            Cost of album today: ${((.002621 * adjustedDailyPrice).toString()).slice(0, -4)}
+                            Cost of album: ${((.002621 * adjustedDailyPrice).toString()).slice(0, -4)}
                         </tr> 
                         <tr>
-                            Cost of stream today: ${((.000001308805763219 * adjustedDailyPrice).toString()).slice(0, -13)}
+                            Cost of stream: ${((.000001308805763219 * adjustedDailyPrice).toString()).slice(0, -13)}
                         </tr>
                     </tbody>
                 </table>       
             </div>
-        )
-
-
+                )
         }
 
-      
+    //retrieve all total and user play stats
 
     const AlbumStats = () => {
         
@@ -156,6 +152,7 @@ const AudioMain = ({
         UserInteractionContract.getAggregatePlayCount(0, 1, 2)
             .then((result) => setTotalStats(result.toString()))
             .catch((error)=> console.log(error));
+        
         UserInteractionContract.getUserPlayCount(1, currentTrack)
             .then((result) => setUserStats(result.toString()))
             .catch((error)=> console.log(error));
@@ -186,7 +183,7 @@ const AudioMain = ({
         )
     }
 
-  
+    //handles deposit and withdrawal functionality
     const DepositWithdrawal = () => {
 
         const [inputAmount, setInputAmount] = useState(0);
@@ -294,6 +291,7 @@ const AudioMain = ({
         )
     }
 
+    //gets current balance of player bank
     const GetDepositBalance = () => {
         useEffect(() =>{
             if (UserInteractionContract) {        
@@ -323,11 +321,8 @@ const AudioMain = ({
     
 
     return (
-        <div>
-        
-        
-            {mainAccount ?
-             
+        <div>  
+            {mainAccount ?    
             registration ?   
             <div>
                 <div className="songContainer">           

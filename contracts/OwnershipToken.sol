@@ -1,9 +1,13 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0 ;
+pragma solidity 0.8.10 ;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+
+
+/// @notice standard OZ Erc721 token.  Not ERC20, as users could trade around their albums in the secondary market instead of buying directly.
+/// @dev in a second implentation, unrestricted playing of the album would be tokengated by ownership of this proof-of-purchase token
 
 contract OwnershipToken is ERC721, Ownable {
     using Counters for Counters.Counter;

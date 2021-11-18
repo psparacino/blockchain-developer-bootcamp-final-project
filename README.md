@@ -1,8 +1,52 @@
-# Decentralized Audio Player
+# JustStreamIt - A Decentralized Audio Player
 
-on Kovan.  Need kEth to run.
+JustStreamIt requires kovan eth to interact.  Get some here--> [https://faucets.chain.link/]
 
-A decentralized audio player that charges a micropayment per stream.  Buying the album enables unlimited plays.
+JustStreamIt allows users to stream music on an on-demand model that charges micropayments per stream instead subscriptions.  All transactions are also public which discourages the prefential payout models of central streaming services.  
 
-Further features could include a Contract for every artist and micropayments/album purchases automatically split between artist and platform on txn.  Also some sort of bundling/micropayment channel would make more sense to actually use this to cut down on the number of txns.
+Users can also choose to purchase which will then allow them to stream any of the songs without charge.  On purchase they will receive an ERC721 token verifying their purchase of the album.
+
+The next implementation with registered artists will use a payment splitter contract combined with a micropayment channel to send funds directly to artists with less transactions/gas fees.
+
+# Contract Details
+
+* [Design Pattern Decisions](./design_pattern_decisions.md)
+* [Avoiding Common Attacks](./avoiding_common_attacks.md)
+* [Deployed Contract Addresses (Kovan)](./deployed_addresses.md)
+
+
+## App and Contract Locations
+
+* [Github Pages- JustStreamIt](https://psparacino.github.io/blockchain-developer-bootcamp-final-project/)
+* [Kovan Main Contract (Root+UserInteraction) Address](https://kovan.etherscan.io/address/0x19bB16EeF743b0C7AE4B05076BC60236A1A0406d)
+* Main Ethereum Address for NFT certification: 0xe4632110872c2213b6E0C5B7b6a88583124a15a0
+
+## File structure
+
 ```
+├── contracts                 X Contracts Folder
+├── public                    X Public App Info
+├── scripts                   X Scripts to deploy contracts. Deploy-2 is only for the Chainlink oracle contract. 
+├── src                       X Main folder containing frontend and artifacts (required to have artifacts in src for create-react-app)
+│   ├── artifacts             X Contract artifacts
+|   ├── assets                X Audio and visual assets for tracks
+│   ├── components            X Various React components for frontend build
+│   └── hooks                 X Custom hooks to identify Ethereum, confirm registration etc.   
+├── node_modules              X NodeJS libraries
+└── test                      X Contract tests using Chai and Hardhat
+```
+
+## Dependencies, Local Project Access, and Testing
+
+Local SetUp:
+1. [Install Hardhat](https://hardhat.org/getting-started/#installation)--> `npm install --save-dev hardhat.`
+2. `npm install` for everything else.
+3. Start a local Hardhat node: `npx hardhat node`.
+4. Start front end: `npm run start`.
+5. npx hardhat run --network localhost scripts/deploy.js
+6. Localhost at: `http://localhost:3000/`
+
+Tests:
+1. Running the contract tests: `npx hardhat test`
+
+

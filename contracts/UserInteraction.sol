@@ -1,31 +1,28 @@
 //SPDX-License-Identifier: Unlicense
-pragma solidity ^0.8.0;
+pragma solidity 0.8.10;
 
 import "hardhat/console.sol";
-
 import './RootContract.sol';
 import './ChainlinkOracle.sol';
+
+/// @notice this contact extends Root, makes use of Reentrancy Guard to protect the withdrawal, and implements user functions
 
 
 contract UserInteraction is RootContract {
 
-        //total play count of song irrespective of user
-
+        //Mappings 
+        
         mapping(uint => uint) public totalSongCount;
         
         mapping(address => bool) public userAlbumPurchase;
 
         mapping(address => uint) public userPlayBalance;
 
+        // State Var and Contract Instance
+
         uint totalAlbumsPurchased = 0;
 
         PriceConsumerV3 public ChainLinkContract;
-
-        
-        
-        //keep track of deployed payment channels
-
-        //mapping(address => address) public userPaymentChannel;
 
         //Events
 
@@ -41,6 +38,7 @@ contract UserInteraction is RootContract {
             ChainLinkContract = PriceConsumerV3(0x80d1188714a4d2B4BEfeC0571ed583d4b03C4b1B);
         }  
 
+        /// @notice retrieves current ETH price from the Chainklink oracle to calculate stream/album prices in fiat
         function getEthPriceToday() public view returns(int256) {
             return ChainLinkContract.getLatestPrice();
         }
@@ -48,17 +46,21 @@ contract UserInteraction is RootContract {
 
         //User Deposit
 
+        /// @notice registers users' play bank deposit
         function depositBalance() public payable userRegistered {
         
             userPlayBalance[msg.sender] += msg.value;
 
             emit AmountDeposited(msg.sender, msg.value, true);
         }
-        
+
+        /// @notice retrieves user play balance
         function getDepositBalance() public view returns(uint) {
             return userPlayBalance[msg.sender];
         }
 
+        /// @notice lets users withdraw excess eth from their play balance if they desposited too much
+        /// @param _amount desired withdrawal amount
         function withdrawBalance(uint256 _amount) external userRegistered {
             require(_amount <= userPlayBalance[msg.sender], "not enough value");
             
@@ -73,6 +75,9 @@ contract UserInteraction is RootContract {
         
         //Play and Buy operations
 
+        /// @notice stream payment function. If the user owns the stream then the stream is free. 
+        /// @dev this function still needs to be called to upstate playcount state.  Could be streamlined into batches so that every play isn't a txn.
+        /// @param albumID placeholder album ID for the moment
         function Play(uint albumID, uint songID) public userRegistered returns(bool){
             uint price = userAlbumPurchase[msg.sender] ? 0 : 1308805763219;
             require(userPlayBalance[msg.sender] > 0, "deposit eth to listen");
@@ -89,25 +94,31 @@ contract UserInteraction is RootContract {
             userPlayBalance[msg.sender] -= price;
 
             emit SongPlayed(songID, true);
-            return true;
-
-          
+            return true;     
         }
-
+        /// @notice get total all user count of a song
         function getPlayCount(uint songID) public view returns(uint) {
             return totalSongCount[songID];
+        /// @return returns the total playcount of a song
         }
 
+        /// @notice get user specific play count of a song
         function getUserPlayCount(uint albumID, uint songID) public view returns(uint) {
             return albumStats[msg.sender][albumID].songStats[songID].playCount;
+
+        /// @return returns user playcount of a song
         }
 
-
+        /// @notice gets total plays of all songs on the platform
+        /// @dev this function needs to be reworked if there are dynamic artist uploads
         function getAggregatePlayCount(uint songID, uint songID2, uint songID3) public view returns(uint) {
             return totalSongCount[songID] + totalSongCount[songID2] + totalSongCount[songID3];
+        
+        /// @return returns total song plays on platform
         }
           
-
+        /// @notice Purchases album and refunds any excess in the playbank
+        /// @dev requires full value for msg.value and then adjust price within function, rather than adjusting price on frontend to reduce tampering risk
         function Buy(uint albumID) payable external userRegistered {
             //change this to chainlink oracle price
             uint price = 2621229059106300;
@@ -131,14 +142,10 @@ contract UserInteraction is RootContract {
                 
             }
             
-
-
             emit AlbumPurchased(albumID, true);
-
-            ///console.log("album successfully purchased");
         }
      
-
+        /// @notice check if user owns album
         function getAlbumOwnership() public view returns(bool) {
             if (userAlbumPurchase[msg.sender] == true) {
                 return true;
@@ -147,33 +154,20 @@ contract UserInteraction is RootContract {
             }
         }
 
+        /// @notice gets number of all albums purchased on the platform
         function getTotalAlbumsPurchased() public view returns(uint) {
             return totalAlbumsPurchased;
         }
 
+        /// @notice restricted to owner.  withdraws full balance from contract
+        /// @dev this is currently safety net backdoor. this should be worked in a second version.
         function ownerRedirectFullBalance(address destination) public onlyOwner {
          
             (bool sent, ) = payable(destination).call{value: address(this).balance}("");
             require(sent, "Failed to send Ether");
         }
-
-        //handling individual Payment Channels
-        /*
-        function getUserChannelAddress() public view returns(address) {
-            return userPaymentChannel[msg.sender];
-        }
-
-        function newPaymentChannel(address payable _vault, uint _duration) public returns(address userChannel) {
-
-            userChannel = address(new PaymentChannelFactory(_vault, _duration));
-            userPaymentChannel[msg.sender] = userChannel;
-            return userChannel;      
-        }
-        */
     }
 
 
 
 
-
-//should have songID generator. albumID + Song ID
