@@ -11,6 +11,7 @@ The next implementation with registered artists will use a payment splitter cont
 ## App and Contract Locations
 
 * [JustStreamIt](https://psparacino.github.io/blockchain-developer-bootcamp-final-project/)
+* [Screencast Walkthough](https://www.youtube.com/watch?v=Tfu7MnyHeGE&feature=youtu.be)
 * [Kovan Main Contract (Root+UserInteraction) Address](https://kovan.etherscan.io/address/0x83A71D391677f78BbED848b414635EdCE6e6E9b4)
 * Main Ethereum Address for NFT certification: 0xe4632110872c2213b6E0C5B7b6a88583124a15a0
 
