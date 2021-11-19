@@ -14,8 +14,9 @@ import OwnershipToken from '../artifacts/contracts/OwnershipToken.sol/OwnershipT
 
 
 const useContractObjectRepo = () => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner(0);
+    
+    
+    
 
     //const [RootContract, setRootContract] = useState('');
     
@@ -30,14 +31,17 @@ const useContractObjectRepo = () => {
     //const [provider, setProvider] = useState('');
 
     useEffect(()=> {
-        if (provider) {
+        if (window.ethereum) {
             contractObjects();
           } else {
-            alert("please connect to Metamask")
+            alert("please install Metamask")
           }
         
         
           async function contractObjects() {
+
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner(0);
 
                      
             //User Interaction Contract + Root Contract
