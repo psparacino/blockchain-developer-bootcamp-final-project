@@ -52,7 +52,7 @@ const useContractObjectRepo = () => {
 
             // kovan: 0xE7b3ab901E2384aE086a8e7c14ab68E3Be7C9112
 
-            const ownerShipTokenContractAddress = "0xE7b3ab901E2384aE086a8e7c14ab68E3Be7C9112";
+            const ownerShipTokenContractAddress = "0xfea39ED3c5FeA0248ec1E7453726a0Cf0c4E6E06";
             const OwnerShipTokenContractObject = await new ethers.Contract(ownerShipTokenContractAddress, OwnershipToken.abi, signer);
             setOwnershipTokenContract(OwnerShipTokenContractObject);
 

@@ -59,7 +59,6 @@ The next implementation with registered artists will use a payment splitter cont
 5. Copy UserInteraction and OwnershipToken addresses from console into src/hooks/useContractObjectRepo.js
 
 ### Populating .env file
-If you choose to use your own .env variables, two are required:
 1. REACT_APP_PRIVATE_KEY : private key to wallet
 2. REACT_APP_INFURA_URL : url to your infura endpoint
 

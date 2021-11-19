@@ -113,7 +113,7 @@ contract RootContract is ReentrancyGuard {
 
 
     receive() external payable {}
-    fallback () external payable {}
+    fallback () external {}
 
 
 }

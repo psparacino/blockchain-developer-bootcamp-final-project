@@ -120,6 +120,7 @@ contract UserInteraction is RootContract {
         /// @notice Purchases album and refunds any excess in the playbank
         /// @dev requires full value for msg.value and then adjust price within function, rather than adjusting price on frontend to reduce tampering risk
         function Buy(uint albumID) payable external userRegistered {
+           
             uint price = 2621229059106300;
             require(msg.value == price, "price too low");
             

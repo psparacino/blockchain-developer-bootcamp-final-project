@@ -176,8 +176,8 @@
       ]
     },
     "/Users/peter/Documents/Development/Consensys/blockchain-developer-bootcamp-final-project/contracts/UserInteraction.sol": {
-      "lastModificationDate": 1637248513125,
-      "contentHash": "2ac37b3551368615f1079e41eeb14758",
+      "lastModificationDate": 1637291927859,
+      "contentHash": "2d335291791ea0f9c7d6fd97201f29d6",
       "sourceName": "contracts/UserInteraction.sol",
       "solcConfig": {
         "version": "0.8.10",
@@ -214,8 +214,8 @@
       ]
     },
     "/Users/peter/Documents/Development/Consensys/blockchain-developer-bootcamp-final-project/contracts/RootContract.sol": {
-      "lastModificationDate": 1637185800059,
-      "contentHash": "ddbaad57a69516884bd49aba98d0d318",
+      "lastModificationDate": 1637286924641,
+      "contentHash": "9f5993106af793797e9069379263c46d",
       "sourceName": "contracts/RootContract.sol",
       "solcConfig": {
         "version": "0.8.10",
@@ -930,8 +930,8 @@
       ]
     },
     "/Users/peter/Documents/Development/Consensys/blockchain-developer-bootcamp-final-project/contracts/OwnershipToken.sol": {
-      "lastModificationDate": 1637255511944,
-      "contentHash": "a37b1162a390e8205e34089ebc027c54",
+      "lastModificationDate": 1637291791431,
+      "contentHash": "451bd3b5f75f5c5804fc5d92db346fdd",
       "sourceName": "contracts/OwnershipToken.sol",
       "solcConfig": {
         "version": "0.8.10",
