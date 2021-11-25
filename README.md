@@ -67,5 +67,5 @@ After cloning the repo:
 
 ### Populating .env file
 1. REACT_APP_PRIVATE_KEY : private key to wallet
-2. REACT_APP_INFURA_URL : private key to wallet
+2. REACT_APP_INFURA_URL : Infura URL endpoint
 
