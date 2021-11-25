@@ -52,21 +52,20 @@ The buy functionality is located on the lefthand side of the screen.  After the 
 
 ## Dependencies, Testing, .env Population
 
+### Running Tests:
+After cloning the repo: 
+1. Install dependencies `npm install`.
+2. Confirm Hardhat is installed. In terminal, enter `npx hardhat`. If commands appear then hardhat is installed.
+3. If needed: [Install Hardhat](https://hardhat.org/getting-started/#installation)
+4. Run the contract tests: `npx hardhat test`
+
 ### Local Set-up:
 1. Install dependencies: `npm install`
 2. To start front end: `npm run start`.
 3. Localhost at: `http://localhost:3000/`
 4. Connect to Kovan in Metamask.
-   
-### Testing:
-After cloning the repo: 
-1. Install dependencies `npm install`.
-2. Confirm Hardhat is installed. In terminal, enter `npx hardhat`. If commands appear then hardhat is installed.
-3. If needed: [Install Hardhat](https://hardhat.org/getting-started/#installation)
-4. 
-5. Run the contract tests: `npx hardhat test`
-
 
 ### Populating .env file
 1. REACT_APP_PRIVATE_KEY : private key to wallet
+2. REACT_APP_INFURA_URL : private key to wallet
 
