@@ -50,27 +50,23 @@ The buy functionality is located on the lefthand side of the screen.  After the 
 └── test                      X Contract tests using Chai and Hardhat
 ```
 
-## Dependencies, Testing, Local Hardhat Development, .env Population
+## Dependencies, Testing, .env Population
 
 ### Local Set-up:
-1. Install dependencies: `npm i`
-2. Start front end: `npm run start`.
+1. Install dependencies: `npm install`
+2. To start front end: `npm run start`.
 3. Localhost at: `http://localhost:3000/`
-4. Connect to Kovan in Metamask
+4. Connect to Kovan in Metamask.
    
-### Tests:
-1. Confirm Hardhat is installed.
-2. If needed: [Install Hardhat](https://hardhat.org/getting-started/#installation)
-3. Run the contract tests: `npx hardhat test`
+### Testing:
+After cloning the repo: 
+1. Install dependencies `npm install`.
+2. Confirm Hardhat is installed. In terminal, enter `npx hardhat`. If commands appear then hardhat is installed.
+3. If needed: [Install Hardhat](https://hardhat.org/getting-started/#installation)
+4. 
+5. Run the contract tests: `npx hardhat test`
 
-### Hardhat Local Development:
-1. [Install Hardhat](https://hardhat.org/getting-started/#installation)--> `npm install --save-dev hardhat.`
-2. `npm install` for everything else.
-3. Start a local Hardhat node: `npx hardhat node`.
-4. Deploy contracts: `npx hardhat run --network localhost scripts/deploy.js`
-5. Copy UserInteraction and OwnershipToken addresses from console into src/hooks/useContractObjectRepo.js
 
 ### Populating .env file
 1. REACT_APP_PRIVATE_KEY : private key to wallet
-2. REACT_APP_INFURA_URL : url to your infura endpoint
 
