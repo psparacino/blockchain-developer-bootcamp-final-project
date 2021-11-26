@@ -16,11 +16,11 @@ There are two main areas of the platform: streaming functionality and buy functi
 
 The audio player contains an 'album' of three songs (::cough:: all taken from my own albums).  To listen to these songs the user must stream a micropayment of approximately .005USD.  To do this, they must first deposit ETH into the play bank below the audio player. Streams will deduct the micropayment from the bank balance. If they have deposited too much, they can withdraw using the 'withdraw button'.  Updated song statistics and the current streaming and album price (based on the current eth price sourced using a Chainlink oracle) is located on the righthand side of the screen. 
 
-The buy functionality is located on the lefthand side of the screen.  After the album is purchased, the user will be able to stream in perpetuity without paying micropayments for every stream. Their entire player bank balance will also be automatically refunded. As a proof of purchase the user will receive an ERC721 token.
+The buy functionality is located on the lefthand side of the screen.  After the album (which currently consists of all three songs on the player) is purchased, the user will be able to stream in perpetuity without paying micropayments for every stream. Their entire player bank balance will also be automatically refunded. As a proof of purchase the user will receive an ERC721 token.
 
 ## App and Contract Locations
 
-* [JustStreamIt](https://psparacino.github.io/blockchain-developer-bootcamp-final-project/)
+* [JustStreamIt- Deployed Frontend](https://psparacino.github.io/blockchain-developer-bootcamp-final-project/)
 * [Screencast Walkthough](https://www.youtube.com/watch?v=Tfu7MnyHeGE&feature=youtu.be)
 * [Kovan Main Contract (Root+UserInteraction) Address](https://kovan.etherscan.io/address/0x83A71D391677f78BbED848b414635EdCE6e6E9b4)
 * [Kovan OwnershipToken Contract Address](https://kovan.etherscan.io/address/0xfea39ED3c5FeA0248ec1E7453726a0Cf0c4E6E06)
