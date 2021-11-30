@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/blockchain-developer-bootcamp-final-project/static/css/main.72ccc49f.chunk.css",
-    "main.js": "/blockchain-developer-bootcamp-final-project/static/js/main.1341c0f1.chunk.js",
-    "main.js.map": "/blockchain-developer-bootcamp-final-project/static/js/main.1341c0f1.chunk.js.map",
+    "main.js": "/blockchain-developer-bootcamp-final-project/static/js/main.aeaea102.chunk.js",
+    "main.js.map": "/blockchain-developer-bootcamp-final-project/static/js/main.aeaea102.chunk.js.map",
     "runtime-main.js": "/blockchain-developer-bootcamp-final-project/static/js/runtime-main.74585fb6.js",
     "runtime-main.js.map": "/blockchain-developer-bootcamp-final-project/static/js/runtime-main.74585fb6.js.map",
-    "static/js/2.5bbc86f3.chunk.js": "/blockchain-developer-bootcamp-final-project/static/js/2.5bbc86f3.chunk.js",
-    "static/js/2.5bbc86f3.chunk.js.map": "/blockchain-developer-bootcamp-final-project/static/js/2.5bbc86f3.chunk.js.map",
+    "static/js/2.84540780.chunk.js": "/blockchain-developer-bootcamp-final-project/static/js/2.84540780.chunk.js",
+    "static/js/2.84540780.chunk.js.map": "/blockchain-developer-bootcamp-final-project/static/js/2.84540780.chunk.js.map",
     "static/js/3.5a6cf2cd.chunk.js": "/blockchain-developer-bootcamp-final-project/static/js/3.5a6cf2cd.chunk.js",
     "static/js/3.5a6cf2cd.chunk.js.map": "/blockchain-developer-bootcamp-final-project/static/js/3.5a6cf2cd.chunk.js.map",
     "index.html": "/blockchain-developer-bootcamp-final-project/index.html",
     "static/css/main.72ccc49f.chunk.css.map": "/blockchain-developer-bootcamp-final-project/static/css/main.72ccc49f.chunk.css.map",
-    "static/js/2.5bbc86f3.chunk.js.LICENSE.txt": "/blockchain-developer-bootcamp-final-project/static/js/2.5bbc86f3.chunk.js.LICENSE.txt",
+    "static/js/2.84540780.chunk.js.LICENSE.txt": "/blockchain-developer-bootcamp-final-project/static/js/2.84540780.chunk.js.LICENSE.txt",
     "static/media/AnoumanCover.ee360dbc.jpg": "/blockchain-developer-bootcamp-final-project/static/media/AnoumanCover.ee360dbc.jpg",
     "static/media/InterDweller.6c394cd5.mp3": "/blockchain-developer-bootcamp-final-project/static/media/InterDweller.6c394cd5.mp3",
     "static/media/LaStoria.71c373dc.mp3": "/blockchain-developer-bootcamp-final-project/static/media/LaStoria.71c373dc.mp3",
@@ -24,8 +24,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.74585fb6.js",
-    "static/js/2.5bbc86f3.chunk.js",
+    "static/js/2.84540780.chunk.js",
     "static/css/main.72ccc49f.chunk.css",
-    "static/js/main.1341c0f1.chunk.js"
+    "static/js/main.aeaea102.chunk.js"
   ]
 }
