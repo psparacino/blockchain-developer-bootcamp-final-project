@@ -2,8 +2,10 @@ import { useState, React } from 'react';
 import { ethers } from 'ethers';
 
 const RegisterButton = ({registration, setRegistration, UserInteractionContract}) => {
+    const [isRegistering, setIsRegistering] = useState('Click here for one-time registration')
 
     function register() {
+        setIsRegistering('Registering...')
         UserInteractionContract.RegisterAddress()
         .then((result) => {
             console.log(result, 'registration successful')
@@ -31,7 +33,7 @@ return (
         Registered!   
         </button>
         : <button className="standardButton" id="registerButton" onClick={register}>
-        Click here for one-time registration  
+        {isRegistering}  
         </button>}
         
     </div>

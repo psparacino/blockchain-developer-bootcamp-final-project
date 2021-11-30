@@ -48,13 +48,17 @@ const useContractObjectRepo = () => {
 
             // kovan main: 0x83A71D391677f78BbED848b414635EdCE6e6E9b4
 
+            // rinkeby main: 0xEf543579E6dc9c7C71C3dF6405C119799f25C676
+
             const userInteractionContractAddress = "0x83A71D391677f78BbED848b414635EdCE6e6E9b4";
             const UserInteractionContractObject = await new ethers.Contract(userInteractionContractAddress, UserInteraction.abi, signer);
             setUserInteractionContract(UserInteractionContractObject);
             
             //Token Contract
 
-            // kovan: 0xE7b3ab901E2384aE086a8e7c14ab68E3Be7C9112
+            // kovan: 0xfea39ED3c5FeA0248ec1E7453726a0Cf0c4E6E06
+
+            // rinkeby: 0xF6E1B285f2c0633e478A8b77acAF7b08C10C61C0
 
             const ownerShipTokenContractAddress = "0xfea39ED3c5FeA0248ec1E7453726a0Cf0c4E6E06";
             const OwnerShipTokenContractObject = await new ethers.Contract(ownerShipTokenContractAddress, OwnershipToken.abi, signer);

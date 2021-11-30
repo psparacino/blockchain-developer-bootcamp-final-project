@@ -26,12 +26,18 @@ module.exports = {
     hardhat: {
       chainId: 1337  
     },
-    /*
+    /*  
     kovan: {
-      url: `${process.env.REACT_APP_INFURA_URL}`,
+      url: `${process.env.REACT_APP_KOVAN_INFURA_URL}`,
+      accounts:[`${process.env.REACT_APP_PRIVATE_KEY}`],
+    },
+    rinkeby: {
+      url: `${process.env.REACT_APP_RINKEBY_INFURA_URL}`,
       accounts:[`${process.env.REACT_APP_PRIVATE_KEY}`],
     }
     */
+    
+    
   }, 
   solidity: '0.8.10'
 };

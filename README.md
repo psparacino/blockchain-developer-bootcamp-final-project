@@ -1,5 +1,7 @@
 # JustStreamIt - A Decentralized Audio Player
 
+NOTE: As of midday on 11/29 MetaMask was not syncing with Kovan transactions and emitted events. By evening 11/29 everything appears to be working normally, but please be aware there is a potential ongoing issue with MetaMask/Kovan.   
+
 JustStreamIt requires kovan eth to interact.  Get kETH here--> [https://faucets.chain.link/]
 
 JustStreamIt allows users to stream music in an on-demand model that charges micropayments per stream instead of monthly subscriptions.  All transactions are public which discourages the prefential payout models of central streaming services.  
